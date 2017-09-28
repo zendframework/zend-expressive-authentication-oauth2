@@ -1,0 +1,64 @@
+{
+    "name": "zendframework/zend-expressive-authentication-oauth2",
+    "description": "OAuth2 authentication for Expressive and PSR-7 applications",
+    "homepage": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "authentication",
+        "OAuth2",
+        "http",
+        "middleware",
+        "zend-expressive",
+        "psr-7"
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-expressive-authentication/",
+        "issues": "https://github.com/ezimuel/zend-expressive-authentication/issues",
+        "source": "https://github.com/ezimuel/zend-expressive-authentication",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/expressive"
+    },
+    "require": {
+        "php": "^7.1",
+        "http-interop/http-middleware": "^0.4.1",
+        "league/oauth2-server": "^6.0",
+        "psr/container": "^1.0",
+        "psr/http-message": "^1.0.1",
+        "zendframework/zend-authentication": "^2.5.0",
+        "zendframework/zend-diactoros": "^1.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0.8",
+        "roave/security-advisories": "dev-master",
+        "zendframework/zend-coding-standard": "~1.0.0"
+    },
+    "conflict": {
+        "container-interop/container-interop": "<1.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zend\\Expressive\\Authentication\\OAuth2": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZendTest\\Expressive\\Authentication\\OAuth2": "test/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "upload-coverage": "coveralls -v",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --coverage-clover clover.xml",
+        "license-check": "vendor/bin/docheader check src/ test/"
+    }
+}
