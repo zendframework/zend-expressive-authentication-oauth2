@@ -6,12 +6,12 @@
  */
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
+use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
-class AccessTokenEntity implements AccessTokenEntityInterface
+class AuthCodeEntity implements AuthCodeEntityInterface
 {
-    use AccessTokenTrait, TokenEntityTrait, EntityTrait;
+    use AuthCodeTrait, EntityTrait, TokenEntityTrait;
 }

@@ -8,16 +8,12 @@
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
-use PDO;
 
-class AccessTokenRepository implements AccessTokenRepositoryInterface
+class AccessTokenRepository extends AbstractRepository
+    implements AccessTokenRepositoryInterface
 {
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -37,18 +33,23 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        // 'id' => $accessTokenEntity->getIdentifier(),
-        //     'user_id' => $accessTokenEntity->getUserIdentifier(),
-        //     'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
-        //     'scopes' => $this->scopesToArray($accessTokenEntity->getScopes()),
-        //     'revoked' => false,
-        //     'created_at' => new DateTime,
-        //     'updated_at' => new DateTime,
-        //     'expires_at' => $accessTokenEntity->getExpiryDateTime(),
-        $this->pdo->prepare(
+        $sth = $this->pdo->prepare(
             'INSERT INTO oauth_access_tokens (id, user_id, client_id, scopes, revoked, created_at, updated_at, expires_at) ' .
             'VALUES (:id, :user_id, :client_id, :scopes, :revoked, :created_at, :updated_at, :expires_at)'
         );
+
+        $sth->bindValue(':id', $accessTokenEntity->getIdentifier());
+        $sth->bindValue(':user_id', $accessTokenEntity->getUserIdentifier());
+        $sth->bindValue(':client_id', $accessTokenEntity->getClient()->getIdentifier());
+        $sth->bindValue(':scopes', $this->scopesToArray($accessTokenEntity->getScopes()));
+        $sth->bindValue(':revoked', false);
+        $sth->bindValue(':created_at', date(DATE_RFC3339));
+        $sth->bindValue(':updated_at', date(DATE_RFC3339));
+        $sth->bindValue(':expires_at',  $accessTokenEntity->getExpiryDateTime());
+
+        if (false === $sth->execute()) {
+            throw UniqueTokenIdentifierConstraintViolationException::create();
+        }
     }
 
     /**
@@ -56,7 +57,13 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
+        $sth = $this->pdo->prepare(
+            'UPDATE oauth_access_tokens SET revoked=:revoked WHERE id = :tokenId'
+        );
+        $sth->bindValue(':revoked', true);
+        $sth->bindParam(':tokenId', $tokenId);
 
+        $sth->execute();
     }
 
     /**
@@ -64,6 +71,16 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function isAccessTokenRevoked($tokenId)
     {
+        $sth = $this->pdo->prepare(
+            'SELECT revoked FROM oauth_access_tokens WHERE id = :tokenId'
+        );
+        $sth->bindParam(':tokenId', $tokenId);
 
+        if (false === $sth->execute()) {
+            return false;
+        }
+        $row = $sth->fetch();
+
+        return isset($row['revoked']) ? (bool) $row['revoked'] : false;
     }
 }

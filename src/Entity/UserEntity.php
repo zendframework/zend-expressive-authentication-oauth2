@@ -6,12 +6,21 @@
  */
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
+use League\OAuth2\Server\Entities\UserEntityInterface;
 
-class AccessTokenEntity implements AccessTokenEntityInterface
+class UserEntity implements UserEntityInterface
 {
-    use AccessTokenTrait, TokenEntityTrait, EntityTrait;
+    use EntityTrait;
+
+    /**
+     * Create a new user instance.
+     *
+     * @param  string|int  $identifier
+     * @return void
+     */
+    public function __construct($identifier)
+    {
+        $this->setIdentifier($identifier);
+    }
 }

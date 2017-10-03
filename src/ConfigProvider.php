@@ -7,6 +7,13 @@
 
 namespace Zend\Expressive\Authentication\OAuth2;
 
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use Repository\Pdo;
+
 class ConfigProvider
 {
     /**
@@ -27,14 +34,25 @@ class ConfigProvider
     {
         return [
             'aliases' => [
-                // Change the alias value for Authentication adapter and
-                // UserRepository adapter
-                AuthenticationInterface::class => Adapter\BasicAccess::class,
-                UserRepositoryInterface::class => UserRepository\Htpasswd::class
+                // Choose a different adapter changing the alias value
+                AccessTokenRepositoryInterface::class => Pdo\AccessTokenRepository,
+                AuthCodeEntityInterface::class => Pdo\AuthCodeRepository,
+                ClientRepositoryInterface::class => Pdo\ClientRepository,
+                RefreshTokenRepositoryInterface::class => Pdo\RefreshTokenRepository,
+                ScopeRepositoryInterface::class => Pdo\ScopeRepository,
+                UserRepositoryInterface::class => Pdo\UserRepository
             ],
             'factories' => [
                 OAuth2Middleware::class => OAuth2MiddlewareFactory::class,
-                OAuth2Adapter::class => OAuth2AdapterFactory::class
+                OAuth2Adapter::class => OAuth2AdapterFactory::class,
+                // Pdo adapter
+                Pdo\PdoService::class => Pdo\PdoFactory::class,
+                Pdo\AccessTokenRepository::class => Pdo\AccessTokenRepositoryFactory::class,
+                Pdo\AuthCodeRepository::class => Pdo\AuthCodeRepositoryFactory::class,
+                Pdo\ClientRepository::class => Pdo\ClientRepositoryFactory::class,
+                Pdo\RefreshTokenRepository::class => Pdo\RefreshTokenRepositoryFactory::class,
+                Pdo\ScopeRepository::class => Pdo\ScopeRepositoryFactory::class,
+                Pdo\UserRepository::class => Pdo\UserRepositoryFactory::class
             ]
         ];
     }
