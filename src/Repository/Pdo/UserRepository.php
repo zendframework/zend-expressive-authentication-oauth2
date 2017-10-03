@@ -21,7 +21,7 @@ class UserRepository extends AbstractRepository
         ClientEntityInterface $clientEntity
     ) {
         $sth = $this->pdo->prepare(
-            'SELECT id, password FROM oauth_users WHERE username = :username'
+            'SELECT password FROM oauth_users WHERE username = :username'
         );
         $sth->bindParam(':username', $username);
 

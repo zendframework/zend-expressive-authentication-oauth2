@@ -11,18 +11,18 @@ use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface as ServerMiddlewareInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
 
 class OAuth2Middleware implements ServerMiddlewareInterface
 {
     protected $server;
-    protected $config;
+    protected $responsePrototype;
 
-    public function __construct(AuthorizationServer $server, array $config)
+    public function __construct(AuthorizationServer $server, ResponseInterface $responsePrototype)
     {
         $this->server = $server;
-        $this->config = $config;
+        $this->responsePrototype = $responsePrototype;
     }
 
     /**
@@ -31,12 +31,12 @@ class OAuth2Middleware implements ServerMiddlewareInterface
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         try {
-            return $this->server->respondToAccessTokenRequest($request, new Response());
+            return $this->server->respondToAccessTokenRequest($request, $this->responsePrototype);
         } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse(new Response());
+            return $exception->generateHttpResponse($this->responsePrototype);
         } catch (\Exception $exception) {
             return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-            ->generateHttpResponse(new Response());
+            ->generateHttpResponse($this->responsePrototype);
         }
     }
 }

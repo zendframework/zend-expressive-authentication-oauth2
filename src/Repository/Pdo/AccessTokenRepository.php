@@ -7,8 +7,10 @@
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 
 class AccessTokenRepository extends AbstractRepository

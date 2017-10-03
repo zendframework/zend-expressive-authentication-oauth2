@@ -12,7 +12,8 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface;
-
+use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\Response;
 
 class OAuth2MiddlewareFactory
 {
@@ -60,6 +61,21 @@ class OAuth2MiddlewareFactory
             $config['private-key'],
             $config['encryption-key']
         );
-        return new OAuth2Middleware($authServer, $config);
+
+        if (! $container->has(ResponseInterface::class)
+            && ! class_exists(Response::class)
+        ) {
+            throw new Exception\InvalidConfigException(sprintf(
+                'Cannot create %s service; dependency %s is missing. Either define the service, '
+                . 'or install zendframework/zend-diactoros',
+                OAuth2Middleware::class,
+                ResponseInterface::class
+            ));
+        }
+        $responsePrototype = $container->has(ResponseInterface::class)
+            ? $container->get(ResponseInterface::class)
+            : new Response();
+
+        return new OAuth2Middleware($authServer, $responsePrototype);
     }
 }

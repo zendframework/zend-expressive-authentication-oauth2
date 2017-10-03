@@ -1,6 +1,6 @@
 {
     "name": "zendframework/zend-expressive-authentication-oauth2",
-    "description": "OAuth2 server and authentication for Expressive and PSR-7 applications",
+    "description": "OAuth2 server for Expressive and PSR-7 applications",
     "homepage": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
     "type": "library",
     "license": "BSD-3-Clause",
@@ -16,9 +16,9 @@
         "sort-packages": true
     },
     "support": {
-        "docs": "https://docs.zendframework.com/zend-expressive-authentication/",
-        "issues": "https://github.com/ezimuel/zend-expressive-authentication/issues",
-        "source": "https://github.com/ezimuel/zend-expressive-authentication",
+        "docs": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
+        "issues": "https://github.com/zendframework/zend-expressive-authentication-oauth2/issues",
+        "source": "https://github.com/zendframework/zend-expressive-authentication-oauth2",
         "slack": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/expressive"
     },
@@ -29,12 +29,12 @@
         "psr/container": "^1.0",
         "psr/http-message": "^1.0.1",
         "zendframework/zend-expressive-authentication": "dev-master",
-        "zendframework/zend-diactoros": "^1.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0.8",
         "roave/security-advisories": "dev-master",
-        "zendframework/zend-coding-standard": "~1.0.0"
+        "zendframework/zend-coding-standard": "~1.0.0",
+        "zendframework/zend-diactoros": "^1.4.0"
     },
     "conflict": {
         "container-interop/container-interop": "<1.2.0"

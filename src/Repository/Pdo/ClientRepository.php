@@ -19,7 +19,7 @@ class ClientRepository extends AbstractRepository
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
         $sth = $this->pdo->prepare(
-            'SELECT * FROM oauth_clients WHERE id = :clientIdentifier'
+            'SELECT * FROM oauth_clients WHERE name = :clientIdentifier'
         );
         $sth->bindParam(':clientIdentifier', $clientIdentifier);
 

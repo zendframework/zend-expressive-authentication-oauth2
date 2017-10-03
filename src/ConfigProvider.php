@@ -12,7 +12,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use Repository\Pdo;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 class ConfigProvider
 {
@@ -46,7 +46,7 @@ class ConfigProvider
                 OAuth2Middleware::class => OAuth2MiddlewareFactory::class,
                 OAuth2Adapter::class => OAuth2AdapterFactory::class,
                 // Pdo adapter
-                Pdo\PdoService::class => Pdo\PdoFactory::class,
+                Pdo\PdoService::class => Pdo\PdoServiceFactory::class,
                 Pdo\AccessTokenRepository::class => Pdo\AccessTokenRepositoryFactory::class,
                 Pdo\AuthCodeRepository::class => Pdo\AuthCodeRepositoryFactory::class,
                 Pdo\ClientRepository::class => Pdo\ClientRepositoryFactory::class,
