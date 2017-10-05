@@ -30,7 +30,7 @@ class ClientRepository extends AbstractRepository
         if (empty($row) || !$this->isGranted($row, $grantType)) {
             return;
         }
-        if ($mustValidateSecret && !hash_equals($row['secret'], (string) $clientSecret)) {
+        if ($mustValidateSecret && !password_verify((string) $clientSecret, $row['secret'])) {
             return;
         }
         return new ClientEntity($clientIdentifier, $row['name'], $row['redirect']);
@@ -43,7 +43,7 @@ class ClientRepository extends AbstractRepository
      * @param string $grantType
      * @return bool
      */
-    protected function checkGrant(array $row, string $grantType): bool
+    protected function isGranted(array $row, string $grantType): bool
     {
         switch ($grantType) {
             case 'authorization_code':

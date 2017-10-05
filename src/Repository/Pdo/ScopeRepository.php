@@ -15,7 +15,7 @@ class ScopeRepository extends AbstractRepository
 
     public function getScopeEntityByIdentifier($identifier)
     {
-
+        
     }
 
     public function finalizeScopes(
