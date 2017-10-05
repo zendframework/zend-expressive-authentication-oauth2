@@ -16,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
-use Zend\Diactoros\Request\Serializer;
+use Zend\Diactoros\Request\Serializer as RequestSerializer;
+use Zend\Diactoros\Response\Serializer as ResponseSerializer;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ClientRepository;
@@ -95,10 +96,10 @@ class OAuth2MiddlewareTest extends TestCase
 
         // Build the server request
         $params = [
-            'grant_type' => 'client_credentials',
-            'client_id' => 'client_test',
+            'grant_type'    => 'client_credentials',
+            'client_id'     => 'client_test',
             'client_secret' => 'test',
-            'scope' => 'test'
+            'scope'         => 'test'
         ];
         $this->stream->write(http_build_query($params));
         $request = $this->buildRequest(
@@ -108,11 +109,14 @@ class OAuth2MiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ],
             $params
         );
-
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
         $response = $authMiddleware->process($request, $this->delegate->reveal());
-        
-        $this->assertEquals(400, $response->getStatusCode());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = json_decode((string) $response->getBody());
+        $this->assertEquals('Bearer', $content->token_type);
+        $this->assertEquals(3600, $content->expires_in);
+        $this->assertNotEmpty($content->access_token);
     }
 
     protected function buildRequest($method, $url, $stream, $headers, $params)

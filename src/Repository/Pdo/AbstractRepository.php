@@ -19,4 +19,18 @@ class AbstractRepository
     {
         $this->pdo = $pdo;
     }
+
+    /**
+     * Return a string of scopes, separated by space
+     * from ScopeEntityInterface[]
+     *
+     * @param ScopeEntityInterface[] $scopes
+     * @return string
+     */
+    protected function scopesToString(array $scopes)
+    {
+        return trim(array_reduce($scopes, function($result, $item){
+            return $result . ' ' . $item->getIdentifier();
+        }));
+    }
 }

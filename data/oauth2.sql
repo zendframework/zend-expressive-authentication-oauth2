@@ -17,6 +17,7 @@ CREATE TABLE oauth_access_tokens (
     revoked BOOLEAN,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
+    expires_at TIMESTAMP,
     PRIMARY KEY(id)
 );
 CREATE INDEX idx1_oauth_access_tokens ON oauth_access_tokens(user_id);
@@ -57,4 +58,9 @@ CREATE TABLE oauth_users (
     first_name VARCHAR(80),
     last_name VARCHAR(80),
     PRIMARY KEY (username)
+);
+
+CREATE TABLE oauth_scopes (
+    id VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
 );

@@ -8,6 +8,7 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use Zend\Expressive\Authentication\OAuth2\Entity\ScopeEntity;
 
 class ScopeRepository extends AbstractRepository
     implements ScopeRepositoryInterface
@@ -15,7 +16,21 @@ class ScopeRepository extends AbstractRepository
 
     public function getScopeEntityByIdentifier($identifier)
     {
-        
+        $sth = $this->pdo->prepare(
+            'SELECT id FROM oauth_scopes WHERE id = :identifier'
+        );
+        $sth->bindParam(':identifier', $identifier);
+
+        if (false === $sth->execute()) {
+            return;
+        }
+        $row = $sth->fetch();
+        if (isset($row['id'])) {
+            $scope = new ScopeEntity();
+            $scope->setIdentifier($row['id']);
+            return $scope;
+        }
+        return;
     }
 
     public function finalizeScopes(
@@ -24,6 +39,6 @@ class ScopeRepository extends AbstractRepository
         ClientEntityInterface $clientEntity,
         $userIdentifier = null
     ) {
-
+        return $scopes;
     }
 }

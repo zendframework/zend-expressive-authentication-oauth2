@@ -11,6 +11,7 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use PDO;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 
 class AccessTokenRepository extends AbstractRepository
@@ -37,19 +38,17 @@ class AccessTokenRepository extends AbstractRepository
     {
         $sth = $this->pdo->prepare(
             'INSERT INTO oauth_access_tokens (id, user_id, client_id, scopes, revoked, created_at, updated_at, expires_at) ' .
-            'VALUES (:id, :user_id, :client_id, :scopes, :revoked, :created_at, :updated_at, :expires_at)'
+            'VALUES (:id, :user_id, :client_id, :scopes, :revoked, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :expires_at)'
         );
-
-        $sth->bindValue(':id', $accessTokenEntity->getIdentifier());
-        $sth->bindValue(':user_id', $accessTokenEntity->getUserIdentifier());
-        $sth->bindValue(':client_id', $accessTokenEntity->getClient()->getIdentifier());
-        $sth->bindValue(':scopes', $this->scopesToArray($accessTokenEntity->getScopes()));
-        $sth->bindValue(':revoked', false);
-        $sth->bindValue(':created_at', date(DATE_RFC3339));
-        $sth->bindValue(':updated_at', date(DATE_RFC3339));
-        $sth->bindValue(':expires_at',  $accessTokenEntity->getExpiryDateTime());
-
-        if (false === $sth->execute()) {
+        $params = [
+            ':id'         => $accessTokenEntity->getIdentifier(),
+            ':user_id'    => $accessTokenEntity->getUserIdentifier(),
+            ':client_id'  => $accessTokenEntity->getClient()->getIdentifier(),
+            ':scopes'     => $this->scopesToString($accessTokenEntity->getScopes()),
+            ':revoked'    => false,
+            ':expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp()
+        ];
+        if (false === $sth->execute($params)) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
         }
     }
