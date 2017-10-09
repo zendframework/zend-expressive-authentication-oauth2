@@ -35,9 +35,9 @@ class AuthCodeRepository extends AbstractRepository
         $sth->bindValue(':id', $authCodeEntity->getIdentifier());
         $sth->bindValue(':user_id', $authCodeEntity->getUserIdentifier());
         $sth->bindValue(':client_id', $authCodeEntity->getClient()->getIdentifier());
-        $sth->bindValue(':scopes', $this->formatScopesForStorage($authCodeEntity->getScopes()));
+        $sth->bindValue(':scopes', $this->scopesToString($authCodeEntity->getScopes()));
         $sth->bindValue(':revoked', false);
-        $sth->bindValue(':expires_at',  $authCodeEntity->getExpiryDateTime());
+        $sth->bindValue(':expires_at',  $authCodeEntity->getExpiryDateTime()->getTimestamp());
 
         if (false === $sth->execute()) {
             throw UniqueTokenIdentifierConstraintViolationException::create();

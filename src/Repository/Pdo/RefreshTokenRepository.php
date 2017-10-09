@@ -10,6 +10,7 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity;
 
 class RefreshTokenRepository extends AbstractRepository
     implements RefreshTokenRepositoryInterface
@@ -29,7 +30,7 @@ class RefreshTokenRepository extends AbstractRepository
         $sth->bindValue(':id', $refreshTokenEntity->getIdentifier());
         $sth->bindValue(':access_token_id', $refreshTokenEntity->getAccessToken()->getIdentifier());
         $sth->bindValue(':revoked', false);
-        $sth->bindValue(':expires_at', $refreshTokenEntity->getExpiryDateTime());
+        $sth->bindValue(':expires_at', $refreshTokenEntity->getExpiryDateTime()->getTimestamp());
 
         if (false === $sth->execute()) {
             throw UniqueTokenIdentifierConstraintViolationException::create();

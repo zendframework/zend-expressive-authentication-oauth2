@@ -8,10 +8,10 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use Zend\Expressive\Authentication\Entity\UserEntity;
+use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
 class UserRepository extends AbstractRepository
-    implements ScopeRepositoryInterface
+    implements UserRepositoryInterface
 {
 
     public function getUserEntityByUserCredentials(

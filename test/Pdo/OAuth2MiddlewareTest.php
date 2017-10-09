@@ -10,19 +10,24 @@ namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 use DateInterval;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Zend\Diactoros\Request\Serializer as RequestSerializer;
 use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\Serializer as ResponseSerializer;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
-use Zend\Diactoros\Request\Serializer as RequestSerializer;
-use Zend\Diactoros\Response\Serializer as ResponseSerializer;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AuthCodeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ClientRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
 
 class OAuth2MiddlewareTest extends TestCase
 {
@@ -67,7 +72,9 @@ class OAuth2MiddlewareTest extends TestCase
         $this->clientRepository = new ClientRepository($this->pdoService);
         $this->accessTokenRepository = new AccessTokenRepository($this->pdoService);
         $this->scopeRepository = new ScopeRepository($this->pdoService);
-        $this->stream = new Stream('php://temp', 'w');
+        $this->userRepository = new UserRepository($this->pdoService);
+        $this->refreshTokenRepository = new RefreshTokenRepository($this->pdoService);
+        $this->authCodeRepository = new AuthCodeRepository($this->pdoService);
 
         $this->authServer = new AuthorizationServer(
             $this->clientRepository,
@@ -94,20 +101,19 @@ class OAuth2MiddlewareTest extends TestCase
             new DateInterval('PT1H') // access tokens will expire after 1 hour
         );
 
-        // Build the server request
+        // Server request
         $params = [
             'grant_type'    => 'client_credentials',
             'client_id'     => 'client_test',
             'client_secret' => 'test',
             'scope'         => 'test'
         ];
-        $this->stream->write(http_build_query($params));
-        $request = $this->buildRequest(
+        $request = $this->buildServerRequest(
             'POST',
             '/access_token',
-            $this->stream,
-            [ 'Content-Type' => 'application/x-www-form-urlencoded' ],
-            $params
+            http_build_query($params),
+            $params,
+            [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
         $response = $authMiddleware->process($request, $this->delegate->reveal());
@@ -119,8 +125,106 @@ class OAuth2MiddlewareTest extends TestCase
         $this->assertNotEmpty($content->access_token);
     }
 
-    protected function buildRequest($method, $url, $stream, $headers, $params)
+    public function testProcessPasswordGrant()
     {
+        $grant = new PasswordGrant(
+            $this->userRepository,
+            $this->refreshTokenRepository
+        );
+        $grant->setRefreshTokenTTL(new DateInterval('P1M')); // expire after 1 month
+        // Enable the password grant on the server
+        $this->authServer->enableGrantType(
+            $grant,
+            new DateInterval('PT1H') // access tokens will expire after 1 hour
+        );
+        // Server request
+        $params = [
+            'grant_type'    => 'password',
+            'client_id'     => 'client_test',
+            'client_secret' => 'test',
+            'scope'         => 'test',
+            'username'      => 'user_test',
+            'password'      => 'test'
+        ];
+        $request = $this->buildServerRequest(
+            'POST',
+            '/access_token',
+            http_build_query($params),
+            $params,
+            [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
+        );
+        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = json_decode((string) $response->getBody());
+        $this->assertEquals('Bearer', $content->token_type);
+        $this->assertEquals(3600, $content->expires_in);
+        $this->assertNotEmpty($content->access_token);
+        $this->assertNotEmpty($content->refresh_token);
+    }
+
+    public function testProcessGetAuthorizationCode()
+    {
+        $grant = new AuthCodeGrant(
+            $this->authCodeRepository,
+            $this->refreshTokenRepository,
+            new DateInterval('PT10M') // authorization codes will expire after 10 minutes
+        );
+        $grant->setRefreshTokenTTL(new DateInterval('P1M')); // refresh tokens will expire after 1 month
+
+        // Enable the authentication code grant on the server
+        $this->authServer->enableGrantType(
+            $grant,
+            new DateInterval('PT1H') // access tokens will expire after 1 hour
+        );
+        $state = bin2hex(random_bytes(10)); // CSRF token
+        // Server request
+        $params = [
+            'response_type' => 'code',
+            'client_id'     => 'client_test2',
+            'redirect_uri'  => '/redirect',
+            'scope'         => 'test',
+            'state'         => $state
+        ];
+        $request = $this->buildServerRequest(
+            'GET',
+            '/auth_code?' . http_build_query($params),
+            '',
+            [],
+            [],
+            $params
+        );
+
+        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertTrue($response->hasHeader('Location'));
+        [$url, $queryString] = explode('?', $response->getHeader('Location')[0]);
+        $this->assertEquals($params['redirect_uri'], $url);
+        parse_str($queryString, $data);
+        $this->assertTrue(isset($data['code']));
+        $this->assertTrue(isset($data['state']));
+        $this->assertEquals($state, $data['state']);
+
+        return $data['code'];
+    }
+
+    /**
+     * Build a ServerRequest object
+     *
+     * @param string $method
+     * @param sting $url
+     * @param array $params
+     * @param array $headers
+     * @return Zend\Diactoros\ServerRequest
+     */
+    protected function buildServerRequest($method, $url, $body, $params, $headers = [], $queryParams = [])
+    {
+        $stream = new Stream('php://temp', 'w');
+        $stream->write($body);
+
         return new ServerRequest(
             [],
             [],
@@ -129,7 +233,7 @@ class OAuth2MiddlewareTest extends TestCase
             $stream,
             $headers,
             [],
-            [],
+            $queryParams,
             $params
         );
     }
