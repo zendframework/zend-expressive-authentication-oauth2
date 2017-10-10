@@ -7,6 +7,8 @@
 
 namespace Zend\Expressive\Authentication\OAuth2;
 
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -22,8 +24,9 @@ class ConfigProvider
     public function __invoke() : array
     {
         return [
-            'dependencies'  => $this->getDependencies(),
-            'authentication' => include __DIR__ . '/../config/oauth2.php'
+            'dependencies'   => $this->getDependencies(),
+            'authentication' => include __DIR__ . '/../config/oauth2.php',
+            'routes'         => $this->getRoutes()
         ];
     }
 
@@ -45,6 +48,8 @@ class ConfigProvider
             'factories' => [
                 OAuth2Middleware::class => OAuth2MiddlewareFactory::class,
                 OAuth2Adapter::class => OAuth2AdapterFactory::class,
+                AuthorizationServer::class => AuthorizationServerFactory::class,
+                ResourceServer::class => ResourceServerFactory::class,
                 // Pdo adapter
                 Pdo\PdoService::class => Pdo\PdoServiceFactory::class,
                 Pdo\AccessTokenRepository::class => Pdo\AccessTokenRepositoryFactory::class,
@@ -54,6 +59,18 @@ class ConfigProvider
                 Pdo\ScopeRepository::class => Pdo\ScopeRepositoryFactory::class,
                 Pdo\UserRepository::class => Pdo\UserRepositoryFactory::class
             ]
+        ];
+    }
+
+    public function getRoutes() : array
+    {
+        return [
+            [
+                'name'            => 'oauth',
+                'path'            => '/oauth',
+                'middleware'      => OAuth2Middleware::class,
+                'allowed_methods' => ['GET', 'POST']
+            ],
         ];
     }
 }

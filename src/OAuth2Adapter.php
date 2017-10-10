@@ -13,22 +13,32 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
+use Zend\Expressive\Authentication\UserRepository\UserTrait;
 
 class OAuth2 implements AuthenticationInterface
 {
-    protected $oauth2;
+    use UserTrait;
+
+    protected $resourceServer;
     protected $config;
 
-    public function __construct(ResourceServer $oauth2, array $config)
+    public function __construct(ResourceServer $resourceServer, array $config)
     {
-        $this->oauth2 = $oauth2;
+        $this->resourceServer = $resourceServer;
         $this->config = $config;
     }
 
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         try {
-            $result = $this->oauth2->validateAuthenticatedRequest($request);
+            $result = $this->resourceServer->validateAuthenticatedRequest($request);
+            $userId = $result->getAttribute('oauth_user_id', false);
+            if (false !== $userId) {
+                return $this->generateUser(
+                    $result->getAttribute('oauth_user_id'),
+                    ''
+                );
+            }
         } catch (OAuthServerException $exception) {
             return null;
         }

@@ -42,7 +42,11 @@ class OAuth2Middleware implements ServerMiddlewareInterface
     }
 
     /**
-     * Authorize the request in order to return an authorization code
+     * Authorize the request and return an authorization code
+     * Used for authorization code grant and implicit grant
+     *
+     * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/
+     * @see https://oauth2.thephpleague.com/authorization-server/implicit-grant/
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -78,6 +82,11 @@ class OAuth2Middleware implements ServerMiddlewareInterface
 
     /**
      * Request an access token
+     * Used for client credential grant, password grant, and refresh token grant
+     *
+     * @see https://oauth2.thephpleague.com/authorization-server/client-credentials-grant/
+     * @see https://oauth2.thephpleague.com/authorization-server/resource-owner-password-credentials-grant/
+     * @see https://oauth2.thephpleague.com/authorization-server/refresh-token-grant/
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface

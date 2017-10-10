@@ -5,10 +5,17 @@
  *
  * To generate the encryption key use this command:
  * php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
+ *
+ * The expire values must be a valid DateInterval format
+ * @see http://php.net/manual/en/class.dateinterval.php
  */
 return [
-    'private-key' => __DIR__ . '/../data/private.key',
-    'encryption-key' => file_get_contents(__DIR__ . '/../data/encryption.key'),
+    'private_key' => __DIR__ . '/../data/private.key',
+    'public_key' => __DIR__ . '/../data/public.key',
+    'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
+    'access_token_expire' => 'PT1D', // 1 day in DateInterval format
+    'refresh_token_expire' => 'PT1M', // 1 month in DateInterval format
+    'auth_code_expire' => 'PT10I', // 10 minutes in DateInterval format
     'pdo' => [
         'dsn' => '',
         'username' => '',
