@@ -13,9 +13,9 @@ return [
     'private_key' => __DIR__ . '/../data/private.key',
     'public_key' => __DIR__ . '/../data/public.key',
     'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
-    'access_token_expire' => 'PT1D', // 1 day in DateInterval format
-    'refresh_token_expire' => 'PT1M', // 1 month in DateInterval format
-    'auth_code_expire' => 'PT10I', // 10 minutes in DateInterval format
+    'access_token_expire' => 'P1D', // 1 day in DateInterval format
+    'refresh_token_expire' => 'P1M', // 1 month in DateInterval format
+    'auth_code_expire' => 'PT10M', // 10 minutes in DateInterval format
     'pdo' => [
         'dsn' => '',
         'username' => '',

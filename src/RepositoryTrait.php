@@ -5,6 +5,8 @@
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
  */
 
+namespace Zend\Expressive\Authentication\OAuth2;
+
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -67,11 +69,11 @@ trait RepositoryTrait
 
     protected function getAuthCodeRepository(ContainerInterface $container): AuthCodeRepositoryInterface
     {
-        if (!$container->has(RefreshTokenRepositoryInterface::class)) {
+        if (!$container->has(AuthCodeRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Refresk Token Repository is missing'
             );
         }
-        return $container->get(RefreshTokenRepositoryInterface::class);
+        return $container->get(AuthCodeRepositoryInterface::class);
     }
 }

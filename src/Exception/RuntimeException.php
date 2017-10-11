@@ -5,7 +5,7 @@
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Expressive\Authentication\Exception\OAuth2;
+namespace Zend\Expressive\Authentication\OAuth2\Exception;
 
 class RuntimeException extends \RuntimeException implements
     ExceptionInterface

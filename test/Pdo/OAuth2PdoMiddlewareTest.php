@@ -36,7 +36,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
     const DB_FILE        = __DIR__ . '/TestAsset/test_oauth2.sq3';
     const DB_SCHEMA      = __DIR__ . '/../../data/oauth2.sql';
     const DB_DATA        = __DIR__ . '/TestAsset/test_data.sql';
-    const PRIVATE_KEY    = __DIR__ .'/TestAsset/private.key';
+    const PRIVATE_KEY    = __DIR__ .'/../TestAsset/private.key';
     const ENCRYPTION_KEY = 'T2x2+1OGrEzfS+01OUmwhOcJiGmE58UD1fllNn6CGcQ=';
 
     public static function setUpBeforeClass()

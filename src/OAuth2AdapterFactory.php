@@ -23,12 +23,6 @@ class OAuth2AdapterFactory
                 'OAuth2 resource server is missing for authentication'
             );
         }
-        $config = $container->get('config')['authentication']['oauth2'] ?? [];
-        if (!isset($config['...'])) {
-            throw new Exception\InvalidConfigException(
-                'The ... configuration is missing for authentication'
-            );
-        }
-        return new OAuth2Adapter($resourceServer, $config);
+        return new OAuth2Adapter($resourceServer);
     }
 }

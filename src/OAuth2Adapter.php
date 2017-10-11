@@ -5,7 +5,7 @@
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Expressive\Authentication\Adapter;
+namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -15,17 +15,15 @@ use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
 use Zend\Expressive\Authentication\UserRepository\UserTrait;
 
-class OAuth2 implements AuthenticationInterface
+class OAuth2Adapter implements AuthenticationInterface
 {
     use UserTrait;
 
     protected $resourceServer;
-    protected $config;
 
-    public function __construct(ResourceServer $resourceServer, array $config)
+    public function __construct(ResourceServer $resourceServer)
     {
         $this->resourceServer = $resourceServer;
-        $this->config = $config;
     }
 
     public function authenticate(ServerRequestInterface $request): ?UserInterface
