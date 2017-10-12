@@ -3,12 +3,19 @@
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-authorization.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-authorization)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-authorization/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-authorization?branch=master)
 
-Zend-expressive-authentication is a middleware for [Expressive](https://github.com/zendframework/zend-expressive)
-and [PSR-7](http://www.php-fig.org/psr/psr-7/) applications for authenticate
-HTTP requests using different adapters: Username and password using PHP sessions,
-[Basic access authentication](https://en.wikipedia.org/wiki/Basic_access_authentication),
-[Digest access authentication](https://en.wikipedia.org/wiki/Digest_access_authentication),
-[OAuth2](https://oauth.net/2/), etc.
+Zend-expressive-authentication-oauth2 is a middleware for [Expressive](https://github.com/zendframework/zend-expressive)
+and [PSR-7](http://www.php-fig.org/psr/psr-7/) applications for OAuth2
+authentication.
+
+This library uses the [league/oauth2-server](https://oauth2.thephpleague.com/)
+package for implementing the OAuth2 server. It supports all the following grant
+types:
+
+- client credentials;
+- password;
+- authorization code;
+- implicit;
+- refresh token;
 
 ## WORK IN PROGRESS
 
