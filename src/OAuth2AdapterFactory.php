@@ -13,7 +13,9 @@ use Zend\Expressive\Authentication\OAuth2\Exception;
 
 class OAuth2AdapterFactory
 {
-    public function __invoke(ContainerInterface $container): PhpSession
+    use ResponsePrototypeTrait;
+
+    public function __invoke(ContainerInterface $container): OAuth2Adapter
     {
         $resourceServer = $container->has(ResourceServer::class) ?
                           $container->get(ResourceServer::class) :
@@ -23,6 +25,9 @@ class OAuth2AdapterFactory
                 'OAuth2 resource server is missing for authentication'
             );
         }
-        return new OAuth2Adapter($resourceServer);
+        return new OAuth2Adapter(
+            $resourceServer,
+            $this->getResponsePrototype($container)
+        );
     }
 }

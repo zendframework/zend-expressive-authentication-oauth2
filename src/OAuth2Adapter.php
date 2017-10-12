@@ -19,27 +19,45 @@ class OAuth2Adapter implements AuthenticationInterface
 {
     use UserTrait;
 
+    protected $responsePrototype;
     protected $resourceServer;
+    protected $unauthorizedResponse;
 
-    public function __construct(ResourceServer $resourceServer)
-    {
+    public function __construct(
+        ResourceServer $resourceServer,
+        ResponseInterface $responsePrototype
+    ) {
         $this->resourceServer = $resourceServer;
+        $this->responsePrototype = $responsePrototype;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         try {
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', false);
             if (false !== $userId) {
-                return $this->generateUser(
-                    $result->getAttribute('oauth_user_id'),
-                    ''
-                );
+                return $this->generateUser($userId, '');
             }
+            return null;
         } catch (OAuthServerException $exception) {
+            $this->unauthorizedResponse = $exception->generateHttpResponse(
+                $this->responsePrototype
+            );
             return null;
         }
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unauthorizedResponse(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->unauthorizedResponse ??
+               $this->responsePrototype->withStatus(401);
     }
 }

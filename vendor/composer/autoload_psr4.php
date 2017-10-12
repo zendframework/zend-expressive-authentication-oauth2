@@ -7,8 +7,11 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib/src'),
     'Zend\\Expressive\\Authentication\\OAuth2\\' => array($baseDir . '/src'),
+    'Zend\\Expressive\\Authentication\\' => array($vendorDir . '/zendframework/zend-expressive-authentication/src'),
     'Zend\\Diactoros\\' => array($vendorDir . '/zendframework/zend-diactoros/src'),
+    'Zend\\Authentication\\' => array($vendorDir . '/zendframework/zend-authentication/src'),
     'ZendTest\\Expressive\\Authentication\\OAuth2\\' => array($baseDir . '/test'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
