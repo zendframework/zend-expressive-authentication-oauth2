@@ -11,9 +11,12 @@ use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
+use Zend\Expressive\Authentication\ResponsePrototypeTrait;
 
 class OAuth2MiddlewareFactory
 {
+    use ResponsePrototypeTrait;
+
     public function __invoke(ContainerInterface $container): OAuth2Middleware
     {
         $authServer = $container->has(AuthorizationServer::class) ?
@@ -26,20 +29,9 @@ class OAuth2MiddlewareFactory
             ));
         }
 
-        if (! $container->has(ResponseInterface::class)
-            && ! class_exists(Response::class)
-        ) {
-            throw new Exception\InvalidConfigException(sprintf(
-                'Cannot create %s service; dependency %s is missing. Either define the service, '
-                . 'or install zendframework/zend-diactoros',
-                OAuth2Middleware::class,
-                ResponseInterface::class
-            ));
-        }
-        $responsePrototype = $container->has(ResponseInterface::class)
-            ? $container->get(ResponseInterface::class)
-            : new Response();
-
-        return new OAuth2Middleware($authServer, $responsePrototype);
+        return new OAuth2Middleware(
+            $authServer,
+            $this->getResponsePrototype($container)
+        );
     }
 }

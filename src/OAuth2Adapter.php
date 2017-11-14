@@ -19,14 +19,24 @@ class OAuth2Adapter implements AuthenticationInterface
 {
     use UserTrait;
 
-    protected $responsePrototype;
+    /**
+     * @var ResourceServer
+     */
     protected $resourceServer;
-    protected $unauthorizedResponse;
 
-    public function __construct(
-        ResourceServer $resourceServer,
-        ResponseInterface $responsePrototype
-    ) {
+    /**
+     * @var ResponseInterface
+     */
+    protected $responsePrototype;
+
+    /**
+     * Constructor
+     *
+     * @param ResourceServer $resourceServer
+     * @param ResponseInterface $responsePrototype
+     */
+    public function __construct(ResourceServer $resourceServer, ResponseInterface $responsePrototype)
+    {
         $this->resourceServer = $resourceServer;
         $this->responsePrototype = $responsePrototype;
     }
@@ -40,13 +50,12 @@ class OAuth2Adapter implements AuthenticationInterface
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', false);
             if (false !== $userId) {
-                return $this->generateUser($userId, '');
+                return $this->generateUser(
+                    $result->getAttribute('oauth_user_id'),
+                    ''
+                );
             }
-            return null;
         } catch (OAuthServerException $exception) {
-            $this->unauthorizedResponse = $exception->generateHttpResponse(
-                $this->responsePrototype
-            );
             return null;
         }
         return null;
@@ -57,7 +66,11 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     public function unauthorizedResponse(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->unauthorizedResponse ??
-               $this->responsePrototype->withStatus(401);
+        $this->responsePrototype
+            ->withHeader(
+                'WWW-Authenticate',
+                'Bearer token-example'
+            )
+            ->withStatus(401);
     }
 }

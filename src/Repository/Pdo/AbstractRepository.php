@@ -9,11 +9,15 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 class AbstractRepository
 {
+    /**
+     * @var PdoService
+     */
     protected $pdo;
+
     /**
      * Constructor
      *
-     * @param PDO $pdo
+     * @param PdoService $pdo
      */
     public function __construct(PdoService $pdo)
     {

@@ -17,9 +17,22 @@ use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
 class OAuth2Middleware implements ServerMiddlewareInterface
 {
+    /**
+     * @var AuthorizationServer
+     */
     protected $server;
+
+    /**
+     * @var ResponseInterface
+     */
     protected $responsePrototype;
 
+    /**
+     * Constructor
+     *
+     * @param AuthorizationServer $server
+     * @param ResponseInterface $responsePrototype
+     */
     public function __construct(AuthorizationServer $server, ResponseInterface $responsePrototype)
     {
         $this->server = $server;

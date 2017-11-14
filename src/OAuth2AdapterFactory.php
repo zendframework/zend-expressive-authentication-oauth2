@@ -10,6 +10,7 @@ namespace Zend\Expressive\Authentication\OAuth2;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\Exception;
+use Zend\Expressive\Authentication\ResponsePrototypeTrait;
 
 class OAuth2AdapterFactory
 {
@@ -25,6 +26,7 @@ class OAuth2AdapterFactory
                 'OAuth2 resource server is missing for authentication'
             );
         }
+
         return new OAuth2Adapter(
             $resourceServer,
             $this->getResponsePrototype($container)
