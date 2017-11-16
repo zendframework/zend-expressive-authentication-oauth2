@@ -2,7 +2,8 @@
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
  * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
+ *     New BSD License
  */
 
 namespace Zend\Expressive\Authentication\OAuth2;
@@ -32,27 +33,27 @@ class AuthorizationServerFactory
         $authCodeRepository = $this->getAuthCodeRepository($container);
 
         $config = $container->get('config')['authentication'] ?? [];
-        if (!isset($config['private_key']) || empty($config['private_key'])) {
+        if (! isset($config['private_key']) || empty($config['private_key'])) {
             throw new Exception\InvalidConfigException(
                 'The private_key value is missing in config authentication'
             );
         }
-        if (!isset($config['encryption_key']) || empty($config['encryption_key'])) {
+        if (! isset($config['encryption_key']) || empty($config['encryption_key'])) {
             throw new Exception\InvalidConfigException(
                 'The encryption_key value is missing in config authentication'
             );
         }
-        if (!isset($config['access_token_expire'])) {
+        if (! isset($config['access_token_expire'])) {
             throw new Exception\InvalidConfigException(
                 'The access_token_expire value is missing in config authentication'
             );
         }
-        if (!isset($config['refresh_token_expire'])) {
+        if (! isset($config['refresh_token_expire'])) {
             throw new Exception\InvalidConfigException(
                 'The refresh_token_expire value is missing in config authentication'
             );
         }
-        if (!isset($config['auth_code_expire'])) {
+        if (! isset($config['auth_code_expire'])) {
             throw new Exception\InvalidConfigException(
                 'The auth_code_expire value is missing in config authentication'
             );

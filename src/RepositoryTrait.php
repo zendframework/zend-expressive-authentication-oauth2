@@ -2,7 +2,8 @@
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
  * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
+ *     New BSD License
  */
 
 namespace Zend\Expressive\Authentication\OAuth2;
@@ -19,7 +20,7 @@ trait RepositoryTrait
 {
     protected function getUserRepository(ContainerInterface $container): UserRepositoryInterface
     {
-        if (!$container->has(UserRepositoryInterface::class)) {
+        if (! $container->has(UserRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 User Repository is missing'
             );
@@ -29,7 +30,7 @@ trait RepositoryTrait
 
     protected function getScopeRepository(ContainerInterface $container): ScopeRepositoryInterface
     {
-        if (!$container->has(ScopeRepositoryInterface::class)) {
+        if (! $container->has(ScopeRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Scope Repository is missing'
             );
@@ -39,7 +40,7 @@ trait RepositoryTrait
 
     protected function getAccessTokenRepository(ContainerInterface $container): AccessTokenRepositoryInterface
     {
-        if (!$container->has(AccessTokenRepositoryInterface::class)) {
+        if (! $container->has(AccessTokenRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Access Token Repository is missing'
             );
@@ -49,7 +50,7 @@ trait RepositoryTrait
 
     protected function getClientRepository(ContainerInterface $container): ClientRepositoryInterface
     {
-        if (!$container->has(ClientRepositoryInterface::class)) {
+        if (! $container->has(ClientRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Client Repository is missing'
             );
@@ -59,7 +60,7 @@ trait RepositoryTrait
 
     protected function getRefreshTokenRepository(ContainerInterface $container): RefreshTokenRepositoryInterface
     {
-        if (!$container->has(RefreshTokenRepositoryInterface::class)) {
+        if (! $container->has(RefreshTokenRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Refresk Token Repository is missing'
             );
@@ -69,7 +70,7 @@ trait RepositoryTrait
 
     protected function getAuthCodeRepository(ContainerInterface $container): AuthCodeRepositoryInterface
     {
-        if (!$container->has(AuthCodeRepositoryInterface::class)) {
+        if (! $container->has(AuthCodeRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 Refresk Token Repository is missing'
             );

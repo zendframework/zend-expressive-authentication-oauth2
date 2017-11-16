@@ -2,7 +2,8 @@
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
  * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
+ *     New BSD License
  */
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
@@ -13,8 +14,7 @@ use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationExcep
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 
-class AccessTokenRepository extends AbstractRepository
-    implements AccessTokenRepositoryInterface
+class AccessTokenRepository extends AbstractRepository implements AccessTokenRepositoryInterface
 {
     /**
      * {@inheritDoc}
@@ -35,10 +35,34 @@ class AccessTokenRepository extends AbstractRepository
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        $sth = $this->pdo->prepare(
-            'INSERT INTO oauth_access_tokens (id, user_id, client_id, scopes, revoked, created_at, updated_at, expires_at) ' .
-            'VALUES (:id, :user_id, :client_id, :scopes, :revoked, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :expires_at)'
-        );
+        $columns = [
+            'id',
+            'user_id',
+            'client_id',
+            'scopes',
+            'revoked',
+            'created_at',
+            'updated_at',
+            'expires_at',
+        ];
+
+        $values = [
+            ':id',
+            ':user_id',
+            ':client_id',
+            ':scopes',
+            ':revoked',
+            'CURRENT_TIMESTAMP',
+            'CURRENT_TIMESTAMP',
+            ':expires_at',
+        ];
+
+        $sth = $this->pdo->prepare(sprintf(
+            'INSERT INTO oauth_access_tokens (%s) VALUES (%s)',
+            implode(', ', $columns),
+            implode(', ', $values)
+        ));
+
         $params = [
             ':id'         => $accessTokenEntity->getIdentifier(),
             ':user_id'    => $accessTokenEntity->getUserIdentifier(),
@@ -47,6 +71,7 @@ class AccessTokenRepository extends AbstractRepository
             ':revoked'    => false,
             ':expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp()
         ];
+
         if (false === $sth->execute($params)) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
         }
