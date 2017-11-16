@@ -46,7 +46,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         $method = $request->getMethod();
-        switch ($method) {
+        switch (strtoupper($method)) {
             case 'GET':
                 return $this->authorizationRequest($request);
             case 'POST':
@@ -90,7 +90,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
             return $exception->generateHttpResponse($this->responsePrototype);
         } catch (\Exception $exception) {
             return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-            ->generateHttpResponse($this->responsePrototype);
+                ->generateHttpResponse($this->responsePrototype);
         }
     }
 
@@ -113,7 +113,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
             return $exception->generateHttpResponse($this->responsePrototype);
         } catch (\Exception $exception) {
             return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-            ->generateHttpResponse($this->responsePrototype);
+                ->generateHttpResponse($this->responsePrototype);
         }
     }
 }
