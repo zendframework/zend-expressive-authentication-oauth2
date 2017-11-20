@@ -1,16 +1,18 @@
 {
     "name": "zendframework/zend-expressive-authentication-oauth2",
-    "description": "OAuth2 server for Expressive and PSR-7 applications",
+    "description": "OAuth2 (server) authentication middleware for Expressive and PSR-7 applications.",
     "homepage": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
         "authentication",
-        "OAuth2",
+        "expressive",
         "http",
         "middleware",
-        "zend-expressive",
-        "psr-7"
+        "oauth2",
+        "psr-7",
+        "zendframework",
+        "zf"
     ],
     "config": {
         "sort-packages": true
