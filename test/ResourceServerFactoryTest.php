@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
+use Zend\Expressive\Authentication\OAuth2\Exception;
 use Zend\Expressive\Authentication\OAuth2\ResourceServerFactory;
 
 class ResourceServerFactoryTest extends TestCase
@@ -29,13 +30,13 @@ class ResourceServerFactoryTest extends TestCase
         $this->assertInstanceOf(ResourceServerFactory::class, $factory);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testInvokeWithEmptyConfig()
     {
+        $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([]);
         $factory = new ResourceServerFactory();
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $resourceServer = $factory($this->container->reveal());
     }
 
@@ -44,13 +45,15 @@ class ResourceServerFactoryTest extends TestCase
      */
     public function testInvokeWithConfigWithoutRepository()
     {
+        $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
             'authentication' => [
                 'public_key' => self::PUBLIC_KEY
             ]
         ]);
-        $this->container->has(AccessTokenRepositoryInterface::class)
-                        ->willReturn(false);
+        $this->container
+            ->has(AccessTokenRepositoryInterface::class)
+            ->willReturn(false);
 
         $factory = new ResourceServerFactory();
         $resourceServer = $factory($this->container->reveal());
@@ -58,17 +61,20 @@ class ResourceServerFactoryTest extends TestCase
 
     public function testInvokeWithConfigAndRepository()
     {
+        $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
             'authentication' => [
                 'public_key' => self::PUBLIC_KEY
             ]
         ]);
-        $this->container->has(AccessTokenRepositoryInterface::class)
-                        ->willReturn(true);
-        $this->container->get(AccessTokenRepositoryInterface::class)
-                        ->willReturn(
-                            $this->prophesize(AccessTokenRepositoryInterface::class)->reveal()
-                        );
+        $this->container
+            ->has(AccessTokenRepositoryInterface::class)
+            ->willReturn(true);
+        $this->container
+            ->get(AccessTokenRepositoryInterface::class)
+            ->willReturn(
+                $this->prophesize(AccessTokenRepositoryInterface::class)->reveal()
+            );
 
         $factory = new ResourceServerFactory();
         $resourceServer = $factory($this->container->reveal());

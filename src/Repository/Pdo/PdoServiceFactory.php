@@ -13,7 +13,7 @@ use Zend\Expressive\Authentication\OAuth2\Exception;
 
 class PdoServiceFactory
 {
-    public function __invoke(ContainerInterface $container): PdoService
+    public function __invoke(ContainerInterface $container) : PdoService
     {
         $config = $container->has('config') ? $container->get('config') : [];
         $config = $config['authentication']['pdo'] ?? null;

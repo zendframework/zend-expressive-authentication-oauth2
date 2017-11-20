@@ -15,14 +15,17 @@ class ResourceServerFactory
 {
     use RepositoryTrait;
 
-    public function __invoke(ContainerInterface $container): ResourceServer
+    public function __invoke(ContainerInterface $container) : ResourceServer
     {
-        $config = $container->get('config')['authentication'] ?? [];
+        $config = $container->has('config') ? $container->get('config') : [];
+        $config = $config['authentication'] ?? [];
+
         if (! isset($config['public_key'])) {
             throw new Exception\InvalidConfigException(
                 'The public_key value is missing in config authentication'
             );
         }
+
         return new ResourceServer(
             $this->getAccessTokenRepository($container),
             $config['public_key']

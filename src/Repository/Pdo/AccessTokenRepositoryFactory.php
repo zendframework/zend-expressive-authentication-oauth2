@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class AccessTokenRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container): AccessTokenRepository
+    public function __invoke(ContainerInterface $container) : AccessTokenRepository
     {
         return new AccessTokenRepository(
             $container->get(PdoService::class)

@@ -17,11 +17,12 @@ class OAuth2AdapterFactory
 {
     use ResponsePrototypeTrait;
 
-    public function __invoke(ContainerInterface $container): OAuth2Adapter
+    public function __invoke(ContainerInterface $container) : OAuth2Adapter
     {
-        $resourceServer = $container->has(ResourceServer::class) ?
-                          $container->get(ResourceServer::class) :
-                          null;
+        $resourceServer = $container->has(ResourceServer::class)
+            ? $container->get(ResourceServer::class)
+            : null;
+
         if (null === $resourceServer) {
             throw new Exception\InvalidConfigException(
                 'OAuth2 resource server is missing for authentication'

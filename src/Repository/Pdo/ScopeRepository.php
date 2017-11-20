@@ -13,7 +13,6 @@ use Zend\Expressive\Authentication\OAuth2\Entity\ScopeEntity;
 
 class ScopeRepository extends AbstractRepository implements ScopeRepositoryInterface
 {
-
     public function getScopeEntityByIdentifier($identifier)
     {
         $sth = $this->pdo->prepare(

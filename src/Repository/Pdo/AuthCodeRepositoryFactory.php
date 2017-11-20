@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class AuthCodeRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container): AuthCodeRepository
+    public function __invoke(ContainerInterface $container) : AuthCodeRepository
     {
         return new AuthCodeRepository(
             $container->get(PdoService::class)

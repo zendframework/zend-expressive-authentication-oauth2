@@ -32,7 +32,7 @@ class AbstractRepository
      * @param ScopeEntityInterface[] $scopes
      * @return string
      */
-    protected function scopesToString(array $scopes)
+    protected function scopesToString(array $scopes) : string
     {
         return trim(array_reduce($scopes, function ($result, $item) {
             return $result . ' ' . $item->getIdentifier();

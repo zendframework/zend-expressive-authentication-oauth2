@@ -18,7 +18,7 @@ use Psr\Container\ContainerInterface;
 
 trait RepositoryTrait
 {
-    protected function getUserRepository(ContainerInterface $container): UserRepositoryInterface
+    protected function getUserRepository(ContainerInterface $container) : UserRepositoryInterface
     {
         if (! $container->has(UserRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
@@ -28,7 +28,7 @@ trait RepositoryTrait
         return $container->get(UserRepositoryInterface::class);
     }
 
-    protected function getScopeRepository(ContainerInterface $container): ScopeRepositoryInterface
+    protected function getScopeRepository(ContainerInterface $container) : ScopeRepositoryInterface
     {
         if (! $container->has(ScopeRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
@@ -38,7 +38,7 @@ trait RepositoryTrait
         return $container->get(ScopeRepositoryInterface::class);
     }
 
-    protected function getAccessTokenRepository(ContainerInterface $container): AccessTokenRepositoryInterface
+    protected function getAccessTokenRepository(ContainerInterface $container) : AccessTokenRepositoryInterface
     {
         if (! $container->has(AccessTokenRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
@@ -48,7 +48,7 @@ trait RepositoryTrait
         return $container->get(AccessTokenRepositoryInterface::class);
     }
 
-    protected function getClientRepository(ContainerInterface $container): ClientRepositoryInterface
+    protected function getClientRepository(ContainerInterface $container) : ClientRepositoryInterface
     {
         if (! $container->has(ClientRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
@@ -58,7 +58,7 @@ trait RepositoryTrait
         return $container->get(ClientRepositoryInterface::class);
     }
 
-    protected function getRefreshTokenRepository(ContainerInterface $container): RefreshTokenRepositoryInterface
+    protected function getRefreshTokenRepository(ContainerInterface $container) : RefreshTokenRepositoryInterface
     {
         if (! $container->has(RefreshTokenRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(
@@ -68,7 +68,7 @@ trait RepositoryTrait
         return $container->get(RefreshTokenRepositoryInterface::class);
     }
 
-    protected function getAuthCodeRepository(ContainerInterface $container): AuthCodeRepositoryInterface
+    protected function getAuthCodeRepository(ContainerInterface $container) : AuthCodeRepositoryInterface
     {
         if (! $container->has(AuthCodeRepositoryInterface::class)) {
             throw new Exception\InvalidConfigException(

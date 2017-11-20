@@ -65,7 +65,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function authorizationRequest(ServerRequestInterface $request): ResponseInterface
+    protected function authorizationRequest(ServerRequestInterface $request) : ResponseInterface
     {
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
@@ -105,7 +105,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    protected function accessTokenRequest(ServerRequestInterface $request): ResponseInterface
+    protected function accessTokenRequest(ServerRequestInterface $request) : ResponseInterface
     {
         try {
             return $this->server->respondToAccessTokenRequest($request, $this->responsePrototype);

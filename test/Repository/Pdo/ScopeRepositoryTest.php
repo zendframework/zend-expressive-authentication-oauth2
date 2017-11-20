@@ -22,7 +22,7 @@ class ScopeRepositoryTest extends TestCase
         $this->pdo = $this->prophesize(PdoService::class);
         $this->repo = new ScopeRepository($this->pdo->reveal());
     }
-    
+
     public function testGetScopeEntityByIdentifierReturnsNullWhenStatementExecutionFails()
     {
         $statement = $this->prophesize(PDOStatement::class);
@@ -36,7 +36,7 @@ class ScopeRepositoryTest extends TestCase
 
         $this->assertNull($this->repo->getScopeEntityByIdentifier('id'));
     }
-    
+
     public function testGetScopeEntityByIdentifierReturnsNullWhenReturnedRowDoesNotHaveIdentifier()
     {
         $statement = $this->prophesize(PDOStatement::class);

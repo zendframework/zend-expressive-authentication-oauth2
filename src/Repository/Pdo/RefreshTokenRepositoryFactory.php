@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class RefreshTokenRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container): RefreshTokenRepository
+    public function __invoke(ContainerInterface $container) : RefreshTokenRepository
     {
         return new RefreshTokenRepository(
             $container->get(PdoService::class)

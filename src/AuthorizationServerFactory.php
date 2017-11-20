@@ -23,7 +23,7 @@ class AuthorizationServerFactory
 {
     use RepositoryTrait;
 
-    public function __invoke(ContainerInterface $container): AuthorizationServer
+    public function __invoke(ContainerInterface $container) : AuthorizationServer
     {
         $clientRepository = $this->getClientRepository($container);
         $accessTokenRepository = $this->getAccessTokenRepository($container);

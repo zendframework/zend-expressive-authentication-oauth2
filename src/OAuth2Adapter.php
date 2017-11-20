@@ -45,7 +45,7 @@ class OAuth2Adapter implements AuthenticationInterface
     /**
      * {@inheritDoc}
      */
-    public function authenticate(ServerRequestInterface $request): ?UserInterface
+    public function authenticate(ServerRequestInterface $request) : ?UserInterface
     {
         try {
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
@@ -62,7 +62,7 @@ class OAuth2Adapter implements AuthenticationInterface
     /**
      * {@inheritDoc}
      */
-    public function unauthorizedResponse(ServerRequestInterface $request): ResponseInterface
+    public function unauthorizedResponse(ServerRequestInterface $request) : ResponseInterface
     {
         return $this->responsePrototype
             ->withHeader(

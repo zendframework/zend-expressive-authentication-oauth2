@@ -18,10 +18,10 @@ class OAuth2MiddlewareFactory
 {
     use ResponsePrototypeTrait;
 
-    public function __invoke(ContainerInterface $container): OAuth2Middleware
+    public function __invoke(ContainerInterface $container) : OAuth2Middleware
     {
         $authServer = $container->has(AuthorizationServer::class)
-            ?  $container->get(AuthorizationServer::class)
+            ? $container->get(AuthorizationServer::class)
             : null;
 
         if (null === $authServer) {

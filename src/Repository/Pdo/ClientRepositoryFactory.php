@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class ClientRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container): ClientRepository
+    public function __invoke(ContainerInterface $container) : ClientRepository
     {
         return new ClientRepository(
             $container->get(PdoService::class)

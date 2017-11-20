@@ -13,7 +13,7 @@ use Zend\Diactoros\Response;
 
 trait ResponsePrototypeTrait
 {
-    protected function getResponsePrototype(ContainerInterface $container): ResponseInterface
+    protected function getResponsePrototype(ContainerInterface $container) : ResponseInterface
     {
         // @codeCoverageIgnoreStart
         if (! $container->has(ResponseInterface::class)

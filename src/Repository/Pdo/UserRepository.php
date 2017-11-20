@@ -13,7 +13,6 @@ use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
-
     public function getUserEntityByUserCredentials(
         $username,
         $password,

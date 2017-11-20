@@ -43,7 +43,7 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
      * @param string $grantType
      * @return bool
      */
-    protected function isGranted(array $row, string $grantType): bool
+    protected function isGranted(array $row, string $grantType) : bool
     {
         switch ($grantType) {
             case 'authorization_code':
