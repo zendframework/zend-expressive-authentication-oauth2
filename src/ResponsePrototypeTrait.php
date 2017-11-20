@@ -15,6 +15,7 @@ trait ResponsePrototypeTrait
 {
     protected function getResponsePrototype(ContainerInterface $container): ResponseInterface
     {
+        // @codeCoverageIgnoreStart
         if (! $container->has(ResponseInterface::class)
             && ! class_exists(Response::class)
         ) {
@@ -25,6 +26,8 @@ trait ResponsePrototypeTrait
                 ResponseInterface::class
             ));
         }
+        // @codeCoverageIgnoreEnd
+
         return $container->has(ResponseInterface::class)
             ? $container->get(ResponseInterface::class)
             : new Response();

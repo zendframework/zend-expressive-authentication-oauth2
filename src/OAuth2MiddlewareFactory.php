@@ -20,9 +20,10 @@ class OAuth2MiddlewareFactory
 
     public function __invoke(ContainerInterface $container): OAuth2Middleware
     {
-        $authServer = $container->has(AuthorizationServer::class) ?
-                      $container->get(AuthorizationServer::class) :
-                      null;
+        $authServer = $container->has(AuthorizationServer::class)
+            ?  $container->get(AuthorizationServer::class)
+            : null;
+
         if (null === $authServer) {
             throw new Exception\InvalidConfigException(sprintf(
                 "The %s service is missing",

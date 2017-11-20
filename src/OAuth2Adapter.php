@@ -51,10 +51,7 @@ class OAuth2Adapter implements AuthenticationInterface
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', false);
             if (false !== $userId) {
-                return $this->generateUser(
-                    $result->getAttribute('oauth_user_id'),
-                    ''
-                );
+                return $this->generateUser($userId, '');
             }
         } catch (OAuthServerException $exception) {
             return null;
@@ -67,7 +64,7 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     public function unauthorizedResponse(ServerRequestInterface $request): ResponseInterface
     {
-        $this->responsePrototype
+        return $this->responsePrototype
             ->withHeader(
                 'WWW-Authenticate',
                 'Bearer token-example'

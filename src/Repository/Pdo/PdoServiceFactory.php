@@ -6,7 +6,7 @@
  *     New BSD License
  */
 
-namespace Zend\Expressive\Authentication\OAuth2;
+namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\Exception;
@@ -15,7 +15,8 @@ class PdoServiceFactory
 {
     public function __invoke(ContainerInterface $container): PdoService
     {
-        $config = $container->get('config')['authentication']['pdo'] ?? null;
+        $config = $container->has('config') ? $container->get('config') : [];
+        $config = $config['authentication']['pdo'] ?? null;
         if (null === $config) {
             throw new Exception\InvalidConfigException(
                 'The PDO configuration is missing'

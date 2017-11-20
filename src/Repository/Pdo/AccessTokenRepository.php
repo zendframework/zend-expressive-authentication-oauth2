@@ -106,6 +106,6 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
         }
         $row = $sth->fetch();
 
-        return isset($row['revoked']) ? (bool) $row['revoked'] : false;
+        return array_key_exists('revoked', $row) ? (bool) $row['revoked'] : false;
     }
 }

@@ -185,4 +185,74 @@ class OAuth2MiddlewareTest extends TestCase
 
         $this->assertSame($this->response->reveal(), $response);
     }
+
+    public function testPostRequestResultingInOAuthServerExceptionUsesExceptionToGenerateResponse()
+    {
+        $this->serverRequest->getMethod()->willReturn('POST');
+
+        $exception = $this->prophesize(OAuthServerException::class);
+        $exception
+            ->generateHttpResponse(Argument::that([$this->response, 'reveal']))
+            ->will([$this->response, 'reveal']);
+
+        $this->authServer
+            ->respondToAccessTokenRequest(
+                Argument::that([$this->serverRequest, 'reveal']),
+                Argument::that([$this->response, 'reveal'])
+            )
+            ->willThrow($exception->reveal());
+
+        $middleware = new OAuth2Middleware(
+            $this->authServer->reveal(),
+            $this->response->reveal()
+        );
+
+        $response = $middleware->process(
+            $this->serverRequest->reveal(),
+            $this->delegate->reveal()
+        );
+
+        $this->assertSame($this->response->reveal(), $response);
+    }
+
+    public function testPostRequestResultingInGenericExceptionCastsExceptionToOauthServerExceptionToGenerateResponse()
+    {
+        $this->serverRequest->getMethod()->willReturn('POST');
+
+        $exception = new RuntimeException('runtime-exception', 500);
+
+        $body = $this->prophesize(StreamInterface::class);
+        $body->write(Argument::containingString('runtime-exception'))->shouldBeCalled();
+
+        $this->response
+            ->withHeader('Content-type', 'application/json')
+            ->will([$this->response, 'reveal']);
+
+        $this->response
+            ->getBody()
+            ->will([$body, 'reveal']);
+
+        $this->response
+            ->withStatus(500)
+            ->will([$this->response, 'reveal']);
+
+        $this->authServer
+            ->respondToAccessTokenRequest(
+                Argument::that([$this->serverRequest, 'reveal']),
+                Argument::that([$this->response, 'reveal'])
+            )
+            ->willThrow($exception);
+
+        $middleware = new OAuth2Middleware(
+            $this->authServer->reveal(),
+            $this->response->reveal()
+        );
+
+        $response = $middleware->process(
+            $this->serverRequest->reveal(),
+            $this->delegate->reveal()
+        );
+
+        $this->assertSame($this->response->reveal(), $response);
+    }
 }

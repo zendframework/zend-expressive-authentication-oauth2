@@ -24,13 +24,15 @@ class ScopeRepository extends AbstractRepository implements ScopeRepositoryInter
         if (false === $sth->execute()) {
             return;
         }
+
         $row = $sth->fetch();
-        if (isset($row['id'])) {
-            $scope = new ScopeEntity();
-            $scope->setIdentifier($row['id']);
-            return $scope;
+        if (! isset($row['id'])) {
+            return;
         }
-        return;
+
+        $scope = new ScopeEntity();
+        $scope->setIdentifier($row['id']);
+        return $scope;
     }
 
     public function finalizeScopes(

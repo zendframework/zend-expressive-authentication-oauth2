@@ -14,7 +14,11 @@ use Psr\Http\Message\ResponseInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
 use Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory;
+use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
+/**
+ * @covers Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory
+ */
 class OAuth2MiddlewareFactoryTest extends TestCase
 {
     public function setUp()
@@ -30,39 +34,51 @@ class OAuth2MiddlewareFactoryTest extends TestCase
         $this->assertInstanceOf(OAuth2MiddlewareFactory::class, $factory);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testInvokeWithEmptyContainer()
     {
         $factory = new OAuth2MiddlewareFactory();
+
+        $this->expectException(InvalidConfigException::class);
         $middleware = $factory($this->container->reveal());
     }
 
+    /**
+     * @covers Zend\Expressive\Authentication\OAuth2\ResponsePrototypeTrait::getResponsePrototype
+     */
     public function testInvokeWithAuthServerWithoutResponseInterface()
     {
-        $this->container->has(AuthorizationServer::class)
-                        ->willReturn(true);
-        $this->container->get(AuthorizationServer::class)
-                        ->willReturn($this->authServer->reveal());
-        $this->container->has(ResponseInterface::class)
-                        ->willReturn(false);
+        $this->container
+            ->has(AuthorizationServer::class)
+            ->willReturn(true);
+        $this->container
+            ->get(AuthorizationServer::class)
+            ->willReturn($this->authServer->reveal());
+        $this->container
+            ->has(ResponseInterface::class)
+            ->willReturn(false);
 
         $factory = new OAuth2MiddlewareFactory();
         $middleware = $factory($this->container->reveal());
         $this->assertInstanceOf(OAuth2Middleware::class, $middleware);
     }
 
+    /**
+     * @covers Zend\Expressive\Authentication\OAuth2\ResponsePrototypeTrait::getResponsePrototype
+     */
     public function testInvokeWithAuthServerWithResponseInterface()
     {
-        $this->container->has(AuthorizationServer::class)
-                        ->willReturn(true);
-        $this->container->has(ResponseInterface::class)
-                        ->willReturn(true);
-        $this->container->get(AuthorizationServer::class)
-                        ->willReturn($this->authServer->reveal());
-        $this->container->get(ResponseInterface::class)
-                        ->willReturn($this->response->reveal());
+        $this->container
+            ->has(AuthorizationServer::class)
+            ->willReturn(true);
+        $this->container
+            ->has(ResponseInterface::class)
+            ->willReturn(true);
+        $this->container
+            ->get(AuthorizationServer::class)
+            ->willReturn($this->authServer->reveal());
+        $this->container
+            ->get(ResponseInterface::class)
+            ->willReturn($this->response->reveal());
 
         $factory = new OAuth2MiddlewareFactory();
         $middleware = $factory($this->container->reveal());
