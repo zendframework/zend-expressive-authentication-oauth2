@@ -2,22 +2,23 @@
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
  * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
+ *     New BSD License
  */
 
 /**
  * Script to generate public, private and encryption keys for thephpleague/oauth2-server
  * @see https://oauth2.thephpleague.com/installation/
  */
- 
+
 $filePrivateKey = dirname(__DIR__) . '/data/private.key';
 $filePublicKey = dirname(__DIR__) . '/data/public.key';
 
 // Generate public/private keys with OpenSSL
-$config = array(
-    "private_key_bits" => 1024,
-    "private_key_type" => OPENSSL_KEYTYPE_RSA,
-);
+$config = [
+    'private_key_bits' => 1024,
+    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+];
 
 // Private key
 $res = openssl_pkey_new($config);
