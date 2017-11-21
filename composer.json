@@ -1,8 +1,6 @@
 {
     "name": "zendframework/zend-expressive-authentication-oauth2",
     "description": "OAuth2 (server) authentication middleware for Expressive and PSR-7 applications.",
-    "homepage": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
-    "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
         "authentication",
@@ -14,13 +12,11 @@
         "zendframework",
         "zf"
     ],
-    "config": {
-        "sort-packages": true
-    },
     "support": {
         "docs": "https://docs.zendframework.com/zend-expressive-authentication-oauth2/",
         "issues": "https://github.com/zendframework/zend-expressive-authentication-oauth2/issues",
         "source": "https://github.com/zendframework/zend-expressive-authentication-oauth2",
+        "rss": "https://github.com/zendframework/zend-expressive-authentication-oauth2/releases.atom",
         "slack": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/expressive"
     },
@@ -51,17 +47,24 @@
             "ZendTest\\Expressive\\Authentication\\OAuth2\\": "test/"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
     "scripts": {
         "check": [
             "@cs-check",
             "@test"
         ],
-        "upload-coverage": "coveralls -v",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --coverage-clover clover.xml",
-        "license-check": "vendor/bin/docheader check src/ test/",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+        "upload-coverage": "coveralls -v",
         "generate-keys": "php bin/generate-keys.php"
     }
 }
