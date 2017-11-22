@@ -8,10 +8,10 @@
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
-use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
+use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\Exception;
 use Zend\Expressive\Authentication\OAuth2\ResourceServerFactory;
 

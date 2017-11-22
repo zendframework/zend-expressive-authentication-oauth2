@@ -8,9 +8,6 @@
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
-use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -18,6 +15,8 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationServerFactory;
 
 class AuthorizationServerFactoryTest extends TestCase

@@ -8,12 +8,11 @@
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
-use DateTime;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 
 class ScopeRepositoryTest extends TestCase
 {

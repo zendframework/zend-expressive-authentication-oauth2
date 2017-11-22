@@ -8,13 +8,13 @@
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
+use League\OAuth2\Server\AuthorizationServer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use League\OAuth2\Server\AuthorizationServer;
+use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
 use Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory;
-use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
 /**
  * @covers Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory
