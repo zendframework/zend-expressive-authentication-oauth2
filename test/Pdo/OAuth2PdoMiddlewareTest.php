@@ -9,7 +9,7 @@
 namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 
 use DateInterval;
-use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
@@ -87,7 +87,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             self::ENCRYPTION_KEY
         );
 
-        $this->delegate = $this->prophesize(DelegateInterface::class);
+        $this->handler = $this->prophesize(RequestHandlerInterface::class);
     }
 
     public function testConstructor()
@@ -124,7 +124,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -167,7 +167,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -215,7 +215,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         );
 
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -266,7 +266,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -308,7 +308,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -357,7 +357,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         );
 
         $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());

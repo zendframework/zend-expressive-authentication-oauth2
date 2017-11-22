@@ -8,8 +8,8 @@
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface as ServerMiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -29,7 +29,7 @@ class OAuth2MiddlewareTest extends TestCase
         $this->response      = $this->prophesize(ResponseInterface::class);
         $this->serverRequest = $this->prophesize(ServerRequestInterface::class);
         $this->authRequest   = $this->prophesize(AuthorizationRequest::class);
-        $this->delegate      = $this->prophesize(DelegateInterface::class);
+        $this->handler       = $this->prophesize(RequestHandlerInterface::class);
     }
 
     public function testConstructor()
@@ -39,7 +39,7 @@ class OAuth2MiddlewareTest extends TestCase
             $this->response->reveal()
         );
         $this->assertInstanceOf(OAuth2Middleware::class, $middleware);
-        $this->assertInstanceOf(ServerMiddlewareInterface::class, $middleware);
+        $this->assertInstanceOf(MiddlewareInterface::class, $middleware);
     }
 
     public function testProcessWithGet()
@@ -71,7 +71,7 @@ class OAuth2MiddlewareTest extends TestCase
         );
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -94,7 +94,7 @@ class OAuth2MiddlewareTest extends TestCase
         );
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -122,7 +122,7 @@ class OAuth2MiddlewareTest extends TestCase
 
         $result = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
 
         $this->assertSame($response->reveal(), $result);
@@ -162,7 +162,7 @@ class OAuth2MiddlewareTest extends TestCase
 
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
 
         $this->assertSame($this->response->reveal(), $response);
@@ -180,7 +180,7 @@ class OAuth2MiddlewareTest extends TestCase
 
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
 
         $this->assertSame($this->response->reveal(), $response);
@@ -209,7 +209,7 @@ class OAuth2MiddlewareTest extends TestCase
 
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
 
         $this->assertSame($this->response->reveal(), $response);
@@ -250,7 +250,7 @@ class OAuth2MiddlewareTest extends TestCase
 
         $response = $middleware->process(
             $this->serverRequest->reveal(),
-            $this->delegate->reveal()
+            $this->handler->reveal()
         );
 
         $this->assertSame($this->response->reveal(), $response);
