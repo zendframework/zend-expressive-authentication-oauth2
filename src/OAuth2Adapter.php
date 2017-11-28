@@ -51,7 +51,7 @@ class OAuth2Adapter implements AuthenticationInterface
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', false);
             if (false !== $userId) {
-                return $this->generateUser($userId, '');
+                return $this->generateUser($userId, []);
             }
         } catch (OAuthServerException $exception) {
             return null;

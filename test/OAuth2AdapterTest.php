@@ -89,7 +89,7 @@ class OAuth2AdapterTest extends TestCase
 
         $this->assertInstanceOf(UserInterface::class, $user);
         $this->assertSame('some-identifier', $user->getUsername());
-        $this->assertSame('', $user->getUserRole());
+        $this->assertSame([], $user->getUserRoles());
     }
 
     public function testUnauthorizedResponseProducesAResponseWithAWwwAuthenticateHeader()
