@@ -51,9 +51,9 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
             case 'authorization_code':
                 return ! ($row['personal_access_client'] || $row['password_client']);
             case 'personal_access':
-                return $row['personal_access_client'];
+                return (bool) $row['personal_access_client'];
             case 'password':
-                return $row['password_client'];
+                return (bool) $row['password_client'];
             default:
                 return true;
         }
