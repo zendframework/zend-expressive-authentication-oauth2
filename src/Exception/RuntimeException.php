@@ -6,6 +6,8 @@
  *     New BSD License
  */
 
+declare(strict_types=1);
+
 namespace Zend\Expressive\Authentication\OAuth2\Exception;
 
 class RuntimeException extends \RuntimeException implements

@@ -5,6 +5,9 @@
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
+
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;

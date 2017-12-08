@@ -6,6 +6,8 @@
  *     New BSD License
  */
 
+declare(strict_types=1);
+
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\ResourceServer;

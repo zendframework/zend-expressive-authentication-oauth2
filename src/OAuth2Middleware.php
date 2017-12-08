@@ -6,6 +6,8 @@
  *     New BSD License
  */
 
+declare(strict_types=1);
+
 namespace Zend\Expressive\Authentication\OAuth2;
 
 use Interop\Http\Server\MiddlewareInterface;
