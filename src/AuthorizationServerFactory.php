@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 
 class AuthorizationServerFactory
 {
+    use CryptKeyTrait;
     use RepositoryTrait;
 
     public function __invoke(ContainerInterface $container) : AuthorizationServer
@@ -58,11 +59,14 @@ class AuthorizationServerFactory
                 'The auth_code_expire value is missing in config authentication'
             );
         }
+
+        $privateKey = $this->getCryptKey($config['private_key'], 'authentication.private_key');
+
         $authServer = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
-            $config['private_key'],
+            $privateKey,
             $config['encryption_key']
         );
 

@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 
 class ResourceServerFactory
 {
+    use CryptKeyTrait;
     use RepositoryTrait;
 
     public function __invoke(ContainerInterface $container) : ResourceServer
@@ -26,9 +27,11 @@ class ResourceServerFactory
             );
         }
 
+        $publicKey = $this->getCryptKey($config['public_key'], 'authentication.public_key');
+
         return new ResourceServer(
             $this->getAccessTokenRepository($container),
-            $config['public_key']
+            $publicKey
         );
     }
 }

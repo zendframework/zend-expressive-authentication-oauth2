@@ -10,7 +10,6 @@ namespace ZendTest\Expressive\Authentication\OAuth2;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -19,6 +18,7 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationServerFactory;
+use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
 class AuthorizationServerFactoryTest extends TestCase
 {
@@ -56,7 +56,7 @@ class AuthorizationServerFactoryTest extends TestCase
     public function testInvokeWithEmptyContainer()
     {
         $factory = new AuthorizationServerFactory();
-        $authServer = $factory($this->container->reveal());
+        $factory($this->container->reveal());
     }
 
     public function getRepositorySlices()
@@ -90,7 +90,7 @@ class AuthorizationServerFactoryTest extends TestCase
         $this->container->get('config')->willReturn([]);
 
         $factory = new AuthorizationServerFactory();
-        $authServer = $factory($this->container->reveal());
+        $factory($this->container->reveal());
     }
 
     public function getConfigKeys()
@@ -121,7 +121,7 @@ class AuthorizationServerFactoryTest extends TestCase
         ]);
 
         $factory = new AuthorizationServerFactory();
-        $authServer = $factory($this->container->reveal());
+        $factory($this->container->reveal());
     }
 
     public function testInvokeWithValidData()
@@ -140,5 +140,82 @@ class AuthorizationServerFactoryTest extends TestCase
         $authServer = $factory($this->container->reveal());
 
         $this->assertInstanceOf(AuthorizationServer::class, $authServer);
+    }
+
+    public function getConfigsWithExtendedKey(): \Generator
+    {
+        $extendedConfig = array_merge(self::CONFIG, [
+            'private_key' => [
+                'key_or_path' => self::CONFIG['private_key'],
+                'pass_phrase' => 'test',
+                'key_permissions_check' => false,
+            ],
+        ]);
+
+        yield [$extendedConfig];
+
+        unset($extendedConfig['private_key']['pass_phrase']);
+        yield [$extendedConfig];
+
+        unset($extendedConfig['private_key']['key_permissions_check']);
+        yield [$extendedConfig];
+    }
+
+    /**
+     * @dataProvider getConfigsWithExtendedKey
+     */
+    public function testInvokeWithValidExtendedKey(array $config)
+    {
+        foreach (self::REPOSITORY_CLASSES as $repo) {
+            $this->container->has($repo)->willReturn(true);
+            $this->container->get($repo)->willReturn(
+                $this->prophesize($repo)->reveal()
+            );
+        }
+
+        $this->container->get('config')->willReturn([
+            'authentication' => $config
+        ]);
+
+        $factory = new AuthorizationServerFactory();
+        $authServer = $factory($this->container->reveal());
+
+        $this->assertInstanceOf(AuthorizationServer::class, $authServer);
+    }
+
+    public function getInvalidConfigsWithExtendedKey(): \Generator
+    {
+        $extendedConfig = array_merge(self::CONFIG, [
+            'private_key' => [
+                'key_or_path' => self::CONFIG['private_key'],
+                'pass_phrase' => 'test',
+                'key_permissions_check' => false,
+            ],
+        ]);
+
+        unset($extendedConfig['private_key']['key_or_path']);
+        yield [$extendedConfig];
+    }
+
+    /**
+     * @dataProvider getInvalidConfigsWithExtendedKey
+     */
+    public function testInvokeWithInvalidExtendedKey(array $config)
+    {
+        foreach (self::REPOSITORY_CLASSES as $repo) {
+            $this->container->has($repo)->willReturn(true);
+            $this->container->get($repo)->willReturn(
+                $this->prophesize($repo)->reveal()
+            );
+        }
+
+        $this->container->get('config')->willReturn([
+            'authentication' => $config
+        ]);
+
+        $factory = new AuthorizationServerFactory();
+
+        $this->expectException(InvalidConfigException::class);
+        $factory($this->container->reveal());
     }
 }
