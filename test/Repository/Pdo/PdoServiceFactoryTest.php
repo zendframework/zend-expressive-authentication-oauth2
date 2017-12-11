@@ -9,7 +9,6 @@
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\Exception;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;

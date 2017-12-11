@@ -9,11 +9,9 @@
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
 
