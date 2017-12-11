@@ -9,12 +9,11 @@
 namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\ResourceServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use League\OAuth2\Server\ResourceServer;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 class ConfigProvider

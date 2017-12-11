@@ -12,7 +12,6 @@ use DateTime;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

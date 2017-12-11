@@ -10,8 +10,6 @@ namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response;
 use Zend\Expressive\Authentication\ResponsePrototypeTrait;
 
 class OAuth2MiddlewareFactory

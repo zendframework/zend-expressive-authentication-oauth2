@@ -15,8 +15,8 @@ use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationExcep
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
+use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 
 class RefreshTokenRepositoryTest extends TestCase
 {
