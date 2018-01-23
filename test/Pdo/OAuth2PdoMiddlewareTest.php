@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 
 use DateInterval;
-use Interop\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
