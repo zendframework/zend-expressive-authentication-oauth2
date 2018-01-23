@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 
 use DateInterval;
-use Psr\Http\Server\RequestHandlerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
@@ -20,6 +19,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
