@@ -3,7 +3,7 @@
         {
             "location": "/",
             "text": "OAuth2 server middleware for Expressive and PSR-7 applications\n\n\n\n\n\n\nZend-expressive-authentication-oauth2 is middleware for \nExpressive\n\nand \nPSR-7\n applications providing an OAuth2\nserver for authentication.\n\n\nThis library uses the \nleague/oauth2-server\n\npackage for implementing the OAuth2 server. It supports all the following grant\ntypes:\n\n\n\n\nclient credentials;\n\n\npassword;\n\n\nauthorization code;\n\n\nimplicit;\n\n\nrefresh token;\n\n\n\n\nWORK IN PROGRESS\n\n\nThis repository contains a \nwork in progress\n project for building an\nauthentication module for Expressive and PSR-7 applications.\nIt also provides an OAuth2 adapter for \nzend-expressive-authentication\n\nlibrary.\n\n\nPlease, don't use this code in a production environment!\n\n\nInstallation\n\n\nYou can install the \nzend-expressive-authentication-oauth2\n library with\ncomposer:\n\n\n$ composer require zendframework/zend-expressive-authentication-oauth2\n\n\n\nDocumentation\n\n\nDocumentation is \nin the doc tree\n, and can be compiled using \nmkdocs\n:\n\n\n$ mkdocs build\n\n\n\nYou may also \nbrowse the documentation online\n.",
-            "title": "Home"
+            "title": "OAuth2 server middleware for Expressive and PSR-7 applications"
         },
         {
             "location": "/#oauth2-server-middleware-for-expressive-and-psr-7-applications",
