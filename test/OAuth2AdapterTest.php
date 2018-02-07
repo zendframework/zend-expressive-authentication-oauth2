@@ -90,7 +90,7 @@ class OAuth2AdapterTest extends TestCase
         $user = $adapter->authenticate($request->reveal());
 
         $this->assertInstanceOf(UserInterface::class, $user);
-        $this->assertSame('some-identifier', $user->getUsername());
+        $this->assertSame('some-identifier', $user->getIdentity());
         $this->assertSame([], $user->getUserRoles());
     }
 
