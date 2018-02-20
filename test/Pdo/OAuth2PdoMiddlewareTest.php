@@ -49,7 +49,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         if (false === $pdo->exec(file_get_contents(self::DB_SCHEMA))) {
             throw new \Exception(sprintf(
                 "The test cannot be executed without the %s db",
-                $dbSchema
+                self::DB_SCHEMA
             ));
         }
         // Insert the test values
@@ -371,10 +371,10 @@ class OAuth2PdoMiddlewareTest extends TestCase
      * Build a ServerRequest object
      *
      * @param string $method
-     * @param sting $url
+     * @param string $url
      * @param array $params
      * @param array $headers
-     * @return Zend\Diactoros\ServerRequest
+     * @return \Zend\Diactoros\ServerRequest
      */
     protected function buildServerRequest($method, $url, $body, $params, $headers = [], $queryParams = [])
     {
