@@ -16,7 +16,7 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class ClientEntity implements ClientEntityInterface
 {
-    use ClientTrait, EntityTrait, RevokableTrait;
+    use ClientTrait, EntityTrait, RevokableTrait, TimestampableTrait;
 
     /**
      * Constructor
