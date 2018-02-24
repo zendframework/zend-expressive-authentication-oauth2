@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "988d8a0dcd079b99bdf816280746d60b",
+    "content-hash": "6fbfea96963187f15ccd93ce3d03144b",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -500,16 +500,16 @@
         },
         {
             "name": "zendframework/zend-expressive-authentication",
-            "version": "1.0.0alpha1",
+            "version": "1.0.0alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-expressive-authentication.git",
-                "reference": "d9c9162609c58267cc4cfd8a2d99a3a4d9580e61"
+                "reference": "0832c05658605ed290ad6b841180a52a81678ea7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/d9c9162609c58267cc4cfd8a2d99a3a4d9580e61",
-                "reference": "d9c9162609c58267cc4cfd8a2d99a3a4d9580e61",
+                "url": "https://api.github.com/repos/zendframework/zend-expressive-authentication/zipball/0832c05658605ed290ad6b841180a52a81678ea7",
+                "reference": "0832c05658605ed290ad6b841180a52a81678ea7",
                 "shasum": ""
             },
             "require": {
@@ -524,7 +524,8 @@
             "require-dev": {
                 "phpunit/phpunit": "^6.5.5",
                 "roave/security-advisories": "dev-master",
-                "zendframework/zend-coding-standard": "~1.0.0"
+                "zendframework/zend-coding-standard": "~1.0.0",
+                "zendframework/zend-diactoros": "^1.7"
             },
             "suggest": {
                 "ext-pdo": "*: for use with the PDO-backed UserRepositoryInterface implementation",
@@ -537,6 +538,9 @@
                 "branch-alias": {
                     "dev-master": "0.2.x-dev",
                     "dev-release-1.0.0": "1.0.x-dev"
+                },
+                "zf": {
+                    "config-provider": "Zend\\Expressive\\Authentication\\ConfigProvider"
                 }
             },
             "autoload": {
@@ -559,7 +563,7 @@
                 "zend-expressive",
                 "zf"
             ],
-            "time": "2018-02-07T20:56:40+00:00"
+            "time": "2018-02-24T09:11:44+00:00"
         }
     ],
     "packages-dev": [
