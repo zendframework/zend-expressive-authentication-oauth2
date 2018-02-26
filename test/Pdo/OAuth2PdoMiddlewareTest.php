@@ -369,15 +369,15 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
     /**
      * Build a ServerRequest object
-     *
-     * @param string $method
-     * @param string $url
-     * @param array $params
-     * @param array $headers
-     * @return \Zend\Diactoros\ServerRequest
      */
-    protected function buildServerRequest($method, $url, $body, $params, $headers = [], $queryParams = [])
-    {
+    protected function buildServerRequest(
+        string $method,
+        string $url,
+        string $body,
+        array $params,
+        array $headers = [],
+        array $queryParams = []
+    ) : ServerRequest {
         $stream = new Stream('php://temp', 'w');
         $stream->write($body);
 
