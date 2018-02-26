@@ -44,13 +44,16 @@ class OAuth2AdapterFactoryTest extends TestCase
 
     public function testInvokeWithResourceServerEmptyResponse()
     {
-        $this->container->has(ResourceServer::class)
-                        ->willReturn(true);
-        $this->container->get(ResourceServer::class)
-                        ->willReturn($this->resourceServer->reveal());
+        $this->container
+            ->has(ResourceServer::class)
+            ->willReturn(true);
+        $this->container
+            ->get(ResourceServer::class)
+            ->willReturn($this->resourceServer->reveal());
 
-        $this->container->has(ResponseInterface::class)
-                        ->willReturn(false);
+        $this->container
+            ->has(ResponseInterface::class)
+            ->willReturn(false);
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());
@@ -61,18 +64,21 @@ class OAuth2AdapterFactoryTest extends TestCase
 
     public function testInvokeResourceServerAndResponse()
     {
-        $this->container->has(ResourceServer::class)
-                        ->willReturn(true);
-        $this->container->get(ResourceServer::class)
-                        ->willReturn($this->resourceServer->reveal());
-
-        $this->container->has(ResponseInterface::class)
-                        ->willReturn(true);
         $this->container
-             ->get(ResponseInterface::class)
-             ->willReturn(function () {
-                 return $this->response->reveal();
-             });
+            ->has(ResourceServer::class)
+            ->willReturn(true);
+        $this->container
+            ->get(ResourceServer::class)
+            ->willReturn($this->resourceServer->reveal());
+
+        $this->container
+            ->has(ResponseInterface::class)
+            ->willReturn(true);
+        $this->container
+            ->get(ResponseInterface::class)
+            ->willReturn(function () {
+                return $this->response->reveal();
+            });
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());
