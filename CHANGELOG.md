@@ -6,12 +6,40 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  adds `Zend\Expressive\Authentication\OAuth2\Entity\RevokableTrait`, which
+  provides a way to flag whether or not a token has been revoked, and mimics
+  traits from the upstream league/oauth2-server implementation.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  adds `Zend\Expressive\Authentication\OAuth2\Entity\TimestampableTrait`, which
+  provides methods for setting and retrieving `DateTime` values representing
+  creation and update timestamps for a token; it mimics traits from the upstream
+  league/oauth2-server implementation.
 
 ### Changed
 
 - [#15](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/15)
   updates the repository to pin to zend-expressive-authentication `^1.0.0alpha3`.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity` to
+  use the `RevokableTrait` and `TimestampableTrait`.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\AuthCodeEntity` to
+  use the `RevokableTrait`.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity` to
+  use the `RevokableTrait`.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity` to
+  use the `RevokableTrait` and `TimestampableTrait`. It also adds methods for
+  setting and retrieving the client secret, personal access client, and password
+  client.
+  
 
 ### Deprecated
 
