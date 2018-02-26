@@ -15,8 +15,14 @@ use DateTimeZone;
 
 trait TimestampableTrait
 {
+    /**
+     * @var DateTime
+     */
     protected $createdAt;
 
+    /**
+     * @var DateTime
+     */
     protected $updatedAt;
 
     public function getCreatedAt() : DateTime
