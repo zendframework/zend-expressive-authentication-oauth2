@@ -55,4 +55,17 @@ trait TimestampableTrait
     {
         $this->updatedAt = $updatedAt;
     }
+
+    /**
+     *
+     */
+    public function timestampOnCreate(): void
+    {
+        if (! $this->createdAt) {
+            $this->createdAt = new DateTime();
+            if (method_exists($this, 'getTimezone')) {
+                $this->createdAt->setTimezone(new \DateTimeZone(($this->getTimezone()->getValue())));
+            }
+        }
+    }
 }
