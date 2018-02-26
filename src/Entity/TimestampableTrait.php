@@ -11,60 +11,44 @@ declare(strict_types=1);
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
 use DateTime;
+use DateTimeZone;
 
 trait TimestampableTrait
 {
-    /**
-     * @var DateTime
-     */
     protected $createdAt;
 
-    /**
-     * @var DateTime
-     */
     protected $updatedAt;
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt() : DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(DateTime $createdAt) : void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt() : DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime $updatedAt
-     */
-    public function setUpdatedAt(DateTime $updatedAt): void
+    public function setUpdatedAt(DateTime $updatedAt) : void
     {
         $this->updatedAt = $updatedAt;
     }
 
     /**
-     *
+     * Set createdAt on current date/time if not set, using
+     * timezone if defined
      */
-    public function timestampOnCreate(): void
+    public function timestampOnCreate() : void
     {
         if (! $this->createdAt) {
             $this->createdAt = new DateTime();
             if (method_exists($this, 'getTimezone')) {
-                $this->createdAt->setTimezone(new \DateTimeZone(($this->getTimezone()->getValue())));
+                $this->createdAt->setTimezone(new DateTimeZone($this->getTimezone()->getValue()));
             }
         }
     }
