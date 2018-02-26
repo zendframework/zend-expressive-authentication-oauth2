@@ -34,7 +34,7 @@ class OAuth2AdapterFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
+     * @expectedException \Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
      */
     public function testInvokeWithEmptyContainer()
     {
