@@ -10,11 +10,26 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
-
-class RefreshTokenEntity implements RefreshTokenEntityInterface
+trait RevokableTrait
 {
-    use EntityTrait, RefreshTokenTrait, RevokableTrait;
+    /**
+     * @var bool
+     */
+    protected $revoked;
+
+    /**
+     * @return bool
+     */
+    public function isRevoked(): bool
+    {
+        return $this->revoked;
+    }
+
+    /**
+     * @param bool $revoked
+     */
+    public function setRevoked(bool $revoked): void
+    {
+        $this->revoked = $revoked;
+    }
 }

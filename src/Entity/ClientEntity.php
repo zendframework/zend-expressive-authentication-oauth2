@@ -16,7 +16,22 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class ClientEntity implements ClientEntityInterface
 {
-    use ClientTrait, EntityTrait;
+    use ClientTrait, EntityTrait, RevokableTrait, TimestampableTrait;
+
+    /**
+     * @var string
+     */
+    protected $secret;
+
+    /**
+     * @var bool
+     */
+    protected $personalAccessClient;
+
+    /**
+     * @var bool
+     */
+    protected $passwordClient;
 
     /**
      * Constructor
@@ -31,5 +46,35 @@ class ClientEntity implements ClientEntityInterface
         $this->setIdentifier($identifier);
         $this->name = $name;
         $this->redirectUri = explode(',', $redirectUri);
+    }
+
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    public function setSecret(string $secret): void
+    {
+        $this->secret = $secret;
+    }
+
+    public function hasPersonalAccessClient(): bool
+    {
+        return $this->personalAccessClient;
+    }
+
+    public function setPersonalAccessClient(bool $personalAccessClient): void
+    {
+        $this->personalAccessClient = $personalAccessClient;
+    }
+
+    public function hasPasswordClient(): bool
+    {
+        return $this->passwordClient;
+    }
+
+    public function setPasswordClient(bool $passwordClient): void
+    {
+        $this->passwordClient = $passwordClient;
     }
 }

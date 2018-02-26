@@ -17,5 +17,5 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
 class AccessTokenEntity implements AccessTokenEntityInterface
 {
-    use AccessTokenTrait, TokenEntityTrait, EntityTrait;
+    use AccessTokenTrait, TokenEntityTrait, EntityTrait, RevokableTrait, TimestampableTrait;
 }
