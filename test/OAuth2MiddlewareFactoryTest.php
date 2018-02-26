@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
@@ -19,7 +19,7 @@ use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
 use Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory;
 
 /**
- * @covers Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory
+ * @covers \Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory
  */
 class OAuth2MiddlewareFactoryTest extends TestCase
 {
@@ -44,9 +44,6 @@ class OAuth2MiddlewareFactoryTest extends TestCase
         $middleware = $factory($this->container->reveal());
     }
 
-    /**
-     * @covers Zend\Expressive\Authentication\OAuth2\ResponsePrototypeTrait::getResponsePrototype
-     */
     public function testInvokeWithAuthServerWithoutResponseInterface()
     {
         $this->container
@@ -64,9 +61,6 @@ class OAuth2MiddlewareFactoryTest extends TestCase
         $this->assertInstanceOf(OAuth2Middleware::class, $middleware);
     }
 
-    /**
-     * @covers Zend\Expressive\Authentication\OAuth2\ResponsePrototypeTrait::getResponsePrototype
-     */
     public function testInvokeWithAuthServerWithResponseInterface()
     {
         $this->container
@@ -80,7 +74,9 @@ class OAuth2MiddlewareFactoryTest extends TestCase
             ->willReturn($this->authServer->reveal());
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn($this->response->reveal());
+            ->willReturn(function () {
+                return $this->response->reveal();
+            });
 
         $factory = new OAuth2MiddlewareFactory();
         $middleware = $factory($this->container->reveal());

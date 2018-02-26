@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.0.0alpha2 - 2018-02-26
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#15](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/15)
+  updates the repository to pin to zend-expressive-authentication `^1.0.0alpha3`.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.0alpha1 - 2018-02-07
 
 ### Added
