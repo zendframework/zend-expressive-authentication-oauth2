@@ -22,21 +22,29 @@ use Zend\Expressive\Authentication\UserInterface;
 
 class OAuth2AdapterTest extends TestCase
 {
+    /** @var ResourceServer|ObjectProphecy */
+    private $resourceServer;
+
+    /** @var ResponseInterface|ObjectProphecy */
+    private $response;
+
+    /** @var callable */
+    private $responseFactory;
+
     public function setUp()
     {
-        $this->resourceServer = $this->prophesize(ResourceServer::class);
-        $this->response       = $this->prophesize(ResponseInterface::class);
+        $this->resourceServer  = $this->prophesize(ResourceServer::class);
+        $this->response        = $this->prophesize(ResponseInterface::class);
+        $this->responseFactory = function () {
+            return $this->response->reveal();
+        };
     }
 
     public function testConstructor()
     {
-        $factory = function () {
-            return;
-        };
-
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $factory
+            $this->responseFactory
         );
         $this->assertInstanceOf(OAuth2Adapter::class, $adapter);
         $this->assertInstanceOf(AuthenticationInterface::class, $adapter);
@@ -54,9 +62,7 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            function () {
-                return $this->response->reveal();
-            }
+            $this->responseFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -73,9 +79,7 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            function () {
-                return $this->response->reveal();
-            }
+            $this->responseFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -92,9 +96,7 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            function () {
-                return $this->response->reveal();
-            }
+            $this->responseFactory
         );
 
         $user = $adapter->authenticate($request->reveal());
@@ -117,9 +119,7 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            function () {
-                return $this->response->reveal();
-            }
+            $this->responseFactory
         );
 
         $this->assertSame(

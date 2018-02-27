@@ -12,6 +12,7 @@ namespace ZendTest\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\ResourceServer;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
@@ -20,11 +21,26 @@ use Zend\Expressive\Authentication\OAuth2\OAuth2AdapterFactory;
 
 class OAuth2AdapterFactoryTest extends TestCase
 {
+    /** @var ContainerInterface|ObjectProphecy */
+    private $container;
+
+    /** @var ResourceServer|ObjectProphecy */
+    private $resourceServer;
+
+    /** @var ResponseInterface|ObjectProphecy */
+    private $response;
+
+    /** @var callable */
+    private $responseFactory;
+
     public function setUp()
     {
-        $this->container      = $this->prophesize(ContainerInterface::class);
-        $this->resourceServer = $this->prophesize(ResourceServer::class);
-        $this->response       = $this->prophesize(ResponseInterface::class);
+        $this->container       = $this->prophesize(ContainerInterface::class);
+        $this->resourceServer  = $this->prophesize(ResourceServer::class);
+        $this->response        = $this->prophesize(ResponseInterface::class);
+        $this->responseFactory = function () {
+            return $this->response->reveal();
+        };
     }
 
     public function testConstructor()
@@ -77,9 +93,7 @@ class OAuth2AdapterFactoryTest extends TestCase
             ->willReturn(true);
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn(function () {
-                return $this->response->reveal();
-            });
+            ->willReturn($this->responseFactory);
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());

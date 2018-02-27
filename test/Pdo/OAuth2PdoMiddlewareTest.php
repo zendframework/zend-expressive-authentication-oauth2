@@ -19,6 +19,7 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
@@ -39,6 +40,39 @@ class OAuth2PdoMiddlewareTest extends TestCase
     const DB_DATA        = __DIR__ . '/TestAsset/test_data.sql';
     const PRIVATE_KEY    = __DIR__ .'/../TestAsset/private.key';
     const ENCRYPTION_KEY = 'T2x2+1OGrEzfS+01OUmwhOcJiGmE58UD1fllNn6CGcQ=';
+
+    /** @var AccessTokenRepository */
+    private $accessTokenRepository;
+
+    /** @var AuthCodeRepository */
+    private $authCodeRepository;
+
+    /** @var AuthServer */
+    private $authServer;
+
+    /** @var ClientRepository */
+    private $clientRepository;
+
+    /** @var RequestHandlerInterface|ObjectProphecy */
+    private $handler;
+
+    /** @var PdoService */
+    private $pdoService;
+
+    /** @var RefreshTokenRepository */
+    private $refreshTokenRepository;
+
+    /** @var Response */
+    private $response;
+
+    /** @var callable */
+    private $responseFactory;
+
+    /** @var ScopeRepository */
+    private $scopeRepository;
+
+    /** @var UserRepository */
+    private $userRepository;
 
     public static function setUpBeforeClass()
     {
@@ -88,15 +122,16 @@ class OAuth2PdoMiddlewareTest extends TestCase
         );
 
         $this->handler = $this->prophesize(RequestHandlerInterface::class);
+        $this->responseFactory = function () {
+            return $this->response;
+        };
     }
 
     public function testConstructor()
     {
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
         $this->assertInstanceOf(OAuth2Middleware::class, $authMiddleware);
     }
@@ -131,9 +166,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
@@ -181,9 +214,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
@@ -235,9 +266,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
@@ -293,9 +322,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
@@ -342,9 +369,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
@@ -397,9 +422,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function () {
-                return $this->response;
-            }
+            $this->responseFactory
         );
 
         $response = $authMiddleware->process($request, $this->handler->reveal());
