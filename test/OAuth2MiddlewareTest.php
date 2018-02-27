@@ -38,7 +38,9 @@ class OAuth2MiddlewareTest extends TestCase
     {
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
         $this->assertInstanceOf(OAuth2Middleware::class, $middleware);
         $this->assertInstanceOf(MiddlewareInterface::class, $middleware);
@@ -69,7 +71,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
         $response = $middleware->process(
             $this->serverRequest->reveal(),
@@ -92,7 +96,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
         $response = $middleware->process(
             $this->serverRequest->reveal(),
@@ -117,7 +123,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $this->serverRequest->getMethod()->willReturn('GET');
@@ -157,7 +165,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $this->serverRequest->getMethod()->willReturn('GET');
@@ -177,7 +187,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $response = $middleware->process(
@@ -206,7 +218,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $response = $middleware->process(
@@ -247,7 +261,9 @@ class OAuth2MiddlewareTest extends TestCase
 
         $middleware = new OAuth2Middleware(
             $this->authServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $response = $middleware->process(

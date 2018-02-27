@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
+use function foo\func;
 use League\OAuth2\Server\ResourceServer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -52,8 +53,8 @@ class OAuth2AdapterFactoryTest extends TestCase
             ->willReturn($this->resourceServer->reveal());
 
         $this->container
-            ->has(ResponseInterface::class)
-            ->willReturn(false);
+            ->get(ResponseInterface::class)
+            ->willReturn(function () {});
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());

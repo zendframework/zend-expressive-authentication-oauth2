@@ -92,7 +92,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
     public function testConstructor()
     {
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
         $this->assertInstanceOf(OAuth2Middleware::class, $authMiddleware);
     }
 
@@ -123,7 +128,14 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -166,7 +178,14 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -214,7 +233,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
@@ -265,7 +290,14 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -307,7 +339,14 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [],
             $params
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
@@ -356,7 +395,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            function() {
+                return $this->response;
+            }
+        );
+
         $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());

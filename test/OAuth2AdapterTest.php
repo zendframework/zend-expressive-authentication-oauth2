@@ -30,9 +30,13 @@ class OAuth2AdapterTest extends TestCase
 
     public function testConstructor()
     {
+        $factory = function () {
+            return;
+        };
+
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->response->reveal()
+            $factory
         );
         $this->assertInstanceOf(OAuth2Adapter::class, $adapter);
         $this->assertInstanceOf(AuthenticationInterface::class, $adapter);
@@ -50,7 +54,9 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -67,7 +73,9 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -84,7 +92,9 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $user = $adapter->authenticate($request->reveal());
@@ -107,7 +117,9 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->response->reveal()
+            function () {
+                return $this->response->reveal();
+            }
         );
 
         $this->assertSame(

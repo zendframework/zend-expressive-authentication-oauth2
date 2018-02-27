@@ -28,9 +28,9 @@ class OAuth2Adapter implements AuthenticationInterface
     protected $resourceServer;
 
     /**
-     * @var ResponseInterface
+     * @var callable
      */
-    protected $responsePrototype;
+    protected $responseFactory;
 
     /**
      * Constructor
@@ -38,10 +38,12 @@ class OAuth2Adapter implements AuthenticationInterface
      * @param ResourceServer $resourceServer
      * @param ResponseInterface $responsePrototype
      */
-    public function __construct(ResourceServer $resourceServer, ResponseInterface $responsePrototype)
+    public function __construct(ResourceServer $resourceServer, callable $responseFactory)
     {
         $this->resourceServer = $resourceServer;
-        $this->responsePrototype = $responsePrototype;
+        $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
+            return $responseFactory();
+        };
     }
 
     /**
@@ -66,7 +68,7 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     public function unauthorizedResponse(ServerRequestInterface $request) : ResponseInterface
     {
-        return $this->responsePrototype
+        return ($this->responseFactory)()
             ->withHeader(
                 'WWW-Authenticate',
                 'Bearer token-example'
