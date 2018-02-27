@@ -30,12 +30,6 @@ class OAuth2Middleware implements MiddlewareInterface
      */
     protected $responseFactory;
 
-    /**
-     * Constructor
-     *
-     * @param AuthorizationServer $server
-     * @param ResponseInterface $responsePrototype
-     */
     public function __construct(AuthorizationServer $server, callable $responseFactory)
     {
         $this->server = $server;

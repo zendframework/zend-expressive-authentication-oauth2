@@ -32,12 +32,6 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     protected $responseFactory;
 
-    /**
-     * Constructor
-     *
-     * @param ResourceServer $resourceServer
-     * @param ResponseInterface $responsePrototype
-     */
     public function __construct(ResourceServer $resourceServer, callable $responseFactory)
     {
         $this->resourceServer = $resourceServer;
