@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
+use TypeError;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Adapter;
 use Zend\Expressive\Authentication\OAuth2\OAuth2AdapterFactory;
@@ -58,7 +60,7 @@ class OAuth2AdapterFactoryTest extends TestCase
         $oauth2Adapter = $factory($this->container->reveal());
     }
 
-    public function testInvokeWithResourceServerEmptyResponse()
+    public function testFactoryRaisesTypeErrorForNonCallableResponseFactory()
     {
         $this->container
             ->has(ResourceServer::class)
@@ -69,17 +71,34 @@ class OAuth2AdapterFactoryTest extends TestCase
 
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn(function () {
-            });
+            ->willReturn(new stdClass());
 
         $factory = new OAuth2AdapterFactory();
-        $adapter = $factory($this->container->reveal());
 
-        $this->assertInstanceOf(OAuth2Adapter::class, $adapter);
-        $this->assertInstanceOf(AuthenticationInterface::class, $adapter);
+        $this->expectException(TypeError::class);
+        $adapter = $factory($this->container->reveal());
     }
 
-    public function testInvokeResourceServerAndResponse()
+    public function testFactoryRaisesTypeErrorWhenResponseServiceProvidesResponseInstance()
+    {
+        $this->container
+            ->has(ResourceServer::class)
+            ->willReturn(true);
+        $this->container
+            ->get(ResourceServer::class)
+            ->willReturn($this->resourceServer->reveal());
+
+        $this->container
+            ->get(ResponseInterface::class)
+            ->will([$this->response, 'reveal']);
+
+        $factory = new OAuth2AdapterFactory();
+
+        $this->expectException(TypeError::class);
+        $adapter = $factory($this->container->reveal());
+    }
+
+    public function testFactoryReturnsInstanceWhenAppropriateDependenciesArePresentInContainer()
     {
         $this->container
             ->has(ResourceServer::class)
