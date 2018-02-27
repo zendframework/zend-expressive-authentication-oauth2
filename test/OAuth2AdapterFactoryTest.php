@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2;
 
-use function foo\func;
 use League\OAuth2\Server\ResourceServer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
