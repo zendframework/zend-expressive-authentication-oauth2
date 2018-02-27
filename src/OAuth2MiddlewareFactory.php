@@ -12,12 +12,10 @@ namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authentication\ResponsePrototypeTrait;
+use Psr\Http\Message\ResponseInterface;
 
 class OAuth2MiddlewareFactory
 {
-    use ResponsePrototypeTrait;
-
     public function __invoke(ContainerInterface $container) : OAuth2Middleware
     {
         $authServer = $container->has(AuthorizationServer::class)
@@ -33,7 +31,7 @@ class OAuth2MiddlewareFactory
 
         return new OAuth2Middleware(
             $authServer,
-            $this->getResponsePrototype($container)
+            $container->get(ResponseInterface::class)
         );
     }
 }
