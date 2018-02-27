@@ -54,7 +54,8 @@ class OAuth2AdapterFactoryTest extends TestCase
 
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn(function () {});
+            ->willReturn(function () {
+            });
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());

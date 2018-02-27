@@ -54,7 +54,8 @@ class OAuth2MiddlewareFactoryTest extends TestCase
             ->willReturn($this->authServer->reveal());
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn(function () {});
+            ->willReturn(function () {
+            });
 
         $factory = new OAuth2MiddlewareFactory();
         $middleware = $factory($this->container->reveal());

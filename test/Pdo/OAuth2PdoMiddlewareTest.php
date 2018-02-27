@@ -94,7 +94,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
     {
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -131,7 +131,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -181,7 +181,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -235,7 +235,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -293,7 +293,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -342,7 +342,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
@@ -397,7 +397,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
         $authMiddleware = new OAuth2Middleware(
             $this->authServer,
-            function() {
+            function () {
                 return $this->response;
             }
         );
