@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.0.0alpha4 - 2018-02-28
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#18](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/18)
+  updates the default SQL shipped with the package in `data/oauth2.sql` for
+  generating OAuth2 tables to ensure it works with MySQL 5.7+; the SQL will
+  still work with older versions, as well as other relational databases.
+
 ## 1.0.0alpha3 - 2018-02-27
 
 ### Added
@@ -73,7 +98,6 @@ All notable changes to this project will be documented in this file, in reverse 
   use the `RevokableTrait` and `TimestampableTrait`. It also adds methods for
   setting and retrieving the client secret, personal access client, and password
   client.
-  
 
 ### Deprecated
 
@@ -112,6 +136,31 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - Nothing.
+
+## 0.3.1 - 2018-02-28
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#18](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/18)
+  updates the default SQL shipped with the package in `data/oauth2.sql` for
+  generating OAuth2 tables to ensure it works with MySQL 5.7+; the SQL will
+  still work with older versions, as well as other relational databases.
 
 ## 0.3.0 - 2018-02-07
 
