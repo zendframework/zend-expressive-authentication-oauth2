@@ -4,7 +4,7 @@ CREATE TABLE oauth_auth_codes (
     client_id INTEGER,
     scopes TEXT NULL,
     revoked BOOLEAN,
-    expires_at TIMESTAMP,
+    expires_at TIMESTAMP NULL,
     PRIMARY KEY(id)
 );
 
@@ -15,9 +15,9 @@ CREATE TABLE oauth_access_tokens (
     name VARCHAR(255) NULL,
     scopes TEXT NULL,
     revoked BOOLEAN,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    expires_at TIMESTAMP,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
     PRIMARY KEY(id)
 );
 CREATE INDEX idx1_oauth_access_tokens ON oauth_access_tokens(user_id);
@@ -39,16 +39,16 @@ CREATE TABLE oauth_clients (
     personal_access_client BOOLEAN,
     password_client BOOLEAN,
     revoked BOOLEAN,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
     PRIMARY KEY (name)
 );
 CREATE INDEX idx1_oauth_clients ON oauth_clients(user_id);
 
 CREATE TABLE oauth_personal_access_clients (
     client_id INTEGER,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
 );
 CREATE INDEX idx1_oauth_personal_access_clients ON oauth_personal_access_clients(client_id);
 
