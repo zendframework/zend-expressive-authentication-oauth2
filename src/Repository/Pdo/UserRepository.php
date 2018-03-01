@@ -33,7 +33,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
         $row = $sth->fetch();
 
-        if (!empty($row) && password_verify($password, $row['password'])) {
+        if (! empty($row) && password_verify($password, $row['password'])) {
             return new UserEntity($username);
         }
 
