@@ -73,4 +73,29 @@ class UserRepositoryTest extends TestCase
             )
         );
     }
+
+    public function testGetUserEntityByCredentialsReturnsNullIfUserIsNotFound()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':username', 'username')->shouldBeCalled();
+        $statement->execute()->will(function () use ($statement) {
+            $statement->fetch()->willReturn(null);
+            return null;
+        });
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT password FROM oauth_users'))
+            ->will([$statement, 'reveal']);
+
+        $client = $this->prophesize(ClientEntityInterface::class);
+
+        $this->assertNull(
+            $this->repo ->getUserEntityByUserCredentials(
+                'username',
+                'password',
+                'auth',
+                $client->reveal()
+            )
+        );
+    }
 }
