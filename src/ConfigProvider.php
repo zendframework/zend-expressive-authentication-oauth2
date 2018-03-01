@@ -18,6 +18,7 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
+use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 class ConfigProvider
@@ -47,7 +48,8 @@ class ConfigProvider
                 ClientRepositoryInterface::class => Pdo\ClientRepository::class,
                 RefreshTokenRepositoryInterface::class => Pdo\RefreshTokenRepository::class,
                 ScopeRepositoryInterface::class => Pdo\ScopeRepository::class,
-                UserRepositoryInterface::class => Pdo\UserRepository::class
+                UserRepositoryInterface::class => Pdo\UserRepository::class,
+                AuthenticationInterface::class => OAuth2Adapter::class
             ],
             'factories' => [
                 OAuth2Middleware::class => OAuth2MiddlewareFactory::class,
