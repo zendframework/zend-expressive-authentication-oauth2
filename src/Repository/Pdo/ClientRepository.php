@@ -34,9 +34,13 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
         if (empty($row) || ! $this->isGranted($row, $grantType)) {
             return;
         }
-        if ($mustValidateSecret && ! password_verify((string) $clientSecret, $row['secret'])) {
+
+        if ($mustValidateSecret
+            && (empty($row['secret']) || ! password_verify((string) $clientSecret, $row['secret']))
+        ) {
             return;
         }
+
         return new ClientEntity($clientIdentifier, $row['name'], $row['redirect']);
     }
 
