@@ -57,8 +57,8 @@ class AccessTokenRepositoryTest extends TestCase
                 ':user_id'    => 'user_id',
                 ':client_id'  => 'client_id',
                 ':scopes'     => 'authentication',
-                ':revoked'    => false,
-                ':expires_at' => $time,
+                ':revoked'    => 0,
+                ':expires_at' => date('Y-m-d H:i:s',$time),
             ])
             ->willReturn(false);
 

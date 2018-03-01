@@ -74,8 +74,11 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
             ':user_id'    => $accessTokenEntity->getUserIdentifier(),
             ':client_id'  => $accessTokenEntity->getClient()->getIdentifier(),
             ':scopes'     => $this->scopesToString($accessTokenEntity->getScopes()),
-            ':revoked'    => false,
-            ':expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp()
+            ':revoked'    => 0,
+            ':expires_at' => date(
+                'Y-m-d H:i:s',
+                $accessTokenEntity->getExpiryDateTime()->getTimestamp()
+            ),
         ];
 
         if (false === $sth->execute($params)) {
@@ -91,7 +94,7 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
         $sth = $this->pdo->prepare(
             'UPDATE oauth_access_tokens SET revoked=:revoked WHERE id = :tokenId'
         );
-        $sth->bindValue(':revoked', true);
+        $sth->bindValue(':revoked', 0);
         $sth->bindParam(':tokenId', $tokenId);
 
         $sth->execute();
