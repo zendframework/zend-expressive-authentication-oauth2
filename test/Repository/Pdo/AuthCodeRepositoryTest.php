@@ -53,8 +53,9 @@ class AuthCodeRepositoryTest extends TestCase
         $statement->bindValue(':user_id', 'user_id')->shouldBeCalled();
         $statement->bindValue(':client_id', 'client_id')->shouldBeCalled();
         $statement->bindValue(':scopes', 'authentication')->shouldBeCalled();
-        $statement->bindValue(':revoked', false)->shouldBeCalled();
-        $statement->bindValue(':expires_at', $time)->shouldBeCalled();
+        $statement->bindValue(':revoked', 0)->shouldBeCalled();
+        $statement->bindValue(':expires_at', date('Y-m-d H:i:s', $time))
+            ->shouldBeCalled();
         $statement->execute()->willReturn(false);
 
         $this->pdo

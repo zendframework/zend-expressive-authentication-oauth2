@@ -39,8 +39,14 @@ class AuthCodeRepository extends AbstractRepository implements AuthCodeRepositor
         $sth->bindValue(':user_id', $authCodeEntity->getUserIdentifier());
         $sth->bindValue(':client_id', $authCodeEntity->getClient()->getIdentifier());
         $sth->bindValue(':scopes', $this->scopesToString($authCodeEntity->getScopes()));
-        $sth->bindValue(':revoked', false);
-        $sth->bindValue(':expires_at', $authCodeEntity->getExpiryDateTime()->getTimestamp());
+        $sth->bindValue(':revoked', 0);
+        $sth->bindValue(
+            ':expires_at',
+            date(
+                'Y-m-d H:i:s',
+                $authCodeEntity->getExpiryDateTime()->getTimestamp()
+            )
+        );
 
         if (false === $sth->execute()) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
@@ -55,7 +61,7 @@ class AuthCodeRepository extends AbstractRepository implements AuthCodeRepositor
         $sth = $this->pdo->prepare(
             'UPDATE oauth_auth_codes SET revoked=:revoked WHERE id = :codeId'
         );
-        $sth->bindValue(':revoked', true);
+        $sth->bindValue(':revoked', 1);
         $sth->bindParam(':codeId', $codeId);
 
         $sth->execute();
