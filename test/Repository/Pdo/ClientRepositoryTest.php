@@ -135,4 +135,32 @@ class ClientRepositoryTest extends TestCase
             )
         );
     }
+
+    public function testGetClientReturnsNullForEmptyClientSecret()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
+        $statement->execute()->will(function () use ($statement) {
+            $statement->fetch()->willReturn([
+                'password_client' => true,
+                'secret' => null,
+            ]);
+            return null;
+        });
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT * FROM oauth_clients'))
+            ->will([$statement, 'reveal']);
+
+        $client = $this->prophesize(ClientEntityInterface::class);
+
+        $this->assertNull(
+            $this->repo ->getClientEntity(
+                'client_id',
+                'password_client',
+                'password',
+                true
+            )
+        );
+    }
 }
