@@ -24,6 +24,11 @@ class ClientEntity implements ClientEntityInterface
     protected $secret;
 
     /**
+     * @var string
+     */
+    protected $userIdentifier;
+
+    /**
      * @var bool
      */
     protected $personalAccessClient;
@@ -56,6 +61,16 @@ class ClientEntity implements ClientEntityInterface
     public function setSecret(string $secret): void
     {
         $this->secret = $secret;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->userIdentifier;
+    }
+
+    public function setUserIdentifier(string $userIdentifier): void
+    {
+        $this->userIdentifier = $userIdentifier;
     }
 
     public function hasPersonalAccessClient(): bool

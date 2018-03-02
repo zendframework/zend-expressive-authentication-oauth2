@@ -15,7 +15,7 @@ trait RevokableTrait
     /**
      * @var bool
      */
-    protected $revoked;
+    protected $revoked = false;
 
     /**
      * @return bool
