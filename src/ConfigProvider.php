@@ -11,6 +11,11 @@ declare(strict_types=1);
 namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use League\OAuth2\Server\Grant\ImplicitGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -18,6 +23,11 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\ResourceServer;
+use Zend\Expressive\Authentication\OAuth2\Grant\AuthCodeGrantFactory;
+use Zend\Expressive\Authentication\OAuth2\Grant\ClientCredentialsGrantFactory;
+use Zend\Expressive\Authentication\OAuth2\Grant\ImplicitGrantFactory;
+use Zend\Expressive\Authentication\OAuth2\Grant\PasswordGrantFactory;
+use Zend\Expressive\Authentication\OAuth2\Grant\RefreshTokenGrantFactory;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 class ConfigProvider
@@ -61,7 +71,13 @@ class ConfigProvider
                 Pdo\ClientRepository::class => Pdo\ClientRepositoryFactory::class,
                 Pdo\RefreshTokenRepository::class => Pdo\RefreshTokenRepositoryFactory::class,
                 Pdo\ScopeRepository::class => Pdo\ScopeRepositoryFactory::class,
-                Pdo\UserRepository::class => Pdo\UserRepositoryFactory::class
+                Pdo\UserRepository::class => Pdo\UserRepositoryFactory::class,
+                // Default Grants
+                ClientCredentialsGrant::class => ClientCredentialsGrantFactory::class,
+                PasswordGrant::class => PasswordGrantFactory::class,
+                AuthCodeGrant::class => AuthCodeGrantFactory::class,
+                ImplicitGrant::class => ImplicitGrantFactory::class,
+                RefreshTokenGrant::class => RefreshTokenGrantFactory::class,
             ]
         ];
     }

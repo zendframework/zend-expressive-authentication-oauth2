@@ -20,5 +20,19 @@ return [
         'dsn' => '',
         'username' => '',
         'password' => ''
-    ]
+    ],
+
+    // Set value to null to disable a grant
+    'grants' => [
+        \League\OAuth2\Server\Grant\ClientCredentialsGrant::class
+            => \League\OAuth2\Server\Grant\ClientCredentialsGrant::class,
+        \League\OAuth2\Server\Grant\PasswordGrant::class
+            => \League\OAuth2\Server\Grant\PasswordGrant::class,
+        \League\OAuth2\Server\Grant\AuthCodeGrant::class
+            => \League\OAuth2\Server\Grant\AuthCodeGrant::class,
+        \League\OAuth2\Server\Grant\ImplicitGrant::class
+            => \League\OAuth2\Server\Grant\ImplicitGrant::class,
+        \League\OAuth2\Server\Grant\RefreshTokenGrant::class
+            => \League\OAuth2\Server\Grant\RefreshTokenGrant::class
+    ],
 ];
