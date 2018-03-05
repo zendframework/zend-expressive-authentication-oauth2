@@ -30,5 +30,5 @@ The `token_type` is the type of generated token (Bearer). The `expires_in` is
 an integer representing the TTL (in seconds) of the access token.
 The `refresh_token` a token that can be used to refresh the `access_token` when
 expired.
-The `access_token` contains the a `JWT` signed with the authorization server’s
+The `access_token` contains a `JWT` signed with the authorization server’s
 private key. This token must be used in the `Authorization` request HTTP header.
