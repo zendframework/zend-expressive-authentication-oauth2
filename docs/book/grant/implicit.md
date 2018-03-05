@@ -11,7 +11,7 @@ server:
 - `response_type` = token;
 - `client_id` with the client’s ID;
 - `redirect_uri` with the client redirect URI. This parameter is optional,
-  but if not send the user will be redirected to a pre-registered redirect URI;
+  if not, the user will be redirected to a pre-registered redirect URI;
 - `scope` with a space-delimited list of requested scope permissions;
 - `state` with a CSRF token. This parameter is optional but highly recommended.
   You can store the value of CSRF token in the user’s session to be validated
