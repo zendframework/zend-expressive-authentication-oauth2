@@ -1,3 +1,2 @@
-private.key
-public.key
-oauth2.sqlite
+*.key
+*.sqlite

@@ -13,6 +13,7 @@
 
 $filePrivateKey = dirname(__DIR__) . '/data/private.key';
 $filePublicKey = dirname(__DIR__) . '/data/public.key';
+$fileEncryptionKey = dirname(__DIR__) . '/data/encryption.key';
 
 // Generate public/private keys with OpenSSL
 $config = [
@@ -24,14 +25,14 @@ $config = [
 $res = openssl_pkey_new($config);
 openssl_pkey_export($res, $privateKey);
 file_put_contents($filePrivateKey, $privateKey);
+printf("Private key stored in:\n%s\n", $filePrivateKey);
 
 // Public key
 $publicKey = openssl_pkey_get_details($res);
 file_put_contents($filePublicKey, $publicKey["key"]);
-
-printf("Private key stored in:\n%s\n", $filePrivateKey);
 printf("Public key stored in:\n%s\n", $filePublicKey);
-printf(
-    "Encryption key (copy & paste in config/oauth2.php):\n%s\n",
-    base64_encode(random_bytes(32))
-);
+
+// Encryption key
+$encKey = base64_encode(random_bytes(32));
+file_put_contents($fileEncryptionKey, sprintf("<?php return '%s';", $encKey));
+printf("Encryption key stored in:\n%s\n", $fileEncryptionKey);
