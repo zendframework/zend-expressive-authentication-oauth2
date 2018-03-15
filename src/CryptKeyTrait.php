@@ -10,6 +10,9 @@ namespace Zend\Expressive\Authentication\OAuth2;
 
 use League\OAuth2\Server\CryptKey;
 
+use function is_string;
+use function sprintf;
+
 trait CryptKeyTrait
 {
     protected function getCryptKey($keyConfig, string $configPath) : CryptKey

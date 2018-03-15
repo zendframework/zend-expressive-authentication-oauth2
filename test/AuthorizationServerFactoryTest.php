@@ -22,6 +22,10 @@ use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationServerFactory;
 use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
+use function array_merge;
+use function array_slice;
+use function in_array;
+
 class AuthorizationServerFactoryTest extends TestCase
 {
     const REPOSITORY_CLASSES = [

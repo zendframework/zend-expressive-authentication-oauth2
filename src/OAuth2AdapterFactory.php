@@ -13,7 +13,6 @@ namespace Zend\Expressive\Authentication\OAuth2;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Expressive\Authentication\OAuth2\Exception;
 
 class OAuth2AdapterFactory
 {

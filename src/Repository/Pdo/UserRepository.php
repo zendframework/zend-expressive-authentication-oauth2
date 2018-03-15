@@ -14,6 +14,8 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
+use function password_verify;
+
 class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
     public function getUserEntityByUserCredentials(

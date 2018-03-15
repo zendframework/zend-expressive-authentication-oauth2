@@ -21,6 +21,8 @@ use Zend\Expressive\Authentication\OAuth2\Entity\AuthCodeEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AuthCodeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 
+use function time;
+
 class AuthCodeRepositoryTest extends TestCase
 {
     public function setUp()

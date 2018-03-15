@@ -13,6 +13,8 @@ namespace Zend\Expressive\Authentication\OAuth2\Entity;
 use DateTime;
 use DateTimeZone;
 
+use function method_exists;
+
 trait TimestampableTrait
 {
     /**
