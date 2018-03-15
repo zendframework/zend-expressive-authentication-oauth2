@@ -9,7 +9,7 @@
     <meta name="description" content="OAuth2 server authentication middleware for Expressive and PSR-7 applications.">  
     <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>Introduction - OAuth2 middleware</title>
+    <title>Usage - OAuth2 middleware</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
@@ -58,16 +58,16 @@
                 
                 
                 
-                    <li class="active">
-                        <a href="./">Introduction</a>
+                    <li >
+                        <a href="../intro/">Introduction</a>
                     </li>
                 
                 
                 
                 
                 
-                    <li >
-                        <a href="../usage/">Usage</a>
+                    <li class="active">
+                        <a href="./">Usage</a>
                     </li>
                 
                 
@@ -159,11 +159,9 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#zendframeworkzend-expressive-authentication-oauth2">zendframework/zend-expressive-authentication-oauth2</a></li>
+        <li class="main active"><a href="#usage">Usage</a></li>
         
-            <li><a href="#installation">Installation</a></li>
-        
-            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#authenticate-a-middleware">Authenticate a middleware</a></li>
         
     
     </ul>
@@ -171,10 +169,10 @@
     
     <ul class="pager hidden-print">
       <li class="previous">
-        <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+        <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
       </li>
       <li class="next">
-        <a rel="next" href="../usage/">Next <i class="fa fa-arrow-right"></i></a>
+        <a rel="next" href="../grant/client_credentials/">Next <i class="fa fa-arrow-right"></i></a>
       </li>
     </ul>
     
@@ -186,96 +184,52 @@
   
     
   
-  <li class="active">Introduction</li>
+  <li class="active">Usage</li>
 </ol>
 
-<h1 id="zendframeworkzend-expressive-authentication-oauth2">zendframework/zend-expressive-authentication-oauth2</h1>
-<p>This component provides <a href="https://oauth.net/2/">OAuth2</a> (server) authentication
-for <a href="https://docs.zendframework.com/zend-expressive/">Expressive</a> and
-<a href="https://www.php-fig.org/psr/psr-7/">PSR-7</a> applications. It implements
-<code>Zend\Expressive\Authentication\AuthenticationInterface</code>, and it be used as
-an adapter for <a href="https://github.com/zendframework/zend-expressive-authentication">zend-expressive-authentication</a>.</p>
-<p>This library uses the <a href="https://oauth2.thephpleague.com/">league/oauth2-server</a>
-package for implementing the OAuth2 server.</p>
-<p>If you need an introduction to OAuth2, you can read the following references:</p>
+<h1 id="usage">Usage</h1>
+<p>If you successfully configured the OAuth2 server as detailed in the
+<a href="../intro/">installation</a> section, you can request an access token using the
+default <code>/oauth</code> route.</p>
+<p>You can require an access token using one of the following scenarios:</p>
 <ul>
-<li><a href="https://apigility.org/documentation/auth/authentication-oauth2">OAuth2 documentation</a>
-  from the Apigility project.</li>
-<li><a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2">An Introduction to OAuth 2</a>
-  by Digital Ocean.</li>
-<li>The <a href="https://oauth.net/2/">OAuth2 specification</a> itself, via its official
-  website.</li>
+<li><a href="../grant/client_credentials/">client credentials</a>;</li>
+<li><a href="../grant/password/">password</a>;</li>
+<li><a href="../grant/auth_code/">authorization code</a>;</li>
+<li><a href="../grant/implicit/">implicit</a>;</li>
+<li><a href="../grant/refresh_token/">refresh token</a>.</li>
 </ul>
-<h2 id="installation">Installation</h2>
-<p>In order to implement the OAuth2 server, we first need to configure it. The
-first step is to generate new cryptographic keys. We need to execute the script
-<code>bin/generate-keys.php</code> in order to generate these keys.</p>
-<pre class="codehilite"><code class="language-bash">$ php vendor/bin/generate-keys.php</code></pre>
+<h2 id="authenticate-a-middleware">Authenticate a middleware</h2>
+<p>This library uses the authentication abstraction of the <code>Zend\Expressive\Authentication\AuthenticationMiddleware</code>
+class provided by <a href="https://github.com/zendframework/zend-expressive-authentication">zend-expressive-authentication</a>.</p>
+<p>In order to use OAuth2 we need to configure the service
+<code>Zend\Expressive\Authentication\AuthenticationInterface</code> to resolve in
+<code>Zend\Expressive\Authentication\OAuth2\OAuth2Adapter</code>. Using the
+<a href="https://github.com/zendframework/zend-servicemanager">zend-servicemanager</a> this
+can be achieved using <code>aliases</code> with the following configuration:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Expressive\Authentication;
 
-<p>This script will store the keys in the <code>data</code> folder:</p>
-<pre class="codehilite"><code>Private key stored in:
-./data/private.key
-Public key stored in:
-./data/public.key
-Encryption key stored in:
-./data/encryption.key</code></pre>
-
-<p>The script will generate public and private keys, and an encryption key.
-These keys are used by <a href="https://oauth2.thephpleague.com/">league/oauth2-server</a>
-as security settings for the OAuth2 server infrastructure.</p>
-<h2 id="configuration">Configuration</h2>
-<p>The OAuth2 server is configured by the <code>authentication</code> configuration key in the
-PSR-11 container (e.g. <a href="https://github.com/zendframework/zend-servicemanager">zend-servicemanager</a>).</p>
-<p>The default values are:</p>
-<pre class="codehilite"><code class="language-php">return [
-    'private_key'    =&gt; __DIR__ . '/../data/private.key',
-    'public_key'     =&gt; __DIR__ . '/../data/public.key',
-    'encryption_key' =&gt; require __DIR__ . '/../data/encryption.key',
-    'access_token_expire'  =&gt; 'P1D',
-    'refresh_token_expire' =&gt; 'P1M',
-    'auth_code_expire'     =&gt; 'PT10M',
-    'pdo' =&gt; [
-        'dsn'      =&gt; '',
-        'username' =&gt; '',
-        'password' =&gt; ''
-    ]
+return [
+    'dependencies' =&gt; [
+        'aliases' =&gt; [
+            Authentication\AuthenticationInterface::class =&gt; Authentication\OAuth2\OAuth2Adapter::class,
+        ],
+    ],
 ];</code></pre>
 
-<p>The <code>private_key</code> and <code>public_key</code> values contains the paths to the previous
-generated pair of keys. The <code>encryption_key</code> contains the encryption key value
-as a string, as stored in the <code>data/encryption.key</code> file.</p>
-<p>The <code>access_token_expire</code> value is the time-to-live (TTL) value of the access
-token. The time period is represented using the <a href="http://php.net/manual/en/class.dateinterval.php">DateInterval</a>
-format in PHP.  The default value is <code>P1D</code> (1 day).</p>
-<p>The <code>refresh_token_expire</code> value is the TTL used for the refresh token. The
-default value is 1 month.</p>
-<p>The <code>auth_code_expire</code> value is th TTL of the authentication code, used in
-the <a href="https://oauth2.thephpleague.com/authorization-server/auth-code-grant/">authorization code grant</a>
-scenario. The default value is 10 minutes.</p>
-<p>The last parameter is the PDO database configuration. Here we need to insert
-the parameters to access the OAuth2 database. These parameters are the <code>dsn</code>,
-the <code>username</code>, and the <code>password</code>, if required. The SQL structure of this
-database is stored in the <a href="https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/data/oauth2.sql">data/oauth2.sql</a>
-file.</p>
-<p>You need to provide an OAuth2 database yourself, or generate a <a href="https://www.sqlite.org">SQLite</a>
-database with the following command (using <code>sqlite3</code> for GNU/Linux):</p>
-<pre class="codehilite"><code class="language-bash">$ sqlite3 data/oauth2.sqlite &lt; data/oauth2.sql</code></pre>
-
-<p>You can also create some testing values using the <code>data/oauth2_test.sql</code> file:</p>
-<pre class="codehilite"><code class="language-bash">$ sqlite3 data/oauth2.sqlite &lt; data/oauth2_test.sql</code></pre>
-
-<p>These commands will insert the following testing values:</p>
-<ul>
-<li>a client <code>client_test</code> with secret <code>test</code>, used for <a href="../grant/client_credentials/">client_credentials</a>
-  and the <a href="../grant/password/">password</a> grant type.</li>
-<li>a client <code>client_test2</code> with secret <code>test</code>, used for <a href="../grant/auth_code/">authorization code</a>
-  and <a href="../grant/implicit/">implicit</a> grant type.</li>
-<li>a user <code>user_test</code> with password <code>test</code>.</li>
-<li>a <code>test</code> scope.</li>
-</ul>
-<p>For security reason, the client <code>secret</code> and the user <code>password</code> are stored
-using the <code>bcrypt</code> algorithm provided by <a href="http://php.net/manual/en/function.password-hash.php">password_hash</a>
-function of PHP.</p>
+<p>The previous configuration will instruct <code>zend-expressive-authentication</code> to use
+the OAuth2 adapter. This adapter does not require a <code>Zend\Expressive\Authentication\UserRepositoryInterface</code>.
+The OAuth2 database with user and client credentials is managed by the component
+itself.</p>
+<p>When the service alias is configured, you can immediately begin authenticating
+your application/API by adding the <code>AuthenticationMiddleware</code> to either your
+application or route-specific middleware pipeline. For instance, using an
+<a href="https://docs.zendframework.com/zend-expressive/">Expressive</a> application, you
+could add it to a specific route, as follows:</p>
+<pre class="codehilite"><code class="language-php">$app-&gt;post('/api/users', [
+    Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+    App\Action\AddUserAction::class,
+], 'api.add.user');</code></pre>
 
 <hr />
 
@@ -283,10 +237,10 @@ function of PHP.</p>
 <nav>
   <ul class="pager hidden-print">
     <li class="previous">
-      <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+      <a rel="prev" href="../intro/"><i class="fa fa-arrow-left"></i> Previous</a>
     </li>
     <li class="next">
-      <a rel="next" href="../usage/">Next <i class="fa fa-arrow-right"></i></a>
+      <a rel="next" href="../grant/client_credentials/">Next <i class="fa fa-arrow-right"></i></a>
     </li>
   </ul>
 </nav>

@@ -7,18 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="OAuth2 server authentication middleware for Expressive and PSR-7 applications.">  
-    <link rel="shortcut icon" href="./img/favicon.ico">
+    <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>OAuth2 server middleware for Expressive and PSR-7 applications - OAuth2 middleware</title>
+    <title>Refresh token - OAuth2 middleware</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/styles-288837cc22.css">
+    <link rel="stylesheet" href="../../css/styles-288837cc22.css">
 
     
 </head>
 
-<body class="homepage" >
+<body>
 
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -37,8 +37,8 @@
 
             <!-- Main title -->
             <span class="navbar-brand">
-                <a class="logo-link" href="https://framework.zend.com/" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="./img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
-                <a href=".">OAuth2 middleware</a>
+                <a class="logo-link" href="https://framework.zend.com/" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../../img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
+                <a href="../..">OAuth2 middleware</a>
             </span>
         </div>
 
@@ -50,8 +50,8 @@
                 
                 
                 
-                    <li class="active">
-                        <a href=".">OAuth2 server middleware for Expressive and PSR-7 applications</a>
+                    <li >
+                        <a href="../..">OAuth2 server middleware for Expressive and PSR-7 applications</a>
                     </li>
                 
                 
@@ -59,7 +59,7 @@
                 
                 
                     <li >
-                        <a href="intro/">Introduction</a>
+                        <a href="../../intro/">Introduction</a>
                     </li>
                 
                 
@@ -67,21 +67,21 @@
                 
                 
                     <li >
-                        <a href="usage/">Usage</a>
+                        <a href="../../usage/">Usage</a>
                     </li>
                 
                 
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Grant <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 
 <li >
-    <a href="grant/client_credentials/">Client credentials</a>
+    <a href="../client_credentials/">Client credentials</a>
 </li>
 
 
@@ -89,7 +89,7 @@
                             
 
 <li >
-    <a href="grant/password/">Password</a>
+    <a href="../password/">Password</a>
 </li>
 
 
@@ -97,7 +97,7 @@
                             
 
 <li >
-    <a href="grant/auth_code/">Authorization code</a>
+    <a href="../auth_code/">Authorization code</a>
 </li>
 
 
@@ -105,15 +105,15 @@
                             
 
 <li >
-    <a href="grant/implicit/">Implicit</a>
+    <a href="../implicit/">Implicit</a>
 </li>
 
 
                         
                             
 
-<li >
-    <a href="grant/refresh_token/">Refresh token</a>
+<li class="active">
+    <a href="./">Refresh token</a>
 </li>
 
 
@@ -153,16 +153,75 @@
     </div>
 </div>
 
-    <div class="container">
-  <div class="jumbotron">
-    <h1>zendframework/zend-expressive-authentication-oauth2</h1>
+    <!-- content:begin -->
+    <div id="page-top" class="container docs">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#refresh-token">Refresh token</a></li>
+        
+    
+    </ul>
 
-    <p>OAuth2 (server) authentication middleware for PSR-7 applications.</p>
+    
+</div></div>
+        <div class="col-md-9" role="main">
 
-    <pre><code class="language-bash">$ composer require zendframework/zend-expressive-authentication-oauth2</code></pre>
-  </div>
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="../..">OAuth2 middleware</a></li>
+  
+    
+      
+        <li>Grant</li>
+      
+    
+  
+  <li class="active">Refresh token</li>
+</ol>
+
+<h1 id="refresh-token">Refresh token</h1>
+<p>The OAuth2 framework provides the ability to <em>refresh</em> the access token,
+generating a new one with a new lifetime. This action can be performed using
+the <code>refresh_token</code> value, if present in the access token response.</p>
+<p>To request a token refresh, the client needs to send a <code>POST</code> request with
+the following parameters:</p>
+<ul>
+<li><code>grant_type</code> = refresh_token.</li>
+<li><code>refresh_token</code> with the refresh token.</li>
+<li><code>client_id</code> with the client’s ID.</li>
+<li><code>client_secret</code> with the client’s secret.</li>
+<li><code>scope</code> with a space-delimited list of requested scope permissions. This is
+  optional; if not sent, the original scopes will be used. Otherwise you can
+  request a <em>reduced</em> scope; you may never <em>expand</em> scope during a refresh
+  operation.</li>
+</ul>
+<p>The authorization server responds with a JSON payload as follows:</p>
+<pre class="codehilite"><code class="language-json">{
+    &quot;token_type&quot; : &quot;Bearer&quot;,
+    &quot;expires_in&quot; : &quot;3600&quot;,
+    &quot;refresh_token&quot; : &quot;YWYwNjhmNmZmMDhmZjkyOGJj...&quot;,
+    &quot;access_token&quot; : &quot;eyJ0eXAiOiJKV1Q...&quot;
+}</code></pre>
+
+<p>The values are as follows:</p>
+<ul>
+<li>The <code>token_type</code> is the type of generated token (here, and generally, Bearer).</li>
+<li><code>expires_in</code> is an integer representing the time-to-live (in seconds) of the
+  access token.</li>
+<li>The <code>refresh_token</code> a token that can be used to refresh the <code>access_token</code>
+  when expired.</li>
+<li>The <code>access_token</code> contains a JSON Web Token (JWT) signed with the
+  authorization server’s private key. This token must be used in the
+  <code>Authorization</code> request HTTP header on all subsequent requests.</li>
+</ul>
+
+<hr />
+
 </div>
-
+        
+    </div>
+    <!-- content:end -->
 
     <div id="footerwrap">
     <div class="container">
@@ -210,11 +269,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-    <script>var base_url = '.';</script>
-    <script src="./js/scripts-0b6185f4a5.js"></script>
-    <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./search/require.js"></script>
-        <script src="./search/search.js"></script>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/scripts-0b6185f4a5.js"></script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">
@@ -246,7 +305,7 @@
     <div class="zf-components">
   <div class="zf-components-grid">
     <div class="zf-logo">
-      <a href="https://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="./img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
+      <a href="https://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../../img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
     </div>
 
     <div class="component-list"></div>
@@ -259,8 +318,3 @@
 
 
 </html>
-
-<!--
-MkDocs version : 0.17.2
-Build Date UTC : 2018-03-15 17:36:56
--->
