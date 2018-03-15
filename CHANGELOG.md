@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.4.0 - 2018-03-15
+
+### Added
+
+- [#32](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/32)
+  adds the ability to pull league/oauth2-server grant implementations from the
+  container, providing factories for each grant type. It also adds the ability
+  to selectively disable grant types via configuration.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.0alpha4 - 2018-02-28
 
 ### Added
