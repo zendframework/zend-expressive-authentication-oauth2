@@ -6,6 +6,20 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
+- [#9](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/9)
+  adds support for PSR-15.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  adds `Zend\Expressive\Authentication\OAuth2\Entity\RevokableTrait`, which
+  provides a way to flag whether or not a token has been revoked, and mimics
+  traits from the upstream league/oauth2-server implementation.
+
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  adds `Zend\Expressive\Authentication\OAuth2\Entity\TimestampableTrait`, which
+  provides methods for setting and retrieving `DateTime` values representing
+  creation and update timestamps for a token; it mimics traits from the upstream
+  league/oauth2-server implementation.
+
 - [#32](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/32)
   adds the ability to pull league/oauth2-server grant implementations from the
   container, providing factories for each grant type. It also adds the ability
@@ -13,52 +27,25 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- Updates the repository to pin to zend-expressive-authentication `^0.4.0`.
 
-### Deprecated
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity` to
+  use the `RevokableTrait` and `TimestampableTrait`.
 
-- Nothing.
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\AuthCodeEntity` to
+  use the `RevokableTrait`.
 
-### Removed
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity` to
+  use the `RevokableTrait`.
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.0.0alpha4 - 2018-02-28
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- [#18](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/18)
-  updates the default SQL shipped with the package in `data/oauth2.sql` for
-  generating OAuth2 tables to ensure it works with MySQL 5.7+; the SQL will
-  still work with older versions, as well as other relational databases.
-
-## 1.0.0alpha3 - 2018-02-27
-
-### Added
-
-- Nothing.
-
-### Changed
+- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
+  updates `Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity` to
+  use the `RevokableTrait` and `TimestampableTrait`. It also adds methods for
+  setting and retrieving the client secret, personal access client, and password
+  client.
 
 - [#17](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/17)
   changes the constructor of each of the `Zend\Expressive\Authentication\OAuth2\OAuth2Adapter`
@@ -80,79 +67,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.0.0alpha2 - 2018-02-26
-
-### Added
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  adds `Zend\Expressive\Authentication\OAuth2\Entity\RevokableTrait`, which
-  provides a way to flag whether or not a token has been revoked, and mimics
-  traits from the upstream league/oauth2-server implementation.
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  adds `Zend\Expressive\Authentication\OAuth2\Entity\TimestampableTrait`, which
-  provides methods for setting and retrieving `DateTime` values representing
-  creation and update timestamps for a token; it mimics traits from the upstream
-  league/oauth2-server implementation.
-
-### Changed
-
-- [#15](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/15)
-  updates the repository to pin to zend-expressive-authentication `^1.0.0alpha3`.
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  updates `Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity` to
-  use the `RevokableTrait` and `TimestampableTrait`.
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  updates `Zend\Expressive\Authentication\OAuth2\Entity\AuthCodeEntity` to
-  use the `RevokableTrait`.
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  updates `Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity` to
-  use the `RevokableTrait`.
-
-- [#13](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/13)
-  updates `Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity` to
-  use the `RevokableTrait` and `TimestampableTrait`. It also adds methods for
-  setting and retrieving the client secret, personal access client, and password
-  client.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.0.0alpha1 - 2018-02-07
-
-### Added
-
-- [#9](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/9)
-  adds support for PSR-15.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
 - [#9](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/9) and
   [#5](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/5)
   remove support for http-interop/http-middleware and
@@ -160,7 +74,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#18](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/18)
+  updates the default SQL shipped with the package in `data/oauth2.sql` for
+  generating OAuth2 tables to ensure it works with MySQL 5.7+; the SQL will
+  still work with older versions, as well as other relational databases.
 
 ## 0.3.1 - 2018-02-28
 

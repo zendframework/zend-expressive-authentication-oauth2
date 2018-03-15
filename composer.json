@@ -26,7 +26,7 @@
         "psr/container": "^1.0",
         "psr/http-message": "^1.0.1",
         "psr/http-server-middleware": "^1.0",
-        "zendframework/zend-expressive-authentication": "^1.0.0alpha3"
+        "zendframework/zend-expressive-authentication": "^0.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0.1",
@@ -52,8 +52,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2.x-dev",
-            "dev-release-1.0.0": "1.0.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     },
     "scripts": {
