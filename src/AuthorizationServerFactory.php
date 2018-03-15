@@ -17,9 +17,11 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Psr\Container\ContainerInterface;
+use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
 class AuthorizationServerFactory
 {
+    use ConfigTrait;
     use CryptKeyTrait;
     use RepositoryTrait;
 
@@ -28,128 +30,33 @@ class AuthorizationServerFactory
         $clientRepository = $this->getClientRepository($container);
         $accessTokenRepository = $this->getAccessTokenRepository($container);
         $scopeRepository = $this->getScopeRepository($container);
-        $userRepository  = $this->getUserRepository($container);
-        $refreshTokenRepository = $this->getRefreshTokenRepository($container);
-        $authCodeRepository = $this->getAuthCodeRepository($container);
 
-        $config = $container->get('config')['authentication'] ?? [];
-        if (! isset($config['private_key']) || empty($config['private_key'])) {
-            throw new Exception\InvalidConfigException(
-                'The private_key value is missing in config authentication'
-            );
-        }
-        if (! isset($config['encryption_key']) || empty($config['encryption_key'])) {
-            throw new Exception\InvalidConfigException(
-                'The encryption_key value is missing in config authentication'
-            );
-        }
-        if (! isset($config['access_token_expire'])) {
-            throw new Exception\InvalidConfigException(
-                'The access_token_expire value is missing in config authentication'
-            );
-        }
-        if (! isset($config['refresh_token_expire'])) {
-            throw new Exception\InvalidConfigException(
-                'The refresh_token_expire value is missing in config authentication'
-            );
-        }
-        if (! isset($config['auth_code_expire'])) {
-            throw new Exception\InvalidConfigException(
-                'The auth_code_expire value is missing in config authentication'
-            );
-        }
-
-        $privateKey = $this->getCryptKey($config['private_key'], 'authentication.private_key');
+        $privateKey = $this->getCryptKey($this->getPrivateKey($container), 'authentication.private_key');
+        $encryptKey = $this->getEncryptionKey($container);
+        $grants = $this->getGrantsConfig($container);
 
         $authServer = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
             $privateKey,
-            $config['encryption_key']
+            $encryptKey
         );
 
-        // Enable Client credentials grant
-        $authServer->enableGrantType(
-            new Grant\ClientCredentialsGrant(),
-            new DateInterval($config['access_token_expire'])
-        );
+        $accessTokenInterval = new DateInterval($this->getAccessTokenExpire($container));
 
-        // Enable Password grant
-        $authServer->enableGrantType(
-            $this->getPasswordGrant(
-                $userRepository,
-                $refreshTokenRepository,
-                new DateInterval($config['refresh_token_expire'])
-            ),
-            new DateInterval($config['access_token_expire'])
-        );
+        foreach ($grants as $grant) {
+            // Config may set this grant to null.  Continue on if grant has been disabled
+            if (empty($grant)) {
+                continue;
+            }
 
-        // Enable Authentication Code grant
-        $authServer->enableGrantType(
-            $this->getAuthCodeGrant(
-                $authCodeRepository,
-                $refreshTokenRepository,
-                new DateInterval($config['auth_code_expire']),
-                new DateInterval($config['refresh_token_expire'])
-            ),
-            new DateInterval($config['access_token_expire'])
-        );
-
-        // Enable Implicit grant
-        $authServer->enableGrantType(
-            new Grant\ImplicitGrant(
-                new DateInterval($config['access_token_expire'])
-            ),
-            new DateInterval($config['access_token_expire'])
-        );
-
-        // Enable Refresh token grant
-        $authServer->enableGrantType(
-            $this->getRefreshTokenGrant(
-                $refreshTokenRepository,
-                new DateInterval($config['refresh_token_expire'])
-            ),
-            new DateInterval($config['access_token_expire'])
-        );
+            $authServer->enableGrantType(
+                $container->get($grant),
+                $accessTokenInterval
+            );
+        }
 
         return $authServer;
-    }
-
-    protected function getAuthCodeGrant(
-        AuthCodeRepositoryInterface $authCodeRepo,
-        RefreshTokenRepositoryInterface $refreshTokenRepo,
-        DateInterval $code_expire,
-        DateInterval $refresh_token_expire
-    ) {
-        $grant = new Grant\AuthCodeGrant(
-            $authCodeRepo,
-            $refreshTokenRepo,
-            $code_expire
-        );
-        $grant->setRefreshTokenTTL($refresh_token_expire);
-        return $grant;
-    }
-
-    protected function getPasswordGrant(
-        UserRepositoryInterface $userRepository,
-        RefreshTokenRepositoryInterface $refreshTokenRepository,
-        DateInterval $refresh_token_expire
-    ) {
-        $grant = new Grant\PasswordGrant(
-            $userRepository,
-            $refreshTokenRepository
-        );
-        $grant->setRefreshTokenTTL($refresh_token_expire);
-        return $grant;
-    }
-
-    protected function getRefreshTokenGrant(
-        RefreshTokenRepositoryInterface $refreshTokenRepository,
-        DateInterval $refreshTokenExpire
-    ) {
-        $grant = new Grant\RefreshTokenGrant($refreshTokenRepository);
-        $grant->setRefreshTokenTTL($refreshTokenExpire);
-        return $grant;
     }
 }
