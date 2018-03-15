@@ -1,15 +1,16 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
 
+declare(strict_types=1);
+
 namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 
 use DateInterval;
-use Interop\Http\ServerMiddleware\DelegateInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
@@ -18,6 +19,8 @@ use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
@@ -30,6 +33,18 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
 
+use function bin2hex;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function http_build_query;
+use function json_decode;
+use function parse_str;
+use function random_bytes;
+use function sprintf;
+use function strtolower;
+use function unlink;
+
 class OAuth2PdoMiddlewareTest extends TestCase
 {
     const DB_FILE        = __DIR__ . '/TestAsset/test_oauth2.sq3';
@@ -37,6 +52,39 @@ class OAuth2PdoMiddlewareTest extends TestCase
     const DB_DATA        = __DIR__ . '/TestAsset/test_data.sql';
     const PRIVATE_KEY    = __DIR__ .'/../TestAsset/private.key';
     const ENCRYPTION_KEY = 'T2x2+1OGrEzfS+01OUmwhOcJiGmE58UD1fllNn6CGcQ=';
+
+    /** @var AccessTokenRepository */
+    private $accessTokenRepository;
+
+    /** @var AuthCodeRepository */
+    private $authCodeRepository;
+
+    /** @var AuthServer */
+    private $authServer;
+
+    /** @var ClientRepository */
+    private $clientRepository;
+
+    /** @var RequestHandlerInterface|ObjectProphecy */
+    private $handler;
+
+    /** @var PdoService */
+    private $pdoService;
+
+    /** @var RefreshTokenRepository */
+    private $refreshTokenRepository;
+
+    /** @var Response */
+    private $response;
+
+    /** @var callable */
+    private $responseFactory;
+
+    /** @var ScopeRepository */
+    private $scopeRepository;
+
+    /** @var UserRepository */
+    private $userRepository;
 
     public static function setUpBeforeClass()
     {
@@ -47,7 +95,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         if (false === $pdo->exec(file_get_contents(self::DB_SCHEMA))) {
             throw new \Exception(sprintf(
                 "The test cannot be executed without the %s db",
-                $dbSchema
+                self::DB_SCHEMA
             ));
         }
         // Insert the test values
@@ -85,12 +133,18 @@ class OAuth2PdoMiddlewareTest extends TestCase
             self::ENCRYPTION_KEY
         );
 
-        $this->delegate = $this->prophesize(DelegateInterface::class);
+        $this->handler = $this->prophesize(RequestHandlerInterface::class);
+        $this->responseFactory = function () {
+            return $this->response;
+        };
     }
 
     public function testConstructor()
     {
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
         $this->assertInstanceOf(OAuth2Middleware::class, $authMiddleware);
     }
 
@@ -121,8 +175,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -164,8 +223,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -212,8 +276,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -263,8 +331,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params,
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -305,8 +378,13 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [],
             $params
         );
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -354,8 +432,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware($this->authServer, $this->response);
-        $response = $authMiddleware->process($request, $this->delegate->reveal());
+        $authMiddleware = new OAuth2Middleware(
+            $this->authServer,
+            $this->responseFactory
+        );
+
+        $response = $authMiddleware->process($request, $this->handler->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -367,15 +449,15 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
     /**
      * Build a ServerRequest object
-     *
-     * @param string $method
-     * @param sting $url
-     * @param array $params
-     * @param array $headers
-     * @return Zend\Diactoros\ServerRequest
      */
-    protected function buildServerRequest($method, $url, $body, $params, $headers = [], $queryParams = [])
-    {
+    protected function buildServerRequest(
+        string $method,
+        string $url,
+        string $body,
+        array $params,
+        array $headers = [],
+        array $queryParams = []
+    ) : ServerRequest {
         $stream = new Stream('php://temp', 'w');
         $stream->write($body);
 

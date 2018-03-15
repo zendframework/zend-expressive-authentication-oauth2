@@ -22,14 +22,14 @@
     },
     "require": {
         "php": "^7.1",
-        "http-interop/http-middleware": "^0.4.1",
-        "league/oauth2-server": "^6.0",
+        "league/oauth2-server": "^6.0.2",
         "psr/container": "^1.0",
         "psr/http-message": "^1.0.1",
-        "zendframework/zend-expressive-authentication": "^0.3 || ^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "zendframework/zend-expressive-authentication": "^0.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0.8",
+        "phpunit/phpunit": "^7.0.1",
         "roave/security-advisories": "dev-master",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-diactoros": "^1.4.0"
@@ -52,8 +52,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2.x-dev",
-            "dev-release-1.0.0": "1.0.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     },
     "scripts": {

@@ -8,16 +8,28 @@
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
+namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
-use Psr\Container\ContainerInterface;
-
-class ClientRepositoryFactory
+trait RevokableTrait
 {
-    public function __invoke(ContainerInterface $container) : ClientRepository
+    /**
+     * @var bool
+     */
+    protected $revoked;
+
+    /**
+     * @return bool
+     */
+    public function isRevoked(): bool
     {
-        return new ClientRepository(
-            $container->get(PdoService::class)
-        );
+        return $this->revoked;
+    }
+
+    /**
+     * @param bool $revoked
+     */
+    public function setRevoked(bool $revoked): void
+    {
+        $this->revoked = $revoked;
     }
 }

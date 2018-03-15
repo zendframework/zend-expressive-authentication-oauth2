@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -13,6 +15,10 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
+
+use function array_key_exists;
+use function implode;
+use function sprintf;
 
 class AccessTokenRepository extends AbstractRepository implements AccessTokenRepositoryInterface
 {
@@ -68,8 +74,11 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
             ':user_id'    => $accessTokenEntity->getUserIdentifier(),
             ':client_id'  => $accessTokenEntity->getClient()->getIdentifier(),
             ':scopes'     => $this->scopesToString($accessTokenEntity->getScopes()),
-            ':revoked'    => false,
-            ':expires_at' => $accessTokenEntity->getExpiryDateTime()->getTimestamp()
+            ':revoked'    => 0,
+            ':expires_at' => date(
+                'Y-m-d H:i:s',
+                $accessTokenEntity->getExpiryDateTime()->getTimestamp()
+            ),
         ];
 
         if (false === $sth->execute($params)) {
@@ -85,7 +94,7 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
         $sth = $this->pdo->prepare(
             'UPDATE oauth_access_tokens SET revoked=:revoked WHERE id = :tokenId'
         );
-        $sth->bindValue(':revoked', true);
+        $sth->bindValue(':revoked', 0);
         $sth->bindParam(':tokenId', $tokenId);
 
         $sth->execute();

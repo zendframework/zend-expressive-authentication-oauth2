@@ -8,16 +8,20 @@
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
+namespace Zend\Expressive\Authentication\OAuth2\Grant;
 
+use League\OAuth2\Server\Grant\ImplicitGrant;
 use Psr\Container\ContainerInterface;
+use Zend\Expressive\Authentication\OAuth2\ConfigTrait;
 
-class ClientRepositoryFactory
+class ImplicitGrantFactory
 {
-    public function __invoke(ContainerInterface $container) : ClientRepository
+    use ConfigTrait;
+
+    public function __invoke(ContainerInterface $container)
     {
-        return new ClientRepository(
-            $container->get(PdoService::class)
+        return new ImplicitGrant(
+            new \DateInterval($this->getAuthCodeExpire($container))
         );
     }
 }

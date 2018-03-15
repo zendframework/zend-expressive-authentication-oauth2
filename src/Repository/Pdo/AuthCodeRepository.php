@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -37,8 +39,14 @@ class AuthCodeRepository extends AbstractRepository implements AuthCodeRepositor
         $sth->bindValue(':user_id', $authCodeEntity->getUserIdentifier());
         $sth->bindValue(':client_id', $authCodeEntity->getClient()->getIdentifier());
         $sth->bindValue(':scopes', $this->scopesToString($authCodeEntity->getScopes()));
-        $sth->bindValue(':revoked', false);
-        $sth->bindValue(':expires_at', $authCodeEntity->getExpiryDateTime()->getTimestamp());
+        $sth->bindValue(':revoked', 0);
+        $sth->bindValue(
+            ':expires_at',
+            date(
+                'Y-m-d H:i:s',
+                $authCodeEntity->getExpiryDateTime()->getTimestamp()
+            )
+        );
 
         if (false === $sth->execute()) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
@@ -53,7 +61,7 @@ class AuthCodeRepository extends AbstractRepository implements AuthCodeRepositor
         $sth = $this->pdo->prepare(
             'UPDATE oauth_auth_codes SET revoked=:revoked WHERE id = :codeId'
         );
-        $sth->bindValue(':revoked', true);
+        $sth->bindValue(':revoked', 1);
         $sth->bindParam(':codeId', $codeId);
 
         $sth->execute();

@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -17,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
+
+use function time;
 
 class RefreshTokenRepositoryTest extends TestCase
 {
@@ -43,8 +47,9 @@ class RefreshTokenRepositoryTest extends TestCase
         $statement = $this->prophesize(PDOStatement::class);
         $statement->bindValue(':id', 'id')->shouldBeCalled();
         $statement->bindValue(':access_token_id', 'access_token_id')->shouldBeCalled();
-        $statement->bindValue(':revoked', false)->shouldBeCalled();
-        $statement->bindValue(':expires_at', $time)->shouldBeCalled();
+        $statement->bindValue(':revoked', 0)->shouldBeCalled();
+        $statement->bindValue(':expires_at', date('Y-m-d H:i:s', $time))
+            ->shouldBeCalled();
         $statement->execute()->willReturn(false)->shouldBeCalled();
 
         $this->pdo

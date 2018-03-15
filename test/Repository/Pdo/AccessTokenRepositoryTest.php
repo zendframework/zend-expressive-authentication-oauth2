@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -18,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
+
+use function time;
 
 class AccessTokenRepositoryTest extends TestCase
 {
@@ -53,8 +57,8 @@ class AccessTokenRepositoryTest extends TestCase
                 ':user_id'    => 'user_id',
                 ':client_id'  => 'client_id',
                 ':scopes'     => 'authentication',
-                ':revoked'    => false,
-                ':expires_at' => $time,
+                ':revoked'    => 0,
+                ':expires_at' => date('Y-m-d H:i:s', $time),
             ])
             ->willReturn(false);
 

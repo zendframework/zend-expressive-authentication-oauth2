@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -53,6 +55,31 @@ class UserRepositoryTest extends TestCase
             $statement->fetch()->willReturn([
                 'password' => 'not-the-same-password',
             ]);
+            return null;
+        });
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT password FROM oauth_users'))
+            ->will([$statement, 'reveal']);
+
+        $client = $this->prophesize(ClientEntityInterface::class);
+
+        $this->assertNull(
+            $this->repo ->getUserEntityByUserCredentials(
+                'username',
+                'password',
+                'auth',
+                $client->reveal()
+            )
+        );
+    }
+
+    public function testGetUserEntityByCredentialsReturnsNullIfUserIsNotFound()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':username', 'username')->shouldBeCalled();
+        $statement->execute()->will(function () use ($statement) {
+            $statement->fetch()->willReturn(null);
             return null;
         });
 

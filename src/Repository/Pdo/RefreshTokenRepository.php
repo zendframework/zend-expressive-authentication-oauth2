@@ -1,10 +1,12 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
@@ -29,8 +31,14 @@ class RefreshTokenRepository extends AbstractRepository implements RefreshTokenR
 
         $sth->bindValue(':id', $refreshTokenEntity->getIdentifier());
         $sth->bindValue(':access_token_id', $refreshTokenEntity->getAccessToken()->getIdentifier());
-        $sth->bindValue(':revoked', false);
-        $sth->bindValue(':expires_at', $refreshTokenEntity->getExpiryDateTime()->getTimestamp());
+        $sth->bindValue(':revoked', 0);
+        $sth->bindValue(
+            ':expires_at',
+            date(
+                'Y-m-d H:i:s',
+                $refreshTokenEntity->getExpiryDateTime()->getTimestamp()
+            )
+        );
 
         if (false === $sth->execute()) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
@@ -42,7 +50,7 @@ class RefreshTokenRepository extends AbstractRepository implements RefreshTokenR
         $sth = $this->pdo->prepare(
             'UPDATE oauth_refresh_tokens SET revoked=:revoked WHERE id = :tokenId'
         );
-        $sth->bindValue(':revoked', true);
+        $sth->bindValue(':revoked', 1);
         $sth->bindParam(':tokenId', $tokenId);
 
         $sth->execute();

@@ -8,16 +8,15 @@
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
+namespace Zend\Expressive\Authentication\OAuth2\Grant;
 
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use Psr\Container\ContainerInterface;
 
-class ClientRepositoryFactory
+class ClientCredentialsGrantFactory
 {
-    public function __invoke(ContainerInterface $container) : ClientRepository
+    public function __invoke(ContainerInterface $container)
     {
-        return new ClientRepository(
-            $container->get(PdoService::class)
-        );
+        return new ClientCredentialsGrant();
     }
 }

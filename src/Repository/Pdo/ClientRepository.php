@@ -1,15 +1,19 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity;
+
+use function password_verify;
 
 class ClientRepository extends AbstractRepository implements ClientRepositoryInterface
 {
@@ -30,9 +34,13 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
         if (empty($row) || ! $this->isGranted($row, $grantType)) {
             return;
         }
-        if ($mustValidateSecret && ! password_verify((string) $clientSecret, $row['secret'])) {
+
+        if ($mustValidateSecret
+            && (empty($row['secret']) || ! password_verify((string) $clientSecret, $row['secret']))
+        ) {
             return;
         }
+
         return new ClientEntity($clientIdentifier, $row['name'], $row['redirect']);
     }
 
@@ -49,9 +57,9 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
             case 'authorization_code':
                 return ! ($row['personal_access_client'] || $row['password_client']);
             case 'personal_access':
-                return $row['personal_access_client'];
+                return (bool) $row['personal_access_client'];
             case 'password':
-                return $row['password_client'];
+                return (bool) $row['password_client'];
             default:
                 return true;
         }

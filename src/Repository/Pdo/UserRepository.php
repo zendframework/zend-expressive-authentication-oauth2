@@ -1,15 +1,20 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
+
+declare(strict_types=1);
+
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
+
+use function password_verify;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
@@ -27,11 +32,13 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
         if (false === $sth->execute()) {
             return;
         }
+
         $row = $sth->fetch();
 
-        if (password_verify($password, $row['password'])) {
+        if (! empty($row) && password_verify($password, $row['password'])) {
             return new UserEntity($username);
         }
+
         return;
     }
 }

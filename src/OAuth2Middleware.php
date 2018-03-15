@@ -1,22 +1,26 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
 
+declare(strict_types=1);
+
 namespace Zend\Expressive\Authentication\OAuth2;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface as ServerMiddlewareInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
-class OAuth2Middleware implements ServerMiddlewareInterface
+use function strtoupper;
+
+class OAuth2Middleware implements MiddlewareInterface
 {
     /**
      * @var AuthorizationServer
@@ -24,26 +28,22 @@ class OAuth2Middleware implements ServerMiddlewareInterface
     protected $server;
 
     /**
-     * @var ResponseInterface
+     * @var callable
      */
-    protected $responsePrototype;
+    protected $responseFactory;
 
-    /**
-     * Constructor
-     *
-     * @param AuthorizationServer $server
-     * @param ResponseInterface $responsePrototype
-     */
-    public function __construct(AuthorizationServer $server, ResponseInterface $responsePrototype)
+    public function __construct(AuthorizationServer $server, callable $responseFactory)
     {
         $this->server = $server;
-        $this->responsePrototype = $responsePrototype;
+        $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
+            return $responseFactory();
+        };
     }
 
     /**
      * {@inheritDoc}
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $method = $request->getMethod();
         switch (strtoupper($method)) {
@@ -52,7 +52,7 @@ class OAuth2Middleware implements ServerMiddlewareInterface
             case 'POST':
                 return $this->accessTokenRequest($request);
         }
-        return $this->responsePrototype->withStatus(501); // Method not implemented
+        return ($this->responseFactory)()->withStatus(501); // Method not implemented
     }
 
     /**
@@ -67,6 +67,9 @@ class OAuth2Middleware implements ServerMiddlewareInterface
      */
     protected function authorizationRequest(ServerRequestInterface $request) : ResponseInterface
     {
+        // Create a new response for the request
+        $response = ($this->responseFactory)();
+
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
             $authRequest = $this->server->validateAuthorizationRequest($request);
@@ -85,12 +88,12 @@ class OAuth2Middleware implements ServerMiddlewareInterface
             $authRequest->setAuthorizationApproved(true);
 
             // Return the HTTP redirect response
-            return $this->server->completeAuthorizationRequest($authRequest, $this->responsePrototype);
+            return $this->server->completeAuthorizationRequest($authRequest, $response);
         } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse($this->responsePrototype);
+            return $exception->generateHttpResponse($response);
         } catch (\Exception $exception) {
             return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-                ->generateHttpResponse($this->responsePrototype);
+                ->generateHttpResponse($response);
         }
     }
 
@@ -107,13 +110,16 @@ class OAuth2Middleware implements ServerMiddlewareInterface
      */
     protected function accessTokenRequest(ServerRequestInterface $request) : ResponseInterface
     {
+        // Create a new response for the request
+        $response = ($this->responseFactory)();
+
         try {
-            return $this->server->respondToAccessTokenRequest($request, $this->responsePrototype);
+            return $this->server->respondToAccessTokenRequest($request, $response);
         } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse($this->responsePrototype);
+            return $exception->generateHttpResponse($response);
         } catch (\Exception $exception) {
             return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-                ->generateHttpResponse($this->responsePrototype);
+                ->generateHttpResponse($response);
         }
     }
 }
