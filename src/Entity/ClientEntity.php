@@ -14,6 +14,8 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
+use function explode;
+
 class ClientEntity implements ClientEntityInterface
 {
     use ClientTrait, EntityTrait, RevokableTrait, TimestampableTrait;

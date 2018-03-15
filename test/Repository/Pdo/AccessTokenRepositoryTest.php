@@ -21,6 +21,8 @@ use Prophecy\Argument;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 
+use function time;
+
 class AccessTokenRepositoryTest extends TestCase
 {
     public function setUp()

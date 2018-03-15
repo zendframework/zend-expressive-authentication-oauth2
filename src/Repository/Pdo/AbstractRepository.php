@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
+use function array_reduce;
+use function trim;
+
 class AbstractRepository
 {
     /**

@@ -13,6 +13,8 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity;
 
+use function password_verify;
+
 class ClientRepository extends AbstractRepository implements ClientRepositoryInterface
 {
     /**

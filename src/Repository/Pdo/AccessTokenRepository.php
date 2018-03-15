@@ -16,6 +16,10 @@ use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationExcep
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 
+use function array_key_exists;
+use function implode;
+use function sprintf;
+
 class AccessTokenRepository extends AbstractRepository implements AccessTokenRepositoryInterface
 {
     /**

@@ -33,6 +33,18 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
 
+use function bin2hex;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function http_build_query;
+use function json_decode;
+use function parse_str;
+use function random_bytes;
+use function sprintf;
+use function strtolower;
+use function unlink;
+
 class OAuth2PdoMiddlewareTest extends TestCase
 {
     const DB_FILE        = __DIR__ . '/TestAsset/test_oauth2.sq3';

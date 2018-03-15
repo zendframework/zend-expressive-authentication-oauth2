@@ -20,6 +20,8 @@ use Prophecy\Argument;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 
+use function time;
+
 class RefreshTokenRepositoryTest extends TestCase
 {
     public function setUp()

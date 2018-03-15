@@ -14,6 +14,8 @@ use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 
+use function sprintf;
+
 class OAuth2MiddlewareFactory
 {
     public function __invoke(ContainerInterface $container) : OAuth2Middleware
