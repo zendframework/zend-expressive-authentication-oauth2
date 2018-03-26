@@ -55,6 +55,7 @@
             "dev-master": "0.4.x-dev"
         }
     },
+    "bin": "bin/zend-expressive-authentication-oauth2-generate-keys",
     "scripts": {
         "check": [
             "@cs-check",
@@ -63,7 +64,6 @@
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-        "generate-keys": "php bin/generate-keys.php"
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     }
 }
