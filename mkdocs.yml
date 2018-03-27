@@ -11,6 +11,6 @@ pages:
         - "Implicit": grant/implicit.md
         - "Refresh token": grant/refresh_token.md
 site_name: OAuth2 middleware
-site_description: 'OAuth2 server authentication middleware for Expressive and PSR-7 applications.'
+site_description: 'OAuth2 (server) for Expressive and PSR-7 applications.'
 repo_url: 'https://github.com/zendframework/zend-expressive-authentication-oauth2'
 copyright: 'Copyright (c) 2015-2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'

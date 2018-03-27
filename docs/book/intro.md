@@ -112,3 +112,23 @@ These commands will insert the following testing values:
 For security reason, the client `secret` and the user `password` are stored
 using the `bcrypt` algorithm provided by [password_hash](http://php.net/manual/en/function.password-hash.php)
 function of PHP.
+
+## Configure the OAuth2 route
+
+As last step, in order to use the OAuth2 server you need to configure a route
+to point to `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware` with
+GET and POST HTTP verbs.
+
+For instance, you can add the following route to your Expressive application:
+
+```php
+$app->route(
+    '/oauth',
+    Zend\Expressive\Authentication\OAuth2\OAuth2Middleware::class,
+    ['GET', 'POST'],
+    'oauth'
+);
+```
+
+With this configuration, you can interact with the OAuth2 server using `/oauth`
+URL.
