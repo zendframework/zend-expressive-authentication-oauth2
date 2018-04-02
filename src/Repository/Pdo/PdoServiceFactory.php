@@ -25,7 +25,7 @@ class PdoServiceFactory
             );
         }
 
-        if (is_string($config) && !$container->has($config)) {
+        if (is_string($config) && ! $container->has($config)) {
             throw new Exception\InvalidConfigException(
                 'Invalid service for PDO'
             );
