@@ -15,7 +15,7 @@ use Zend\Expressive\Authentication\OAuth2\Exception;
 
 class PdoServiceFactory
 {
-    public function __invoke(ContainerInterface $container) : PdoService
+    public function __invoke(ContainerInterface $container) : \PDO
     {
         $config = $container->has('config') ? $container->get('config') : [];
         $config = $config['authentication']['pdo'] ?? null;
@@ -24,6 +24,17 @@ class PdoServiceFactory
                 'The PDO configuration is missing'
             );
         }
+
+        if (is_string($config) && !$container->has($config)) {
+            throw new Exception\InvalidConfigException(
+                'Invalid service for PDO'
+            );
+        }
+
+        if (is_string($config) && $container->has($config)) {
+            return $container->get($config);
+        }
+
         if (! isset($config['dsn'])) {
             throw new Exception\InvalidConfigException(
                 'The DSN configuration is missing for PDO'
