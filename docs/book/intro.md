@@ -62,7 +62,21 @@ return [
         'dsn'      => '',
         'username' => '',
         'password' => ''
-    ]
+    ],
+    
+    // Set value to null to disable a grant
+    'grants' => [
+        \League\OAuth2\Server\Grant\ClientCredentialsGrant::class
+            => \League\OAuth2\Server\Grant\ClientCredentialsGrant::class,
+        \League\OAuth2\Server\Grant\PasswordGrant::class
+            => \League\OAuth2\Server\Grant\PasswordGrant::class,
+        \League\OAuth2\Server\Grant\AuthCodeGrant::class
+            => \League\OAuth2\Server\Grant\AuthCodeGrant::class,
+        \League\OAuth2\Server\Grant\ImplicitGrant::class
+            => \League\OAuth2\Server\Grant\ImplicitGrant::class,
+        \League\OAuth2\Server\Grant\RefreshTokenGrant::class
+            => \League\OAuth2\Server\Grant\RefreshTokenGrant::class
+    ],
 ];
 ```
 
@@ -77,15 +91,20 @@ format in PHP.  The default value is `P1D` (1 day).
 The `refresh_token_expire` value is the TTL used for the refresh token. The
 default value is 1 month.
 
-The `auth_code_expire` value is th TTL of the authentication code, used in
+The `auth_code_expire` value is the TTL of the authentication code, used in
 the [authorization code grant](https://oauth2.thephpleague.com/authorization-server/auth-code-grant/)
 scenario. The default value is 10 minutes.
 
-The last parameter is the PDO database configuration. Here we need to insert
+The `pdo` value is for the PDO database configuration. Here we need to insert
 the parameters to access the OAuth2 database. These parameters are the `dsn`,
 the `username`, and the `password`, if required. The SQL structure of this
 database is stored in the [data/oauth2.sql](https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/data/oauth2.sql)
 file.
+
+The `grants` array is for enabling/disabling grants.   By default all the supported
+grants are configured to be available.  If you would like to disable any of the 
+supplied grants, simply change the value for the grant to NULL.  Additionally,
+you can extend this array to add your own custom grants. 
 
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
 database with the following command (using `sqlite3` for GNU/Linux):
