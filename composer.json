@@ -56,7 +56,7 @@
         }
     },
     "bin": [
-        "bin/zend-expressive-authentication-oauth2-generate-keys"
+        "bin/generate-oauth2-keys"
     ],
     "scripts": {
         "check": [

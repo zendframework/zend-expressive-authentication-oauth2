@@ -22,10 +22,10 @@ If you need an introduction to OAuth2, you can read the following references:
 
 In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
-`bin/zend-expressive-authentication-oauth2-generate-keys` in order to generate these keys.
+`bin/generate-oauth2-keys` in order to generate these keys.
 
 ```bash
-$ ./vendor/bin/zend-expressive-authentication-oauth2-generate-keys
+$ ./vendor/bin/generate-oauth2-keys
 ```
 
 This script will store the keys in the parent application `data` folder if found:
