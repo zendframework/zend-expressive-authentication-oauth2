@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OAuth2 server authentication middleware for Expressive and PSR-7 applications.">  
+    <meta name="description" content="OAuth2 (server) for Expressive and PSR-7 applications.">  
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Introduction - OAuth2 middleware</title>
@@ -165,6 +165,8 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#configure-the-oauth2-route">Configure the OAuth2 route</a></li>
+        
     
     </ul>
 
@@ -209,16 +211,16 @@ package for implementing the OAuth2 server.</p>
 <h2 id="installation">Installation</h2>
 <p>In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
-<code>bin/generate-keys.php</code> in order to generate these keys.</p>
-<pre class="codehilite"><code class="language-bash">$ php vendor/bin/generate-keys.php</code></pre>
+<code>bin/generate-oauth2-keys</code> in order to generate these keys.</p>
+<pre class="codehilite"><code class="language-bash">$ ./vendor/bin/generate-oauth2-keys</code></pre>
 
-<p>This script will store the keys in the <code>data</code> folder:</p>
+<p>This script will store the keys in the parent application <code>data</code> folder if found:</p>
 <pre class="codehilite"><code>Private key stored in:
-./data/private.key
+./data/oauth/private.key
 Public key stored in:
-./data/public.key
+./data/oauth/public.key
 Encryption key stored in:
-./data/encryption.key</code></pre>
+./data/oauth/encryption.key</code></pre>
 
 <p>The script will generate public and private keys, and an encryption key.
 These keys are used by <a href="https://oauth2.thephpleague.com/">league/oauth2-server</a>
@@ -228,9 +230,9 @@ as security settings for the OAuth2 server infrastructure.</p>
 PSR-11 container (e.g. <a href="https://github.com/zendframework/zend-servicemanager">zend-servicemanager</a>).</p>
 <p>The default values are:</p>
 <pre class="codehilite"><code class="language-php">return [
-    'private_key'    =&gt; __DIR__ . '/../data/private.key',
-    'public_key'     =&gt; __DIR__ . '/../data/public.key',
-    'encryption_key' =&gt; require __DIR__ . '/../data/encryption.key',
+    'private_key'    =&gt; __DIR__ . '/../data/oauth/private.key',
+    'public_key'     =&gt; __DIR__ . '/../data/oauth/public.key',
+    'encryption_key' =&gt; require __DIR__ . '/../data/oauth/encryption.key',
     'access_token_expire'  =&gt; 'P1D',
     'refresh_token_expire' =&gt; 'P1M',
     'auth_code_expire'     =&gt; 'PT10M',
@@ -243,7 +245,7 @@ PSR-11 container (e.g. <a href="https://github.com/zendframework/zend-serviceman
 
 <p>The <code>private_key</code> and <code>public_key</code> values contains the paths to the previous
 generated pair of keys. The <code>encryption_key</code> contains the encryption key value
-as a string, as stored in the <code>data/encryption.key</code> file.</p>
+as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
 <p>The <code>access_token_expire</code> value is the time-to-live (TTL) value of the access
 token. The time period is represented using the <a href="http://php.net/manual/en/class.dateinterval.php">DateInterval</a>
 format in PHP.  The default value is <code>P1D</code> (1 day).</p>
@@ -276,6 +278,20 @@ database with the following command (using <code>sqlite3</code> for GNU/Linux):<
 <p>For security reason, the client <code>secret</code> and the user <code>password</code> are stored
 using the <code>bcrypt</code> algorithm provided by <a href="http://php.net/manual/en/function.password-hash.php">password_hash</a>
 function of PHP.</p>
+<h2 id="configure-the-oauth2-route">Configure the OAuth2 route</h2>
+<p>As last step, in order to use the OAuth2 server you need to configure a route
+to point to <code>Zend\Expressive\Authentication\OAuth2\OAuth2Middleware</code> with
+GET and POST HTTP verbs.</p>
+<p>For instance, you can add the following route to your Expressive application:</p>
+<pre class="codehilite"><code class="language-php">$app-&gt;route(
+    '/oauth',
+    Zend\Expressive\Authentication\OAuth2\OAuth2Middleware::class,
+    ['GET', 'POST'],
+    'oauth'
+);</code></pre>
+
+<p>With this configuration, you can interact with the OAuth2 server using <code>/oauth</code>
+URL.</p>
 
 <hr />
 
