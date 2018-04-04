@@ -22,21 +22,21 @@ If you need an introduction to OAuth2, you can read the following references:
 
 In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
-`bin/generate-keys.php` in order to generate these keys.
+`bin/generate-oauth2-keys` in order to generate these keys.
 
 ```bash
-$ php vendor/bin/generate-keys.php
+$ ./vendor/bin/generate-oauth2-keys
 ```
 
-This script will store the keys in the `data` folder:
+This script will store the keys in the parent application `data` folder if found:
 
 ```
 Private key stored in:
-./data/private.key
+./data/oauth/private.key
 Public key stored in:
-./data/public.key
+./data/oauth/public.key
 Encryption key stored in:
-./data/encryption.key
+./data/oauth/encryption.key
 ```
 
 The script will generate public and private keys, and an encryption key.
@@ -52,9 +52,9 @@ The default values are:
 
 ```php
 return [
-    'private_key'    => __DIR__ . '/../data/private.key',
-    'public_key'     => __DIR__ . '/../data/public.key',
-    'encryption_key' => require __DIR__ . '/../data/encryption.key',
+    'private_key'    => __DIR__ . '/../data/oauth/private.key',
+    'public_key'     => __DIR__ . '/../data/oauth/public.key',
+    'encryption_key' => require __DIR__ . '/../data/oauth/encryption.key',
     'access_token_expire'  => 'P1D',
     'refresh_token_expire' => 'P1M',
     'auth_code_expire'     => 'PT10M',
@@ -68,7 +68,7 @@ return [
 
 The `private_key` and `public_key` values contains the paths to the previous
 generated pair of keys. The `encryption_key` contains the encryption key value
-as a string, as stored in the `data/encryption.key` file.
+as a string, as stored in the `data/oauth/encryption.key` file.
 
 The `access_token_expire` value is the time-to-live (TTL) value of the access
 token. The time period is represented using the [DateInterval](http://php.net/manual/en/class.dateinterval.php)
