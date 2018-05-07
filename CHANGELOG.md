@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.0.0alpha5 - 2018-05-07
+
+### Added
+
+- [#30](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/30)
+  adds the AuthenticationInterface to the config provider so OAuth works out of
+  the box. Can always be overwritten in project configs.
+- [#38](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/38)
+  added the the `/oauth` route configuration in docs
+  
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#21](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/21)
+  fixes unknown user will throw an exception. When a user tries to use a
+  username that doesn't exist in the database an exception is thrown instead of
+  an invalid_credentials error.
+- [#22](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/22)
+  fixes exception thrown when client secret is missing. When a client id is used
+  that has no client_secret in the database an exception is thrown instead of an
+  invalid_client error.
+- [#23](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/23)
+  updates the token insert statements to match schema located in data/oauth2.php
+- [#37](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/37)
+  fixes issue with script to generate keys writes to vendor dir
+
+
 ## 0.4.0 - 2018-03-15
 
 ### Added
@@ -50,7 +88,7 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#17](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/17)
   changes the constructor of each of the `Zend\Expressive\Authentication\OAuth2\OAuth2Adapter`
   and `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware` classes to accept
-  a callable `$responseFactory` instead of a `Psr\Http\Message\ResponseInterface` 
+  a callable `$responseFactory` instead of a `Psr\Http\Message\ResponseInterface`
   response prototype. The `$responseFactory` should produce a
   `ResponseInterface` implementation when invoked.
 
