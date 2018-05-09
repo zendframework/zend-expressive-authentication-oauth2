@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.4.3 - 2018-05-09
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Removes auto-requiring of the encryption key via the configuration unless the default file
+  actually exists and is readable. As the configuration is processed in every request, this is necessary
+  to prevent issues when the file does not exist (e.g., if the user has specified an alternate location).
+
 ## 0.4.2 - 2018-05-09
 
 ### Added
