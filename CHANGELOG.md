@@ -2,16 +2,16 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.0.0alpha5 - 2018-05-07
+## 0.4.1 - 2018-05-09
 
 ### Added
 
 - [#30](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/30)
-  adds the AuthenticationInterface to the config provider so OAuth works out of
+  adds the AuthenticationInterface to the config provider so OAuth2 works out of
   the box. Can always be overwritten in project configs.
 - [#38](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/38)
-  added the the `/oauth` route configuration in docs
-  
+  added the the `/oauth` route configuration in docs.
+
 ### Changed
 
 - Nothing.
