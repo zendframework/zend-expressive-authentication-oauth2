@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.4.2 - 2018-05-09
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Fixes an issue in the default configuration paths for public, private, and encryption keys,
+  ensuring they will be based on the current working directory, and not the package directory.
+
 ## 0.4.1 - 2018-05-09
 
 ### Added
