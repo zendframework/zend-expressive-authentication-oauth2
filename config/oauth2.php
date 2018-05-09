@@ -10,9 +10,9 @@
  * @see http://php.net/manual/en/class.dateinterval.php
  */
 return [
-    'private_key'    => __DIR__ . '/../data/private.key',
-    'public_key'     => __DIR__ . '/../data/public.key',
-    'encryption_key' => require __DIR__ . '/../data/encryption.key',
+    'private_key'    => getcwd() . '/data/private.key',
+    'public_key'     => getcwd() . '/data/public.key',
+    'encryption_key' => require getcwd() . '/data/encryption.key',
     'access_token_expire'  => 'P1D', // 1 day in DateInterval format
     'refresh_token_expire' => 'P1M', // 1 month in DateInterval format
     'auth_code_expire'     => 'PT10M', // 10 minutes in DateInterval format
