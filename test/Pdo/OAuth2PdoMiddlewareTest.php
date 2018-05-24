@@ -24,7 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
-use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddleware;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AuthCodeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ClientRepository;
@@ -141,11 +141,11 @@ class OAuth2PdoMiddlewareTest extends TestCase
 
     public function testConstructor()
     {
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
-        $this->assertInstanceOf(OAuth2Middleware::class, $authMiddleware);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $authMiddleware);
     }
 
     /**
@@ -176,7 +176,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
@@ -224,7 +224,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
@@ -276,7 +276,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
@@ -332,7 +332,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
@@ -379,7 +379,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );
@@ -432,7 +432,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new OAuth2Middleware(
+        $authMiddleware = new AuthorizationMiddleware(
             $this->authServer,
             $this->responseFactory
         );

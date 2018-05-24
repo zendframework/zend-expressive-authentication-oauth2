@@ -62,7 +62,7 @@ class ConfigProvider
                 AuthenticationInterface::class => OAuth2Adapter::class
             ],
             'factories' => [
-                OAuth2Middleware::class => OAuth2MiddlewareFactory::class,
+                AuthorizationMiddleware::class => AuthorizationMiddlewareFactory::class,
                 OAuth2Adapter::class => OAuth2AdapterFactory::class,
                 AuthorizationServer::class => AuthorizationServerFactory::class,
                 ResourceServer::class => ResourceServerFactory::class,
@@ -90,7 +90,7 @@ class ConfigProvider
             [
                 'name'            => 'oauth',
                 'path'            => '/oauth',
-                'middleware'      => OAuth2Middleware::class,
+                'middleware'      => AuthorizationMiddleware::class,
                 'allowed_methods' => ['GET', 'POST']
             ],
         ];

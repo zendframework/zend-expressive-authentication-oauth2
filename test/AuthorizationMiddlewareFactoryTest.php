@@ -18,18 +18,18 @@ use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use TypeError;
 use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
-use Zend\Expressive\Authentication\OAuth2\OAuth2Middleware;
-use Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddleware;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddlewareFactory;
 
 /**
- * @covers \Zend\Expressive\Authentication\OAuth2\OAuth2MiddlewareFactory
+ * @covers \Zend\Expressive\Authentication\OAuth2\AuthorizationMiddlewareFactory
  */
-class OAuth2MiddlewareFactoryTest extends TestCase
+class AuthorizationMiddlewareFactoryTest extends TestCase
 {
     /** @var AuthorizationServer|ObjectProphecy */
     private $authServer;
 
-    /** @var AuthServer|ObjectProphecy */
+    /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
     /** @var ResponseInterface|ObjectProphecy */
@@ -44,16 +44,16 @@ class OAuth2MiddlewareFactoryTest extends TestCase
 
     public function testConstructor()
     {
-        $factory = new OAuth2MiddlewareFactory();
-        $this->assertInstanceOf(OAuth2MiddlewareFactory::class, $factory);
+        $factory = new AuthorizationMiddlewareFactory();
+        $this->assertInstanceOf(AuthorizationMiddlewareFactory::class, $factory);
     }
 
     public function testInvokeWithEmptyContainer()
     {
-        $factory = new OAuth2MiddlewareFactory();
+        $factory = new AuthorizationMiddlewareFactory();
 
         $this->expectException(InvalidConfigException::class);
-        $middleware = $factory($this->container->reveal());
+        $factory($this->container->reveal());
     }
 
     public function testFactoryRaisesTypeErrorForNonCallableResponseFactory()
@@ -68,7 +68,7 @@ class OAuth2MiddlewareFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->willReturn(new stdClass());
 
-        $factory = new OAuth2MiddlewareFactory();
+        $factory = new AuthorizationMiddlewareFactory();
 
         $this->expectException(TypeError::class);
         $factory($this->container->reveal());
@@ -86,7 +86,7 @@ class OAuth2MiddlewareFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->will([$this->response, 'reveal']);
 
-        $factory = new OAuth2MiddlewareFactory();
+        $factory = new AuthorizationMiddlewareFactory();
 
         $this->expectException(TypeError::class);
         $factory($this->container->reveal());
@@ -106,8 +106,8 @@ class OAuth2MiddlewareFactoryTest extends TestCase
                 return $this->response->reveal();
             });
 
-        $factory = new OAuth2MiddlewareFactory();
+        $factory = new AuthorizationMiddlewareFactory();
         $middleware = $factory($this->container->reveal());
-        $this->assertInstanceOf(OAuth2Middleware::class, $middleware);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware);
     }
 }
