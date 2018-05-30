@@ -1,0 +1,96 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+/*
+ * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
+ *
+ * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
+ *     New BSD License
+ */
+
+/*
+ * Script to generate public, private and encryption keys for thephpleague/oauth2-server.
+ *
+ * @see https://oauth2.thephpleague.com/installation/
+ */
+
+echo "\n";
+echo "This script is provided as a convenient way to generate keys for\n";
+echo "the OAuth2 server provider. You may choose instead to use an\n";
+echo "alternative method. For more information, see the install docs:\n";
+echo "https://oauth2.thephpleague.com/installation/\n\n";
+
+if (!extension_loaded('openssl')) {
+    fwrite(STDERR, 'Extension \'openssl\' is not available' . PHP_EOL);
+    exit(1);
+}
+
+// find the best dir
+if (
+    // see if there's a data dir of the parent application
+    file_exists($dataDir = realpath(__DIR__ . '/../../../../data'))
+) {
+    printf("Found a good location for keys:\n%s\n\n", $dataDir);
+} elseif (
+    // fallback to data dir of this package
+    file_exists($dataDir = dirname(__DIR__) . '/data')
+    // or, simply the parent directory
+    || $dataDir = dirname(__DIR__)
+) {
+    printf("Best available location for keys:\n%s\n", $dataDir);
+    printf("You'll likely want to move them to a better location\n\n");
+} else {
+    fwrite(STDERR, 'Unable to find a location to write the keys' . PHP_EOL);
+    exit(1);
+}
+
+if (!is_writable($dataDir)) {
+    fwrite(STDERR, 'Directory ' . $dataDir . ' is not writable' . PHP_EOL);
+    exit(1);
+}
+
+$dataDir = $dataDir . '/oauth';
+printf("We'll put them in a subdirectory:\n%s\n\n", $dataDir);
+
+if (!file_exists($dataDir)) {
+    mkdir($dataDir);
+}
+
+$filePrivateKey = $dataDir . '/private.key';
+$filePublicKey = $dataDir . '/public.key';
+$fileEncryptionKey = $dataDir . '/encryption.key';
+
+// Generate public/private keys with OpenSSL
+$config = [
+    'private_key_bits' => $bits = 2048,
+    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+];
+
+printf('Using %d bits to generate key of type RSA' . "\n\n", $bits);
+
+// Private key
+$res = openssl_pkey_new($config);
+
+if (!is_resource($res)) {
+    fwrite(STDERR, 'Failed to create private key.' . PHP_EOL);
+    fwrite(STDERR, 'Check your openssl extension settings.' . PHP_EOL);
+    exit(1);
+}
+
+openssl_pkey_export($res, $privateKey);
+file_put_contents($filePrivateKey, $privateKey);
+printf("Private key stored in:\n%s\n", $filePrivateKey);
+
+// Public key
+$publicKey = openssl_pkey_get_details($res);
+file_put_contents($filePublicKey, $publicKey['key']);
+printf("Public key stored in:\n%s\n", $filePublicKey);
+
+// Encryption key
+$encKey = base64_encode(random_bytes(32));
+file_put_contents($fileEncryptionKey, sprintf("<?php return '%s';", $encKey));
+printf("Encryption key stored in:\n%s\n", $fileEncryptionKey);
+
+echo "\n";

@@ -2,7 +2,8 @@
 
 If you successfully configured the OAuth2 server as detailed in the
 [installation](intro.md) section, you can request an access token using the
-default `/oauth` route.
+OAuth2 server route defined [before](intro.md#configure-the-oauth2-route)
+(e.g. `/oauth`).
 
 You can require an access token using one of the following scenarios:
 

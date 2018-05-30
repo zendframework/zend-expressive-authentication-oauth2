@@ -9,10 +9,10 @@
  * The expire values must be a valid DateInterval format
  * @see http://php.net/manual/en/class.dateinterval.php
  */
-return [
-    'private_key'    => __DIR__ . '/../data/private.key',
-    'public_key'     => __DIR__ . '/../data/public.key',
-    'encryption_key' => require __DIR__ . '/../data/encryption.key',
+
+$config = [
+    'private_key'    => getcwd() . '/data/private.key',
+    'public_key'     => getcwd() . '/data/public.key',
     'access_token_expire'  => 'P1D', // 1 day in DateInterval format
     'refresh_token_expire' => 'P1M', // 1 month in DateInterval format
     'auth_code_expire'     => 'PT10M', // 10 minutes in DateInterval format
@@ -36,3 +36,11 @@ return [
             => \League\OAuth2\Server\Grant\RefreshTokenGrant::class
     ],
 ];
+
+// Conditionally include the encryption_key config setting, based on presence of file.
+$encryptionKeyFile = getcwd() . '/data/encryption.key';
+if (is_readable($encryptionKeyFile)) {
+    $config['encryption_key'] = require $encryptionKeyFile;
+}
+
+return $config;
