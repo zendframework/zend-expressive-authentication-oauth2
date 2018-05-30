@@ -87,6 +87,15 @@ the `username`, and the `password`, if required. The SQL structure of this
 database is stored in the [data/oauth2.sql](https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/data/oauth2.sql)
 file.
 
+If you already have a PDO service configured, you can simply pass in the service
+name to the `pdo` key as follows:
+
+```php
+return [
+    'pdo' => 'myServiceName',
+];
+```
+
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
 database with the following command (using `sqlite3` for GNU/Linux):
 
