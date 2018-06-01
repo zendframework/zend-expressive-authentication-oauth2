@@ -41,7 +41,7 @@ class AuthorizationHandler implements RequestHandlerInterface
     public function __construct(AuthorizationServer $server, callable $responseFactory)
     {
         $this->server = $server;
-        $this->responseFactory = function() use ($responseFactory): ResponseInterface {
+        $this->responseFactory = function () use ($responseFactory): ResponseInterface {
             return $responseFactory();
         };
     }

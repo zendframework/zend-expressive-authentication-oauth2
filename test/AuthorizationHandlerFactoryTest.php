@@ -54,7 +54,8 @@ class AuthorizationHandlerFactoryTest extends TestCase
             ->willReturn(new stdClass());
         $this->container
             ->get(ResponseInterface::class)
-            ->willReturn(function() {});
+            ->willReturn(function () {
+            });
 
         $factory = new AuthorizationHandlerFactory();
 
