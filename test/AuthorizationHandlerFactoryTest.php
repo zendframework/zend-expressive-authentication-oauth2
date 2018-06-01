@@ -17,13 +17,13 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use TypeError;
-use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddleware;
-use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddlewareFactory;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationHandler;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationHandlerFactory;
 
 /**
  * @covers \Zend\Expressive\Authentication\OAuth2\AuthorizationMiddlewareFactory
  */
-class AuthorizationMiddlewareFactoryTest extends TestCase
+class AuthorizationHandlerFactoryTest extends TestCase
 {
     /** @var AuthorizationServer|ObjectProphecy */
     private $authServer;
@@ -43,8 +43,8 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
 
     public function testConstructor()
     {
-        $factory = new AuthorizationMiddlewareFactory();
-        $this->assertInstanceOf(AuthorizationMiddlewareFactory::class, $factory);
+        $factory = new AuthorizationHandlerFactory();
+        $this->assertInstanceOf(AuthorizationHandlerFactory::class, $factory);
     }
 
     public function testRaisesTypeErrorForInvalidAuthorizationServer()
@@ -56,7 +56,7 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->willReturn(function() {});
 
-        $factory = new AuthorizationMiddlewareFactory();
+        $factory = new AuthorizationHandlerFactory();
 
         $this->expectException(TypeError::class);
         $factory($this->container->reveal());
@@ -71,7 +71,7 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->willReturn(new stdClass());
 
-        $factory = new AuthorizationMiddlewareFactory();
+        $factory = new AuthorizationHandlerFactory();
 
         $this->expectException(TypeError::class);
         $factory($this->container->reveal());
@@ -86,7 +86,7 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->will([$this->response, 'reveal']);
 
-        $factory = new AuthorizationMiddlewareFactory();
+        $factory = new AuthorizationHandlerFactory();
 
         $this->expectException(TypeError::class);
         $factory($this->container->reveal());
@@ -103,8 +103,8 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
                 return $this->response->reveal();
             });
 
-        $factory = new AuthorizationMiddlewareFactory();
+        $factory = new AuthorizationHandlerFactory();
         $middleware = $factory($this->container->reveal());
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware);
+        $this->assertInstanceOf(AuthorizationHandler::class, $middleware);
     }
 }

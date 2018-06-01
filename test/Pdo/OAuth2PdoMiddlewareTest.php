@@ -17,14 +17,19 @@ use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
+use Zend\Expressive\Authentication\OAuth2\AuthorizationHandler;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationMiddleware;
+use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AuthCodeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ClientRepository;
@@ -32,7 +37,8 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
-
+use Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler;
+use function assert;
 use function bin2hex;
 use function explode;
 use function file_exists;
@@ -45,6 +51,11 @@ use function sprintf;
 use function strtolower;
 use function unlink;
 
+/**
+ * Integration test for the authorization flows with PDO
+ *
+ * @coversNothing
+ */
 class OAuth2PdoMiddlewareTest extends TestCase
 {
     const DB_FILE        = __DIR__ . '/TestAsset/test_oauth2.sq3';
@@ -59,7 +70,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
     /** @var AuthCodeRepository */
     private $authCodeRepository;
 
-    /** @var AuthServer */
+    /** @var AuthorizationServer */
     private $authServer;
 
     /** @var ClientRepository */
@@ -139,15 +150,6 @@ class OAuth2PdoMiddlewareTest extends TestCase
         };
     }
 
-    public function testConstructor()
-    {
-        $authMiddleware = new AuthorizationMiddleware(
-            $this->authServer,
-            $this->responseFactory
-        );
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $authMiddleware);
-    }
-
     /**
      * Test the Client Credential Grant
      *
@@ -176,12 +178,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
+        $handler = new TokenEndpointHandler(
             $this->authServer,
             $this->responseFactory
         );
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $handler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -224,12 +226,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
+        $handler = new TokenEndpointHandler(
             $this->authServer,
             $this->responseFactory
         );
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $handler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -240,7 +242,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
     }
 
     /**
-     * Test the Authorization Code Grant (Part One)
+     * Test the Authorization Code Grant flow (Part One)
      *
      * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/
      */
@@ -276,12 +278,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
-            $this->authServer,
-            $this->responseFactory
-        );
+        // mocks the authorization endpoint pipe
+        $authMiddleware = new AuthorizationMiddleware($this->authServer, $this->responseFactory);
+        $authHandler = new AuthorizationHandler($this->authServer, $this->responseFactory);
+        $consumerHandler = $this->buildConsumerAuthMiddleware($authHandler);
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $authMiddleware->process($request, $consumerHandler);
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -332,12 +334,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
+        $handler = new TokenEndpointHandler(
             $this->authServer,
             $this->responseFactory
         );
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $handler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -379,12 +381,11 @@ class OAuth2PdoMiddlewareTest extends TestCase
             $params
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
-            $this->authServer,
-            $this->responseFactory
-        );
+        $authMiddleware = new AuthorizationMiddleware($this->authServer, $this->responseFactory);
+        $authHandler = new AuthorizationHandler($this->authServer, $this->responseFactory);
+        $consumerHandler = $this->buildConsumerAuthMiddleware($authHandler);
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $authMiddleware->process($request, $consumerHandler);
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->hasHeader('Location'));
@@ -432,12 +433,12 @@ class OAuth2PdoMiddlewareTest extends TestCase
             [ 'Content-Type' => 'application/x-www-form-urlencoded' ]
         );
 
-        $authMiddleware = new AuthorizationMiddleware(
+        $handler = new TokenEndpointHandler(
             $this->authServer,
             $this->responseFactory
         );
 
-        $response = $authMiddleware->process($request, $this->handler->reveal());
+        $response = $handler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
@@ -445,6 +446,35 @@ class OAuth2PdoMiddlewareTest extends TestCase
         $this->assertInternalType("int", $content->expires_in);
         $this->assertNotEmpty($content->access_token);
         $this->assertNotEmpty($content->refresh_token);
+    }
+
+    private function buildConsumerAuthMiddleware(AuthorizationHandler $authHandler)
+    {
+        return new class($authHandler) implements RequestHandlerInterface
+        {
+            /**
+             * @var AuthorizationHandler
+             */
+            private $handler;
+
+            public function __construct(AuthorizationHandler $handler)
+            {
+                $this->handler = $handler;
+            }
+
+            public function handle(
+                ServerRequestInterface $request
+            ): ResponseInterface {
+                $authRequest = $request->getAttribute(AuthorizationRequest::class);
+                assert($authRequest instanceof AuthorizationRequest);
+                $authRequest->setUser(new UserEntity('test'));
+                $authRequest->setAuthorizationApproved(true);
+
+                return $this->handler->handle(
+                    $request->withAttribute(AuthorizationRequest::class, $authRequest)
+                );
+            }
+        };
     }
 
     /**
