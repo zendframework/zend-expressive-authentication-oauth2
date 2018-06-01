@@ -13,16 +13,13 @@ namespace Zend\Expressive\Authentication\OAuth2;
 use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use function sprintf;
 
-class AuthorizationMiddlewareFactory
+final class AuthorizationMiddlewareFactory
 {
-    use AuthFlowFactoryTrait;
-
     public function __invoke(ContainerInterface $container) : AuthorizationMiddleware
     {
         return new AuthorizationMiddleware(
-            $this->getAuthorizationServer($container),
+            $container->get(AuthorizationServer::class),
             $container->get(ResponseInterface::class)
         );
     }

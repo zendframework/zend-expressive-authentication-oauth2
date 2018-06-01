@@ -10,17 +10,16 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2;
 
+use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class AuthorizationHanderFactory
+final class AuthorizationHandlerFactory
 {
-    use AuthFlowFactoryTrait;
-
     public function __invoke(ContainerInterface $container)
     {
         return new AuthorizationHandler(
-            $this->getAuthorizationServer($container),
+            $container->get(AuthorizationServer::class),
             $container->get(ResponseInterface::class)
         );
     }
