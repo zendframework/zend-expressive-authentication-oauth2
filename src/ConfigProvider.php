@@ -63,6 +63,8 @@ class ConfigProvider
             ],
             'factories' => [
                 AuthorizationMiddleware::class => AuthorizationMiddlewareFactory::class,
+                AuthorizationHandler::class => AuthorizationServerFactory::class,
+                TokenEndpointHandler::class => TokenEndpointHandlerFactory::class,
                 OAuth2Adapter::class => OAuth2AdapterFactory::class,
                 AuthorizationServer::class => AuthorizationServerFactory::class,
                 ResourceServer::class => ResourceServerFactory::class,
