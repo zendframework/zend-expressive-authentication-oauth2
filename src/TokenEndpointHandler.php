@@ -67,10 +67,6 @@ class TokenEndpointHandler implements RequestHandlerInterface
     {
         $response = $this->createResponse();
 
-        if (strtoupper($request->getMethod()) !== 'POST') {
-            return $response->withStatus(501); // Method not implemented
-        }
-
         try {
             return $this->server->respondToAccessTokenRequest($request, $response);
         } catch (OAuthServerException $exception) {
