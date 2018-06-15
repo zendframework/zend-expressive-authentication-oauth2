@@ -1,7 +1,7 @@
 CREATE TABLE oauth_auth_codes (
     id VARCHAR(100),
-    user_id INTEGER,
-    client_id INTEGER,
+    user_id VARCHAR(40),
+    client_id VARCHAR(40),
     scopes TEXT NULL,
     revoked BOOLEAN,
     expires_at TIMESTAMP NULL,
