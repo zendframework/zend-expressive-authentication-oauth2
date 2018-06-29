@@ -25,6 +25,11 @@ use function time;
 
 class AccessTokenRepositoryTest extends TestCase
 {
+    /**
+     * @var AccessTokenRepository
+     */
+    private $repo;
+
     public function setUp()
     {
         $this->pdo = $this->prophesize(PdoService::class);
@@ -124,5 +129,19 @@ class AccessTokenRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertTrue($this->repo->isAccessTokenRevoked('token_id'));
+    }
+
+    public function testRevokeAccessToken()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':tokenId', 'token_id')->shouldBeCalled();
+        $statement->bindValue(':revoked', 1)->shouldBeCalled();
+        $statement->execute()->willReturn(null)->shouldBeCalled();
+
+        $this->pdo
+            ->prepare(Argument::containingString('UPDATE oauth_access_tokens SET revoked=:revoked'))
+            ->will([$statement, 'reveal']);
+
+        $this->repo->revokeAccessToken('token_id');
     }
 }
