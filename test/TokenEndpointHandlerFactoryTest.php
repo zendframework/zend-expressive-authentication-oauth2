@@ -47,7 +47,8 @@ class TokenEndpointHandlerFactoryTest extends TestCase
     public function testCreatesTokenEndpointHandler()
     {
         $server = $this->prophesize(AuthorizationServer::class);
-        $responseFactory = function() {};
+        $responseFactory = function () {
+        };
         $container = $this->prophesize(ContainerInterface::class);
 
         $container->get(AuthorizationServer::class)

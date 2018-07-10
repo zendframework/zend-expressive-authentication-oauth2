@@ -26,7 +26,7 @@ class TokenEndpointHandlerTest extends TestCase
 {
     private function createResponseFactory(ResponseInterface $response = null): callable
     {
-        return function() use ($response): ResponseInterface {
+        return function () use ($response): ResponseInterface {
             return $response ?? $this->prophesize(ResponseInterface::class)->reveal();
         };
     }
@@ -78,6 +78,5 @@ class TokenEndpointHandlerTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $subject->handle($request->reveal());
-
     }
 }

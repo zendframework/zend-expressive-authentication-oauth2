@@ -39,7 +39,7 @@ class AuthorizationHandlerTest extends TestCase
             ->shouldBeCalled()
             ->willReturn($expectedResponse);
 
-        $subject = new AuthorizationHandler($server->reveal(), function() use ($expectedResponse): ResponseInterface {
+        $subject = new AuthorizationHandler($server->reveal(), function () use ($expectedResponse): ResponseInterface {
             return $expectedResponse;
         });
 
@@ -58,7 +58,7 @@ class AuthorizationHandlerTest extends TestCase
         $server->completeAuthorizationRequest(Argument::any())
             ->shouldNotBeCalled();
 
-        $subject = new AuthorizationHandler($server->reveal(), function() {
+        $subject = new AuthorizationHandler($server->reveal(), function () {
             return new stdClass();
         });
 
