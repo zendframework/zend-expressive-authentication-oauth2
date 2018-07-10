@@ -4,6 +4,7 @@ pages:
     - index.md
     - Introduction: intro.md
     - Usage: usage.md
+    - "Authorization server": authorization-server.md
     - Grant:
         - "Client credentials": grant/client_credentials.md
         - "Password": grant/password.md
