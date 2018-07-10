@@ -21,7 +21,7 @@ use Zend\Expressive\Authentication\OAuth2\AuthorizationHandler;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationHandlerFactory;
 
 /**
- * @covers \Zend\Expressive\Authentication\OAuth2\AuthorizationMiddlewareFactory
+ * @covers \Zend\Expressive\Authentication\OAuth2\AuthorizationHandlerFactory
  */
 class AuthorizationHandlerFactoryTest extends TestCase
 {
