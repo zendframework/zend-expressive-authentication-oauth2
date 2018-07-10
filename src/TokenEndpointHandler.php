@@ -71,9 +71,6 @@ class TokenEndpointHandler implements RequestHandlerInterface
             return $this->server->respondToAccessTokenRequest($request, $response);
         } catch (OAuthServerException $exception) {
             return $exception->generateHttpResponse($response);
-        } catch (\Exception $exception) {
-            return (new OAuthServerException($exception->getMessage(), 0, 'unknown_error', 500))
-                ->generateHttpResponse($response);
         }
     }
 }
