@@ -307,6 +307,12 @@ the parameters to access the OAuth2 database. These parameters are the <code>dsn
 the <code>username</code>, and the <code>password</code>, if required. The SQL structure of this
 database is stored in the <a href="https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/data/oauth2.sql">data/oauth2.sql</a>
 file.</p>
+<p>If you already have a PDO service configured, you can simply pass in the service
+name to the <code>pdo</code> key as follows:</p>
+<pre class="codehilite"><code class="language-php">return [
+    'pdo' =&gt; 'myServiceName',
+];</code></pre>
+
 <p>The <code>grants</code> array is for enabling/disabling grants.   By default all the supported
 grants are configured to be available.  If you would like to disable any of the 
 supplied grants, simply change the value for the grant to NULL.  Additionally,
