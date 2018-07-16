@@ -23,9 +23,9 @@ class AbstractRepository
     /**
      * Constructor
      *
-     * @param PdoService $pdo
+     * @param \PDO $pdo
      */
-    public function __construct(PdoService $pdo)
+    public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }

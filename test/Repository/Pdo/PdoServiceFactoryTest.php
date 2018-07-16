@@ -73,4 +73,39 @@ class PdoServiceFactoryTest extends TestCase
 
         $this->assertInstanceOf(PdoService::class, $pdo);
     }
+
+    public function testValidServiceInConfigurationReturnsPdoService()
+    {
+        $mockPdo = $this->prophesize(\PDO::class);
+
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn([
+            'authentication' => [
+                'pdo' => 'My\Pdo\Service',
+            ],
+        ]);
+
+        $this->container->has('My\Pdo\Service')->willReturn(true);
+        $this->container->get('My\Pdo\Service')->willReturn($mockPdo->reveal());
+
+        $pdo = ($this->factory)($this->container->reveal());
+
+        $this->assertInstanceOf(\PDO::class, $pdo);
+    }
+
+    public function testRaisesExceptionIfPdoServiceIsInvalid()
+    {
+        $this->container->has('config')->willReturn(true);
+        $this->container->get('config')->willReturn([
+            'authentication' => [
+                'pdo' => 'My\Invalid\Service',
+            ],
+        ]);
+
+        $this->container->has('My\Invalid\Service')->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
+
+        ($this->factory)($this->container->reveal());
+    }
 }
