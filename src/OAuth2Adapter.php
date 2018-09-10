@@ -40,7 +40,11 @@ class OAuth2Adapter implements AuthenticationInterface
         $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
             return $responseFactory();
         };
-        $this->userFactory = function (string $identity, array $roles = [], array $details = []) use ($userFactory) : UserInterface {
+        $this->userFactory = function (
+            string $identity,
+            array $roles = [],
+            array $details = []
+        ) use ($userFactory) : UserInterface {
             return $userFactory($identity, $roles, $details);
         };
     }
