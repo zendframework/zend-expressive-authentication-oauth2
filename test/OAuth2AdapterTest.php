@@ -17,6 +17,7 @@ use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
+use Zend\Expressive\Authentication\DefaultUser;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Adapter;
 use Zend\Expressive\Authentication\UserInterface;
 
@@ -31,6 +32,9 @@ class OAuth2AdapterTest extends TestCase
     /** @var callable */
     private $responseFactory;
 
+    /** @var callable */
+    private $userFactory;
+
     public function setUp()
     {
         $this->resourceServer  = $this->prophesize(ResourceServer::class);
@@ -38,13 +42,17 @@ class OAuth2AdapterTest extends TestCase
         $this->responseFactory = function () {
             return $this->response->reveal();
         };
+        $this->userFactory = function (string $identity, array $roles = [], array $details = []) {
+            return new DefaultUser($identity, $roles, $details);
+        };
     }
 
     public function testConstructor()
     {
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
         $this->assertInstanceOf(OAuth2Adapter::class, $adapter);
         $this->assertInstanceOf(AuthenticationInterface::class, $adapter);
@@ -62,7 +70,8 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -79,7 +88,8 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -96,14 +106,16 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $user = $adapter->authenticate($request->reveal());
 
         $this->assertInstanceOf(UserInterface::class, $user);
         $this->assertSame('some-identifier', $user->getIdentity());
-        $this->assertSame([], $user->getUserRoles());
+        $this->assertSame([], $user->getRoles());
+        $this->assertSame([], $user->getDetails());
     }
 
     public function testUnauthorizedResponseProducesAResponseWithAWwwAuthenticateHeader()
@@ -119,7 +131,8 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertSame(
