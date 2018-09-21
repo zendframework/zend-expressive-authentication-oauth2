@@ -14,25 +14,12 @@ use League\OAuth2\Server\AuthorizationServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-use function sprintf;
-
-class OAuth2MiddlewareFactory
+final class AuthorizationMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : OAuth2Middleware
+    public function __invoke(ContainerInterface $container) : AuthorizationMiddleware
     {
-        $authServer = $container->has(AuthorizationServer::class)
-            ? $container->get(AuthorizationServer::class)
-            : null;
-
-        if (null === $authServer) {
-            throw new Exception\InvalidConfigException(sprintf(
-                "The %s service is missing",
-                AuthorizationServer::class
-            ));
-        }
-
-        return new OAuth2Middleware(
-            $authServer,
+        return new AuthorizationMiddleware(
+            $container->get(AuthorizationServer::class),
             $container->get(ResponseInterface::class)
         );
     }

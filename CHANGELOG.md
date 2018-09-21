@@ -6,11 +6,15 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Adds `TokenEndpointHandler`,
+  `AuthorizationMiddleware` and `AuthorizationHandler` in the `Zend\Expressive\Authentication\OAuth2` namespace
+  to [implement an authorization server](docs/book/authorization-server.md).
 
 ### Changed
 
-- Nothing.
+- [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Splits 
+  `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware` into individual implementations that allow
+  [OAuth RFC-6749](https://tools.ietf.org/html/rfc6749) compliant authorization server implementations.
 
 ### Deprecated
 
@@ -18,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Removes
+  `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware`.
 
 ### Fixed
 
