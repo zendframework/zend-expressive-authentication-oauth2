@@ -94,7 +94,7 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
         $sth = $this->pdo->prepare(
             'UPDATE oauth_access_tokens SET revoked=:revoked WHERE id = :tokenId'
         );
-        $sth->bindValue(':revoked', 0);
+        $sth->bindValue(':revoked', 1);
         $sth->bindParam(':tokenId', $tokenId);
 
         $sth->execute();
