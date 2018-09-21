@@ -27,7 +27,7 @@ class AbstractRepositoryTest extends TestCase
         $this->assertInstanceOf(AbstractRepository::class, $abstract);
     }
 
-    public function testScopesToString()
+    public function testScopesToStringWithEmptyArray()
     {
         $proxy = new class($this->pdo->reveal()) extends AbstractRepository {
             public function scopesToString(array $scopes): string
