@@ -31,7 +31,7 @@ class AuthCodeRepositoryTest extends TestCase
         $this->repo = new AuthCodeRepository($this->pdo->reveal());
     }
 
-    public function testPeristNewAuthCodeRaisesExceptionWhenStatementExecutionFails()
+    public function testPersistNewAuthCodeRaisesExceptionWhenStatementExecutionFails()
     {
         $client = $this->prophesize(ClientEntityInterface::class);
         $client->getIdentifier()->willReturn('client_id');
@@ -80,5 +80,39 @@ class AuthCodeRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertFalse($this->repo->isAuthCodeRevoked('code_identifier'));
+    }
+
+    public function testIsAuthCodeRevokedReturnsTrue()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':codeId', 'code_identifier')->shouldBeCalled();
+        $statement->execute()->willReturn(true);
+        $statement->fetch()->willReturn(['revoked' => true]);
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT revoked FROM oauth_auth_codes'))
+            ->will([$statement, 'reveal']);
+
+        $this->assertTrue($this->repo->isAuthCodeRevoked('code_identifier'));
+    }
+
+    public function testNewAuthCode()
+    {
+        $result = $this->repo->getNewAuthCode();
+        $this->assertInstanceOf(AuthCodeEntity::class, $result);
+    }
+
+    public function testRevokeAuthCode()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':codeId', 'code_identifier')->shouldBeCalled();
+        $statement->bindValue(':revoked', 1)->shouldBeCalled();
+        $statement->execute()->willReturn(true);
+
+        $this->pdo
+            ->prepare(Argument::containingString('UPDATE oauth_auth_codes SET revoked=:revoked WHERE id = :codeId'))
+            ->will([$statement, 'reveal']);
+
+        $this->repo->revokeAuthCode('code_identifier');
     }
 }

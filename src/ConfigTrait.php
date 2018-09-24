@@ -90,9 +90,14 @@ trait ConfigTrait
     {
         $config = $container->get('config')['authentication'] ?? [];
 
-        if (empty($config['grants']) || ! is_array($config['grants'])) {
+        if (empty($config['grants'])) {
             throw new InvalidConfigException(
                 'The grant value is missing in config authentication'
+            );
+        }
+        if (! is_array($config['grants'])) {
+            throw new InvalidConfigException(
+                'The grant must be an array value'
             );
         }
 

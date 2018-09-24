@@ -18,7 +18,7 @@ class RevokableTraitTest extends TestCase
     public function testRevoked()
     {
         $mock = $this->getMockForTrait(RevokableTrait::class);
-        
+
         $mock->setRevoked(true);
         $this->assertTrue($mock->isRevoked());
         $mock->setRevoked(false);

@@ -17,6 +17,7 @@ use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationExcep
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepository;
 
@@ -72,5 +73,42 @@ class RefreshTokenRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertFalse($this->repo->isRefreshTokenRevoked('token_id'));
+    }
+
+    public function testIsRefreshTokenRevokedReturnsTrue()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':tokenId', 'token_id')->shouldBeCalled();
+        $statement->execute()->willReturn(true)->shouldBeCalled();
+        $statement->fetch()->willReturn(['revoked' => true]);
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT revoked FROM oauth_refresh_tokens'))
+            ->will([$statement, 'reveal']);
+
+        $this->assertTrue($this->repo->isRefreshTokenRevoked('token_id'));
+    }
+
+    public function testGetNewRefreshToken()
+    {
+        $result = $this->repo->getNewRefreshToken();
+        $this->assertInstanceOf(RefreshTokenEntity::class, $result);
+    }
+
+    public function testRevokeRefreshToken()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':tokenId', 'token_id')->shouldBeCalled();
+        $statement->bindValue(':revoked', 1)->shouldBeCalled();
+        $statement->execute()->willReturn(true)->shouldBeCalled();
+        $statement->fetch()->shouldNotBeCalled();
+
+        $this->pdo
+            ->prepare(Argument::containingString(
+                'UPDATE oauth_refresh_tokens SET revoked=:revoked WHERE id = :tokenId'
+            ))
+            ->will([$statement, 'reveal']);
+
+        $this->repo->revokeRefreshToken('token_id');
     }
 }

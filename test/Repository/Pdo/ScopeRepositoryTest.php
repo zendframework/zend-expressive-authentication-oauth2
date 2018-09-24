@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Repository\Pdo;
 
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Zend\Expressive\Authentication\OAuth2\Entity\ScopeEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepository;
 
@@ -50,5 +52,30 @@ class ScopeRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertNull($this->repo->getScopeEntityByIdentifier('id'));
+    }
+
+    public function testGetScopeEntityByIndentifierReturnsScopes()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':identifier', 'id')->shouldBeCalled();
+        $statement->execute()->shouldBeCalled();
+        $statement->fetch()->willReturn([
+            'id' => 'foo'
+        ])->shouldBeCalled();
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT id FROM oauth_scopes'))
+            ->will([$statement, 'reveal']);
+
+        $scope = $this->repo->getScopeEntityByIdentifier('id');
+        $this->assertInstanceOf(ScopeEntity::class, $scope);
+        $this->assertEquals('foo', $scope->getIdentifier());
+    }
+
+    public function testFinalizeScopesWithEmptyScopes()
+    {
+        $clientEntity = $this->prophesize(ClientEntityInterface::class);
+        $scopes = $this->repo->finalizeScopes([], 'foo', $clientEntity->reveal());
+        $this->assertEquals([], $scopes);
     }
 }
