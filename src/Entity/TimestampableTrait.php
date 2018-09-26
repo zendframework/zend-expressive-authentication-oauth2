@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Entity;
 
-use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 
 use function method_exists;
@@ -27,22 +28,22 @@ trait TimestampableTrait
      */
     protected $updatedAt;
 
-    public function getCreatedAt() : DateTime
+    public function getCreatedAt() : DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt) : void
+    public function setCreatedAt(DateTimeInterface $createdAt) : void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt() : DateTime
+    public function getUpdatedAt() : DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt) : void
+    public function setUpdatedAt(DateTimeInterface $updatedAt) : void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -54,9 +55,10 @@ trait TimestampableTrait
     public function timestampOnCreate() : void
     {
         if (! $this->createdAt) {
-            $this->createdAt = new DateTime();
             if (method_exists($this, 'getTimezone')) {
-                $this->createdAt->setTimezone(new DateTimeZone($this->getTimezone()->getValue()));
+                $this->createdAt = new DateTimeImmutable('now', new DateTimeZone($this->getTimezone()->getValue()));
+            } else {
+                $this->createdAt = new DateTimeImmutable();
             }
         }
     }

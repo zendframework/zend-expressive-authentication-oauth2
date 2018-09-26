@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
@@ -14,6 +14,7 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepository;
 
@@ -97,5 +98,30 @@ class UserRepositoryTest extends TestCase
                 $client->reveal()
             )
         );
+    }
+
+    public function testGetUserEntityByCredentialsReturnsEntity()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':username', 'username')->shouldBeCalled();
+        $statement->execute()->willReturn(true);
+        $statement->fetch()->willReturn([
+            'password' => password_hash('password', PASSWORD_DEFAULT)
+        ]);
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT password FROM oauth_users WHERE username = :username'))
+            ->will([$statement, 'reveal']);
+
+        $client = $this->prophesize(ClientEntityInterface::class);
+
+        $entity = $this->repo->getUserEntityByUserCredentials(
+            'username',
+            'password',
+            'auth',
+            $client->reveal()
+        );
+        $this->assertInstanceOf(UserEntity::class, $entity);
+        $this->assertEquals('username', $entity->getIdentifier());
     }
 }

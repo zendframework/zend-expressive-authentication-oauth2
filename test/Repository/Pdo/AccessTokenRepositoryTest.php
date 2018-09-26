@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
+ * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
@@ -14,10 +14,12 @@ use DateTime;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AccessTokenRepository;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 
@@ -143,5 +145,27 @@ class AccessTokenRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->repo->revokeAccessToken('token_id');
+    }
+
+    public function testGetNewToken()
+    {
+        $client = $this->prophesize(ClientEntityInterface::class)->reveal();
+        $accessToken = $this->repo->getNewToken($client, []);
+        $this->assertInstanceOf(AccessTokenEntity::class, $accessToken);
+        $this->assertEquals($client, $accessToken->getClient());
+        $this->assertEquals([], $accessToken->getScopes());
+    }
+
+    public function testGetNewTokenWithScopeAndIndentifier()
+    {
+        $client = $this->prophesize(ClientEntityInterface::class)->reveal();
+        $scopes = [ $this->prophesize(ScopeEntityInterface::class)->reveal() ];
+        $userIdentifier = 'foo';
+
+        $accessToken = $this->repo->getNewToken($client, $scopes, $userIdentifier);
+        $this->assertInstanceOf(AccessTokenEntity::class, $accessToken);
+        $this->assertEquals($client, $accessToken->getClient());
+        $this->assertEquals($scopes, $accessToken->getScopes());
+        $this->assertEquals($userIdentifier, $accessToken->getUserIdentifier());
     }
 }

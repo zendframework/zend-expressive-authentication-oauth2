@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-expressive-authentication-oauth2 for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (https://www.zend.com)
+ * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
  * @license   https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/LICENSE.md
  *     New BSD License
  */
@@ -90,9 +90,14 @@ trait ConfigTrait
     {
         $config = $container->get('config')['authentication'] ?? [];
 
-        if (empty($config['grants']) || ! is_array($config['grants'])) {
+        if (empty($config['grants'])) {
             throw new InvalidConfigException(
-                'The grant value is missing in config authentication'
+                'The grants value is missing in config authentication and must be an array'
+            );
+        }
+        if (! is_array($config['grants'])) {
+            throw new InvalidConfigException(
+                'The grants must be an array value'
             );
         }
 
