@@ -15,13 +15,20 @@ use Zend\Expressive\Authentication\OAuth2\Entity\RevokableTrait;
 
 class RevokableTraitTest extends TestCase
 {
-    public function testRevoked()
+    public function setUp()
     {
-        $mock = $this->getMockForTrait(RevokableTrait::class);
+        $this->trait = $this->getMockForTrait(RevokableTrait::class);
+    }
 
-        $mock->setRevoked(true);
-        $this->assertTrue($mock->isRevoked());
-        $mock->setRevoked(false);
-        $this->assertFalse($mock->isRevoked());
+    public function testSetRevokedToTrue()
+    {
+        $this->trait->setRevoked(true);
+        $this->assertTrue($this->trait->isRevoked());
+    }
+
+    public function testSetREvokedToFalse()
+    {
+        $this->trait->setRevoked(false);
+        $this->assertFalse($this->trait->isRevoked());
     }
 }

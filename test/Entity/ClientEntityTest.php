@@ -20,7 +20,7 @@ class ClientEntityTest extends TestCase
     {
         $this->entity = new ClientEntity('foo', 'bar', 'http://localhost');
     }
-    public function testConstructor()
+    public function testImplementsAuthCodeEntityInterface()
     {
         $this->assertInstanceOf(ClientEntityInterface::class, $this->entity);
     }

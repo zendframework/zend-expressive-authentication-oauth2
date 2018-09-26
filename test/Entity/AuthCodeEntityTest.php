@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\AuthCodeEntity;
 
 class AuthCodeEntityTest extends TestCase
 {
-    public function testConstructor()
+    public function testImplementsInstanceAuthCodeEntityInterface()
     {
         $entity = new AuthCodeEntity();
         $this->assertInstanceOf(AuthCodeEntityInterface::class, $entity);

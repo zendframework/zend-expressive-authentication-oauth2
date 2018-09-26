@@ -92,12 +92,12 @@ trait ConfigTrait
 
         if (empty($config['grants'])) {
             throw new InvalidConfigException(
-                'The grant value is missing in config authentication'
+                'The grants value is missing in config authentication and must be an array'
             );
         }
         if (! is_array($config['grants'])) {
             throw new InvalidConfigException(
-                'The grant must be an array value'
+                'The grants must be an array value'
             );
         }
 

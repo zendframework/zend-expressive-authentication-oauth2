@@ -24,14 +24,18 @@ class UserEntityTest extends TestCase
     /**
      * @expectedException ArgumentCountError
      */
-    public function testConstructorWithoutParam()
+    public function testConstructorWithoutParamWillResultInAnException()
     {
         $entity = new UserEntity();
     }
 
-    public function testConstructor()
+    public function testImplementsUserEntityInterface()
     {
         $this->assertInstanceOf(UserEntityInterface::class, $this->entity);
+    }
+
+    public function testGetIdentifier()
+    {
         $this->assertEquals('foo', $this->entity->getIdentifier());
     }
 }

@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\RefreshTokenEntity;
 
 class RefreshTokenEntityTest extends TestCase
 {
-    public function testConstructor()
+    public function testImplementsRefreshTokenEntityInterface()
     {
         $entity = new RefreshTokenEntity();
         $this->assertInstanceOf(RefreshTokenEntityInterface::class, $entity);

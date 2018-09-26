@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Zend\Expressive\Authentication\OAuth2\Entity\TimestampableTrait;
 
@@ -23,14 +23,14 @@ class TimestampableTraitTest extends TestCase
 
     public function testCreatedAt()
     {
-        $now = new DateTime();
+        $now = new DateTimeImmutable();
         $this->trait->setCreatedAt($now);
         $this->assertEquals($now, $this->trait->getCreatedAt());
     }
 
     public function testUpdatedAt()
     {
-        $now = new DateTime();
+        $now = new DateTimeImmutable();
         $this->trait->setUpdatedAt($now);
         $this->assertEquals($now, $this->trait->getUpdatedAt());
     }

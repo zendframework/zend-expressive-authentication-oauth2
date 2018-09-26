@@ -21,7 +21,7 @@ class ScopeEntityTest extends TestCase
         $this->entity = new ScopeEntity();
     }
 
-    public function testConstructor()
+    public function testImplementsScopeEntityInterface()
     {
         $this->assertInstanceOf(ScopeEntityInterface::class, $this->entity);
     }

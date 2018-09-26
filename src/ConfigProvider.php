@@ -31,6 +31,9 @@ use Zend\Expressive\Authentication\OAuth2\Grant\PasswordGrantFactory;
 use Zend\Expressive\Authentication\OAuth2\Grant\RefreshTokenGrantFactory;
 use Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ConfigProvider
 {
     /**

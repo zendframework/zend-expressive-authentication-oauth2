@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
 
 class AccessTokenEntityTest extends TestCase
 {
-    public function testConstructor()
+    public function testImplementsInstanceAccessTokenEntityInterface()
     {
         $entity = new AccessTokenEntity();
         $this->assertInstanceOf(AccessTokenEntityInterface::class, $entity);
