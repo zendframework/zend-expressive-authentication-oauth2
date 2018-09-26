@@ -40,16 +40,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetUserRepositoryWithoutService()
     {
-        $this->container->has(UserRepositoryInterface::class)
+        $this->container
+            ->has(UserRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getUserRepository', $this->container->reveal());
     }
 
     public function testGetUserRepository()
     {
-        $this->container->has(UserRepositoryInterface::class)
+        $this->container
+            ->has(UserRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(UserRepositoryInterface::class)
+        $this->container
+            ->get(UserRepositoryInterface::class)
             ->willReturn($this->prophesize(UserRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getUserRepository', $this->container->reveal());
@@ -61,16 +64,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetScopeRepositoryWithoutService()
     {
-        $this->container->has(ScopeRepositoryInterface::class)
+        $this->container
+            ->has(ScopeRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getScopeRepository', $this->container->reveal());
     }
 
     public function testGetScopeRepository()
     {
-        $this->container->has(ScopeRepositoryInterface::class)
+        $this->container
+            ->has(ScopeRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(ScopeRepositoryInterface::class)
+        $this->container
+            ->get(ScopeRepositoryInterface::class)
             ->willReturn($this->prophesize(ScopeRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getScopeRepository', $this->container->reveal());
@@ -82,16 +88,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetAccessTokenRepositoryWithoutService()
     {
-        $this->container->has(AccessTokenRepositoryInterface::class)
+        $this->container
+            ->has(AccessTokenRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getAccessTokenRepository', $this->container->reveal());
     }
 
     public function testGetAccessTokenRepository()
     {
-        $this->container->has(AccessTokenRepositoryInterface::class)
+        $this->container
+            ->has(AccessTokenRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(AccessTokenRepositoryInterface::class)
+        $this->container
+            ->get(AccessTokenRepositoryInterface::class)
             ->willReturn($this->prophesize(AccessTokenRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getAccessTokenRepository', $this->container->reveal());
@@ -103,16 +112,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetClientRepositoryWithoutService()
     {
-        $this->container->has(ClientRepositoryInterface::class)
+        $this->container
+            ->has(ClientRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getClientRepository', $this->container->reveal());
     }
 
     public function testGetClientRepository()
     {
-        $this->container->has(ClientRepositoryInterface::class)
+        $this->container
+            ->has(ClientRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(ClientRepositoryInterface::class)
+        $this->container
+            ->get(ClientRepositoryInterface::class)
             ->willReturn($this->prophesize(ClientRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getClientRepository', $this->container->reveal());
@@ -124,16 +136,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetRefreshTokenRepositoryWithoutService()
     {
-        $this->container->has(RefreshTokenRepositoryInterface::class)
+        $this->container
+            ->has(RefreshTokenRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getRefreshTokenRepository', $this->container->reveal());
     }
 
     public function testGetRefreshTokenRepository()
     {
-        $this->container->has(RefreshTokenRepositoryInterface::class)
+        $this->container
+            ->has(RefreshTokenRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(RefreshTokenRepositoryInterface::class)
+        $this->container
+            ->get(RefreshTokenRepositoryInterface::class)
             ->willReturn($this->prophesize(RefreshTokenRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getRefreshTokenRepository', $this->container->reveal());
@@ -145,16 +160,19 @@ class RepositoryTraitTest extends TestCase
      */
     public function testGetAuthCodeRepositoryWithoutService()
     {
-        $this->container->has(AuthCodeRepositoryInterface::class)
+        $this->container
+            ->has(AuthCodeRepositoryInterface::class)
             ->willReturn(false);
         $this->trait->proxy('getAuthCodeRepository', $this->container->reveal());
     }
 
     public function testGetAuthCodeRepository()
     {
-        $this->container->has(AuthCodeRepositoryInterface::class)
+        $this->container
+            ->has(AuthCodeRepositoryInterface::class)
             ->willReturn(true);
-        $this->container->get(AuthCodeRepositoryInterface::class)
+        $this->container
+            ->get(AuthCodeRepositoryInterface::class)
             ->willReturn($this->prophesize(AuthCodeRepositoryInterface::class)->reveal());
 
         $result = $this->trait->proxy('getAuthCodeRepository', $this->container->reveal());

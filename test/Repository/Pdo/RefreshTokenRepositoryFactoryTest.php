@@ -31,7 +31,8 @@ class RefreshTokenRepositoryFactoryTest extends TestCase
 
     public function testFactory()
     {
-        $this->container->get(PdoService::class)
+        $this->container
+            ->get(PdoService::class)
             ->willReturn($this->pdo->reveal());
 
         $factory = (new RefreshTokenRepositoryFactory)($this->container->reveal());
