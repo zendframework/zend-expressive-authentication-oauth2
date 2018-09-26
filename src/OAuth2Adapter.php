@@ -16,12 +16,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Authentication\UserRepository\UserTrait;
 
 class OAuth2Adapter implements AuthenticationInterface
 {
-    use UserTrait;
-
     /**
      * @var ResourceServer
      */
@@ -32,11 +29,23 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     protected $responseFactory;
 
-    public function __construct(ResourceServer $resourceServer, callable $responseFactory)
+    /**
+     * @var callable
+     */
+    protected $userFactory;
+
+    public function __construct(ResourceServer $resourceServer, callable $responseFactory, callable $userFactory)
     {
         $this->resourceServer = $resourceServer;
         $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
             return $responseFactory();
+        };
+        $this->userFactory = function (
+            string $identity,
+            array $roles = [],
+            array $details = []
+        ) use ($userFactory) : UserInterface {
+            return $userFactory($identity, $roles, $details);
         };
     }
 
@@ -49,7 +58,7 @@ class OAuth2Adapter implements AuthenticationInterface
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', false);
             if (false !== $userId) {
-                return $this->generateUser($userId, []);
+                return ($this->userFactory)($userId);
             }
         } catch (OAuthServerException $exception) {
             return null;
