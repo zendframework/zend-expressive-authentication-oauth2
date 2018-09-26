@@ -20,9 +20,25 @@ class ClientEntityTest extends TestCase
     {
         $this->entity = new ClientEntity('foo', 'bar', 'http://localhost');
     }
+
     public function testImplementsAuthCodeEntityInterface()
     {
         $this->assertInstanceOf(ClientEntityInterface::class, $this->entity);
+    }
+
+    public function testConstructorSetsIdentifier()
+    {
+        $this->assertSame('foo', $this->entity->getIdentifier());
+    }
+
+    public function testConstructorSetsName()
+    {
+        $this->assertSame('bar', $this->entity->getName());
+    }
+
+    public function testConstructorSetsRedirectUri()
+    {
+        $this->assertSame(['http://localhost'], $this->entity->getRedirectUri());
     }
 
     public function testSecret()
