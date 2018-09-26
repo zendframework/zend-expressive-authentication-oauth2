@@ -26,7 +26,7 @@ class RevokableTraitTest extends TestCase
         $this->assertTrue($this->trait->isRevoked());
     }
 
-    public function testSetREvokedToFalse()
+    public function testSetRevokedToFalse()
     {
         $this->trait->setRevoked(false);
         $this->assertFalse($this->trait->isRevoked());
