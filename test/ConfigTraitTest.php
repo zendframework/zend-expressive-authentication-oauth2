@@ -37,7 +37,8 @@ class ConfigTraitTest extends TestCase
             ]
         ];
         $this->container = $this->prophesize(ContainerInterface::class);
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn($this->config);
     }
 
@@ -46,7 +47,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetPrivateKeyWhenNoConfigPresentWillResultInAnException()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getPrivateKey', $this->container->reveal());
     }
@@ -62,7 +64,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetEncryptionKeyNoConfig()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getEncryptionKey', $this->container->reveal());
     }
@@ -78,7 +81,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetAccessTokenExpireNoConfig()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getAccessTokenExpire', $this->container->reveal());
     }
@@ -94,7 +98,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetRefreshTokenExpireNoConfig()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getRefreshTokenExpire', $this->container->reveal());
     }
@@ -110,7 +115,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetAuthCodeExpireNoConfig()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getAuthCodeExpire', $this->container->reveal());
     }
@@ -126,7 +132,8 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetGrantsConfigNoConfig()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([]);
         $this->trait->proxy('getGrantsConfig', $this->container->reveal());
     }
@@ -136,11 +143,12 @@ class ConfigTraitTest extends TestCase
      */
     public function testGetGrantsConfigNoArrayValue()
     {
-        $this->container->get('config')
+        $this->container
+            ->get('config')
             ->willReturn([
                 'authentication' => [
-                    'grants' => 'xxx'
-                ]
+                    'grants' => 'xxx',
+                ],
             ]);
 
         $this->trait->proxy('getGrantsConfig', $this->container->reveal());
