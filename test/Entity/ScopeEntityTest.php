@@ -26,7 +26,7 @@ class ScopeEntityTest extends TestCase
         $this->assertInstanceOf(ScopeEntityInterface::class, $this->entity);
     }
 
-    public function testJsonSerialize()
+    public function testEntityIsJsonSerializable()
     {
         $this->entity->setIdentifier('foo');
         $this->assertEquals('"foo"', json_encode($this->entity));
