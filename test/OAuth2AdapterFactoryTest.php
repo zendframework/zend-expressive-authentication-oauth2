@@ -20,6 +20,7 @@ use TypeError;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Adapter;
 use Zend\Expressive\Authentication\OAuth2\OAuth2AdapterFactory;
+use Zend\Expressive\Authentication\UserInterface;
 
 class OAuth2AdapterFactoryTest extends TestCase
 {
@@ -42,6 +43,14 @@ class OAuth2AdapterFactoryTest extends TestCase
         $this->response        = $this->prophesize(ResponseInterface::class);
         $this->responseFactory = function () {
             return $this->response->reveal();
+        };
+        $this->user = $this->prophesize(UserInterface::class);
+        $this->userFactory = function (
+            string $identity,
+            array $roles = [],
+            array $details = []
+        ) {
+            return $this->user->reveal($identity, $roles, $details);
         };
     }
 
@@ -73,6 +82,10 @@ class OAuth2AdapterFactoryTest extends TestCase
             ->get(ResponseInterface::class)
             ->willReturn(new stdClass());
 
+        $this->container
+            ->get(UserInterface::class)
+            ->willReturn($this->userFactory);
+
         $factory = new OAuth2AdapterFactory();
 
         $this->expectException(TypeError::class);
@@ -91,6 +104,10 @@ class OAuth2AdapterFactoryTest extends TestCase
         $this->container
             ->get(ResponseInterface::class)
             ->will([$this->response, 'reveal']);
+
+        $this->container
+            ->get(UserInterface::class)
+            ->willReturn($this->userFactory);
 
         $factory = new OAuth2AdapterFactory();
 
@@ -113,6 +130,10 @@ class OAuth2AdapterFactoryTest extends TestCase
         $this->container
             ->get(ResponseInterface::class)
             ->willReturn($this->responseFactory);
+
+        $this->container
+            ->get(UserInterface::class)
+            ->willReturn($this->userFactory);
 
         $factory = new OAuth2AdapterFactory();
         $adapter = $factory($this->container->reveal());

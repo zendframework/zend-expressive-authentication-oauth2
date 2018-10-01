@@ -17,6 +17,7 @@ use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
+use Zend\Expressive\Authentication\DefaultUser;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Adapter;
 use Zend\Expressive\Authentication\UserInterface;
 
@@ -38,13 +39,21 @@ class OAuth2AdapterTest extends TestCase
         $this->responseFactory = function () {
             return $this->response->reveal();
         };
+        $this->userFactory = function (
+            string $identity,
+            array $roles = [],
+            array $details = []
+        ) {
+            return new DefaultUser($identity, $roles, $details);
+        };
     }
 
     public function testConstructor()
     {
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
         $this->assertInstanceOf(OAuth2Adapter::class, $adapter);
         $this->assertInstanceOf(AuthenticationInterface::class, $adapter);
@@ -62,16 +71,18 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
     }
 
-    public function testAuthenticateReturnsNullIfResourceServerDoesNotProduceAUserId()
+    public function testAuthenticateReturnsNullIfResourceServerDoesNotProduceAUserIdOrClientId()
     {
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('oauth_user_id', false)->willReturn(false);
+        $request->getAttribute('oauth_user_id', null)->willReturn(null);
+        $request->getAttribute('oauth_client_id', null)->willReturn(null);
 
         $this->resourceServer
             ->validateAuthenticatedRequest(Argument::that([$request, 'reveal']))
@@ -79,7 +90,8 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertNull($adapter->authenticate($request->reveal()));
@@ -88,7 +100,10 @@ class OAuth2AdapterTest extends TestCase
     public function testAuthenticateReturnsAUserIfTheResourceServerProducesAUserId()
     {
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('oauth_user_id', false)->willReturn('some-identifier');
+        $request->getAttribute('oauth_user_id', null)->willReturn('some-identifier');
+        $request->getAttribute('oauth_client_id', null)->willReturn(null);
+        $request->getAttribute('oauth_access_token_id', null)->willReturn(null);
+        $request->getAttribute('oauth_scopes', null)->willReturn(null);
 
         $this->resourceServer
             ->validateAuthenticatedRequest(Argument::that([$request, 'reveal']))
@@ -96,14 +111,40 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $user = $adapter->authenticate($request->reveal());
 
         $this->assertInstanceOf(UserInterface::class, $user);
         $this->assertSame('some-identifier', $user->getIdentity());
-        $this->assertSame([], $user->getUserRoles());
+        $this->assertSame([], $user->getRoles());
+    }
+
+    public function testAuthenticateReturnsAClientIfTheResourceServerProducesAClientId()
+    {
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getAttribute('oauth_user_id', null)->willReturn(null);
+        $request->getAttribute('oauth_client_id', null)->willReturn('some-identifier');
+        $request->getAttribute('oauth_access_token_id', null)->willReturn(null);
+        $request->getAttribute('oauth_scopes', null)->willReturn(null);
+
+        $this->resourceServer
+            ->validateAuthenticatedRequest(Argument::that([$request, 'reveal']))
+            ->will([$request, 'reveal']);
+
+        $adapter = new OAuth2Adapter(
+            $this->resourceServer->reveal(),
+            $this->responseFactory,
+            $this->userFactory
+        );
+
+        $user = $adapter->authenticate($request->reveal());
+
+        $this->assertInstanceOf(UserInterface::class, $user);
+        $this->assertSame('some-identifier', $user->getIdentity());
+        $this->assertSame([], $user->getRoles());
     }
 
     public function testUnauthorizedResponseProducesAResponseWithAWwwAuthenticateHeader()
@@ -119,7 +160,8 @@ class OAuth2AdapterTest extends TestCase
 
         $adapter = new OAuth2Adapter(
             $this->resourceServer->reveal(),
-            $this->responseFactory
+            $this->responseFactory,
+            $this->userFactory
         );
 
         $this->assertSame(

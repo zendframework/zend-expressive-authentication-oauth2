@@ -63,7 +63,7 @@ return [
         'username' => '',
         'password' => ''
     ],
-    
+
     // Set value to null to disable a grant
     'grants' => [
         \League\OAuth2\Server\Grant\ClientCredentialsGrant::class
@@ -111,9 +111,9 @@ return [
 ```
 
 The `grants` array is for enabling/disabling grants.   By default all the supported
-grants are configured to be available.  If you would like to disable any of the 
+grants are configured to be available.  If you would like to disable any of the
 supplied grants, simply change the value for the grant to NULL.  Additionally,
-you can extend this array to add your own custom grants. 
+you can extend this array to add your own custom grants.
 
 
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
@@ -142,22 +142,10 @@ For security reason, the client `secret` and the user `password` are stored
 using the `bcrypt` algorithm provided by [password_hash](http://php.net/manual/en/function.password-hash.php)
 function of PHP.
 
-## Configure the OAuth2 route
+## Configure OAuth2 routes
 
-As last step, in order to use the OAuth2 server you need to configure a route
-to point to `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware` with
-GET and POST HTTP verbs.
+As last step, in order to use the OAuth2 server you need to configure the routes
+for the **token endpoint** and **authorization**.
 
-For instance, you can add the following route to your Expressive application:
-
-```php
-$app->route(
-    '/oauth',
-    Zend\Expressive\Authentication\OAuth2\OAuth2Middleware::class,
-    ['GET', 'POST'],
-    'oauth'
-);
-```
-
-With this configuration, you can interact with the OAuth2 server using `/oauth`
-URL.
+You can read how add the **token endpoint** and the **authorization** routes in
+the [Implement an authorization server](authorization-server) section.

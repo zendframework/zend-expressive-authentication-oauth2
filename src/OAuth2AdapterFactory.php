@@ -13,6 +13,7 @@ namespace Zend\Expressive\Authentication\OAuth2;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Zend\Expressive\Authentication\UserInterface;
 
 class OAuth2AdapterFactory
 {
@@ -30,7 +31,8 @@ class OAuth2AdapterFactory
 
         return new OAuth2Adapter(
             $resourceServer,
-            $container->get(ResponseInterface::class)
+            $container->get(ResponseInterface::class),
+            $container->get(UserInterface::class)
         );
     }
 }

@@ -16,12 +16,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Authentication\UserRepository\UserTrait;
 
 class OAuth2Adapter implements AuthenticationInterface
 {
-    use UserTrait;
-
     /**
      * @var ResourceServer
      */
@@ -32,11 +29,21 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     protected $responseFactory;
 
-    public function __construct(ResourceServer $resourceServer, callable $responseFactory)
-    {
+    public function __construct(
+        ResourceServer $resourceServer,
+        callable $responseFactory,
+        callable $userFactory
+    ) {
         $this->resourceServer = $resourceServer;
         $this->responseFactory = function () use ($responseFactory) : ResponseInterface {
             return $responseFactory();
+        };
+        $this->userFactory = function (
+            string $identity,
+            array $roles = [],
+            array $details = []
+        ) use ($userFactory) : UserInterface {
+            return $userFactory($identity, $roles, $details);
         };
     }
 
@@ -47,9 +54,19 @@ class OAuth2Adapter implements AuthenticationInterface
     {
         try {
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
-            $userId = $result->getAttribute('oauth_user_id', false);
-            if (false !== $userId) {
-                return $this->generateUser($userId, []);
+            $userId = $result->getAttribute('oauth_user_id', null);
+            $clientId = $result->getAttribute('oauth_client_id', null);
+            if (isset($userId) || isset($clientId)) {
+                return ($this->userFactory)(
+                    $userId ?? $clientId ?? '',
+                    [],
+                    [
+                        'oauth_user_id' => $userId,
+                        'oauth_client_id' => $clientId,
+                        'oauth_access_token_id' => $result->getAttribute('oauth_access_token_id', null),
+                        'oauth_scopes' => $result->getAttribute('oauth_scopes', null)
+                    ]
+                );
             }
         } catch (OAuthServerException $exception) {
             return null;

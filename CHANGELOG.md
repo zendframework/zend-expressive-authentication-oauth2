@@ -2,17 +2,20 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.4.3 - 2018-05-09
+## 1.0.0 - TBD
 
 ### Added
 
+- [#41](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/41) Allows
+  existing PDO service to be used. This will allow us to reuse existing pdo
+  services instead of opening up a second connection for oauth.
 - [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Adds `TokenEndpointHandler`,
   `AuthorizationMiddleware` and `AuthorizationHandler` in the `Zend\Expressive\Authentication\OAuth2` namespace
   to [implement an authorization server](docs/book/authorization-server.md).
 
 ### Changed
 
-- [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Splits 
+- [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Splits
   `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware` into individual implementations that allow
   [OAuth RFC-6749](https://tools.ietf.org/html/rfc6749) compliant authorization server implementations.
 
@@ -24,6 +27,31 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Removes
   `Zend\Expressive\Authentication\OAuth2\OAuth2Middleware`.
+
+### Fixed
+
+- [#44](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/44/) Fixes
+  revocation of access token for PDO repository
+- [#45](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/45) Fixes
+  issue with empty scope being passed throwing exception.
+
+## 0.4.3 - 2018-05-09
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
 
 ### Fixed
 
