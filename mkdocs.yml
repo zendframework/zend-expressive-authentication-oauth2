@@ -12,6 +12,15 @@ pages:
         - "Authorization code": v1/grant/auth_code.md
         - "Implicit": v1/grant/implicit.md
         - "Refresh token": v1/grant/refresh_token.md
+    - "_hidden-legacy-page-links":
+        - "_introduction": intro.md
+        - "_usage": usage.md
+        - "_authorizationserver": authorization-server.md
+        - "_grant_clientcredentials": grant/client_credentials.md
+        - "_grant_password": grant/password.md
+        - "_grant_authcode": grant/auth_code.md
+        - "_grant_implicit": grant/implicit.md
+        - "_grant_refreshtoken": grant/refresh_token.md
 site_name: OAuth2 middleware
 site_description: 'OAuth2 (server) for Expressive and PSR-7 applications.'
 repo_url: 'https://github.com/zendframework/zend-expressive-authentication-oauth2'

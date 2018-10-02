@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
   services instead of opening up a second connection for oauth.
 - [#42](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/42) Adds `TokenEndpointHandler`,
   `AuthorizationMiddleware` and `AuthorizationHandler` in the `Zend\Expressive\Authentication\OAuth2` namespace
-  to [implement an authorization server](docs/book/authorization-server.md).
+  to [implement an authorization server](https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/authorization-server/).
 
 ### Changed
 

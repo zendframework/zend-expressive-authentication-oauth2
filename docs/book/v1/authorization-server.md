@@ -8,8 +8,8 @@ your application is expected to provide the middleware to handle this.
 
 ## Add the token endpoint
 
-This is the most simple part, since this library provides
-`Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler` to deal with it.
+Adding the token endpoint involves routing to the provided
+`Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler`.
 
 This endpoint must accept POST requests.
 

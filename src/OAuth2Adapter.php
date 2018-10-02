@@ -58,7 +58,7 @@ class OAuth2Adapter implements AuthenticationInterface
             $clientId = $result->getAttribute('oauth_client_id', null);
             if (isset($userId) || isset($clientId)) {
                 return ($this->userFactory)(
-                    $userId ?? $clientId ?? '',
+                    $userId ?? $clientId,
                     [],
                     [
                         'oauth_user_id' => $userId,

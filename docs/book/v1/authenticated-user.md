@@ -1,7 +1,7 @@
 # Authenticated user
 
 Once the user is authenticated, `zend-expressive-authentication-oauth2` stores
-the user's credential in a PSR-7 attribute under the name `Zend\Expressive\Authentication\UserInterface`.
+the user's authorization details in a PSR-7 attribute under the name `Zend\Expressive\Authentication\UserInterface`.
 
 This attribute contains an object that implements the [UserInterface](https://github.com/zendframework/zend-expressive-authentication/blob/master/src/UserInterface.php).
 
@@ -17,8 +17,8 @@ including the following data:
 ]
 ```
 
-You can retrieve all these values using `getDetails()` or `getDetail($name)`
-functions of `UserInterface`. Here is reported an examples:
+You may retrieve these values using the `getDetails()` method or individually
+using the `getDetail($name)` method of the user instance. As an example:
 
 ```php
 $user->getDetails(); // returns all the values, as array
@@ -38,11 +38,46 @@ array.
 
 ## Customize the user's object
 
-You can customize the user's object as you need but you must implement the
-`UserInterface`. To customize the user object you need to change the service
-with name `Zend\Expressive\Authentication\UserInterface` pointing to your
-implementation. For instance, you can point to a `CustomUserFactory` class
-that returns a `CustomUser` object (that implements `UserInterface`) as follows:
+If you wish to provide a custom `Zend\Expressive\Authentication\UserInterface`
+implementation, you will need to provide:
+
+- a custom implementation of the the interface
+- a factory capable of generating instances of that interface
+- a DI factory for generating the previous factory
+- configuration wiring the `UserInterface` service to your factory.
+
+The factory noted in the second step should be a callable with the following
+signature:
+
+```php
+function (
+    string $identity,
+    array $roles = [],
+    array $details = []
+) : Zend\Expressive\Authentication\UserInterface
+```
+
+As an example of the factory in the third point, you will create a standard DI
+factory to return it. It could, for instance, compose a database adapter o pull
+information and create your custom user implementation:
+
+```php
+class CustomUserFactory
+{
+    public function __invoke(Psr\Container\ContainerInterface $container) : callable
+    {
+        $db = $container->get(Zend\Db\Adapter\AdapterInterface::class);
+        return function (string $identity, array $roles = [], array $details = []) use ($db) : Zend\Expressive\Authentication\UserInterface {
+            // get some data from $db
+            // return a new instance
+            return new MyCustomUserType(/* ... */);
+        });
+    }
+}
+```
+
+You will then need to wire this factory to the `UserInterface` service,
+per the following example:
 
 ```php
 // config/autoload/custom-user.local.php
