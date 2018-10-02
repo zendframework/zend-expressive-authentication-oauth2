@@ -2,9 +2,9 @@
 
 This component provides [OAuth2](https://oauth.net/2/) (server) authentication
 for [Expressive](https://docs.zendframework.com/zend-expressive/) and
-[PSR-7](https://www.php-fig.org/psr/psr-7/) applications. It implements
-`Zend\Expressive\Authentication\AuthenticationInterface`, and it be used as
-an adapter for [zend-expressive-authentication](https://github.com/zendframework/zend-expressive-authentication).
+[PSR-7](https://www.php-fig.org/psr/psr-7/)/[PSR-15](https://www.php-fig.org/psr/psr-15/)
+applications. It implements `Zend\Expressive\Authentication\AuthenticationInterface`,
+and it can be used as an adapter for [zend-expressive-authentication](https://github.com/zendframework/zend-expressive-authentication).
 
 This library uses the [league/oauth2-server](https://oauth2.thephpleague.com/)
 package for implementing the OAuth2 server.
@@ -14,7 +14,7 @@ If you need an introduction to OAuth2, you can read the following references:
 - [OAuth2 documentation](https://apigility.org/documentation/auth/authentication-oauth2)
   from the Apigility project.
 - [An Introduction to OAuth 2](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)
-  by Digital Ocean.
+  by DigitalOcean.
 - The [OAuth2 specification](https://oauth.net/2/) itself, via its official
   website.
 
@@ -22,15 +22,15 @@ If you need an introduction to OAuth2, you can read the following references:
 
 In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
-`bin/generate-oauth2-keys` in order to generate these keys.
+`./vendor/bin/generate-oauth2-keys` in order to generate these keys.
 
 ```bash
 $ ./vendor/bin/generate-oauth2-keys
 ```
 
-This script will store the keys in the parent application `data` folder if found:
+This script will store the keys in the application's `data` folder if found:
 
-```
+```text
 Private key stored in:
 ./data/oauth/private.key
 Public key stored in:
@@ -51,6 +51,8 @@ PSR-11 container (e.g. [zend-servicemanager](https://github.com/zendframework/ze
 The default values are:
 
 ```php
+use League\OAuth2\Server\Grant;
+
 return [
     'private_key'    => __DIR__ . '/../data/oauth/private.key',
     'public_key'     => __DIR__ . '/../data/oauth/public.key',
@@ -66,16 +68,11 @@ return [
 
     // Set value to null to disable a grant
     'grants' => [
-        \League\OAuth2\Server\Grant\ClientCredentialsGrant::class
-            => \League\OAuth2\Server\Grant\ClientCredentialsGrant::class,
-        \League\OAuth2\Server\Grant\PasswordGrant::class
-            => \League\OAuth2\Server\Grant\PasswordGrant::class,
-        \League\OAuth2\Server\Grant\AuthCodeGrant::class
-            => \League\OAuth2\Server\Grant\AuthCodeGrant::class,
-        \League\OAuth2\Server\Grant\ImplicitGrant::class
-            => \League\OAuth2\Server\Grant\ImplicitGrant::class,
-        \League\OAuth2\Server\Grant\RefreshTokenGrant::class
-            => \League\OAuth2\Server\Grant\RefreshTokenGrant::class
+        Grant\ClientCredentialsGrant::class => Grant\ClientCredentialsGrant::class,
+        Grant\PasswordGrant::class          => Grant\PasswordGrant::class,
+        Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
+        Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
+        Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class
     ],
 ];
 ```
@@ -101,7 +98,7 @@ the `username`, and the `password`, if required. The SQL structure of this
 database is stored in the [data/oauth2.sql](https://github.com/zendframework/zend-expressive-authentication-oauth2/blob/master/data/oauth2.sql)
 file.
 
-If you already have a PDO service configured, you can simply pass in the service
+If you already have a PDO service configured, you can instead pass the service
 name to the `pdo` key as follows:
 
 ```php
@@ -110,23 +107,22 @@ return [
 ];
 ```
 
-The `grants` array is for enabling/disabling grants.   By default all the supported
-grants are configured to be available.  If you would like to disable any of the
-supplied grants, simply change the value for the grant to NULL.  Additionally,
+The `grants` array is for enabling/disabling grants. By default, all the supported
+grants are configured to be available. If you would like to disable any of the
+supplied grants, change the value for the grant to `null`. Additionally,
 you can extend this array to add your own custom grants.
-
 
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
 database with the following command (using `sqlite3` for GNU/Linux):
 
 ```bash
-$ sqlite3 data/oauth2.sqlite < data/oauth2.sql
+$ sqlite3 data/oauth2.sqlite < vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql
 ```
 
 You can also create some testing values using the `data/oauth2_test.sql` file:
 
 ```bash
-$ sqlite3 data/oauth2.sqlite < data/oauth2_test.sql
+$ sqlite3 data/oauth2.sqlite < vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2_test.sql
 ```
 
 These commands will insert the following testing values:
@@ -139,13 +135,13 @@ These commands will insert the following testing values:
 - a `test` scope.
 
 For security reason, the client `secret` and the user `password` are stored
-using the `bcrypt` algorithm provided by [password_hash](http://php.net/manual/en/function.password-hash.php)
-function of PHP.
+using the `bcrypt` algorithm as used by the [password_hash](http://php.net/manual/en/function.password-hash.php)
+function.
 
 ## Configure OAuth2 routes
 
-As last step, in order to use the OAuth2 server you need to configure the routes
+As the final step, in order to use the OAuth2 server you need to configure the routes
 for the **token endpoint** and **authorization**.
 
 You can read how add the **token endpoint** and the **authorization** routes in
-the [Implement an authorization server](authorization-server) section.
+the [Implement an authorization server](authorization-server.md) section.

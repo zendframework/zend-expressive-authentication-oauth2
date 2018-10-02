@@ -1,9 +1,10 @@
 # Client credentials
 
-The client credentials grant is used in machine-to-machine scenarios: for
-example, a client making API requests that do not require a user's permission.
+The client credentials grant is used in machine-to-machine scenarios. For
+example, you would use it with a client making API requests that do not require
+a user's permission.
 
-The client sends a `POST` request with following body parameters to the
+The client sends a `POST` request with the following body parameters to the
 authorization server:
 
 - `grant_type` = client_credentials.

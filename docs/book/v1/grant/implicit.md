@@ -20,7 +20,7 @@ authorization server:
   user’s session to be validated in the next step.
 
 The user will then be asked to login to the authorization server and approve the
-client request. If the user approves the request they will be redirected to the
+client request. If the user approves the request, they will be redirected to the
 redirect URI with the following parameters in the query string arguments:
 
 - `token_type` = Bearer.

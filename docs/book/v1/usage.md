@@ -2,7 +2,7 @@
 
 If you successfully configured the OAuth2 server as detailed in the
 [installation](intro.md) section, you can request an access token using the
-OAuth2 server route defined [before](intro.md#configure-the-oauth2-route)
+OAuth2 server route you [defined](intro.md#configure-the-oauth2-route)
 (e.g. `/oauth`).
 
 You can require an access token using one of the following scenarios:
@@ -18,11 +18,10 @@ You can require an access token using one of the following scenarios:
 This library uses the authentication abstraction of the `Zend\Expressive\Authentication\AuthenticationMiddleware`
 class provided by [zend-expressive-authentication](https://github.com/zendframework/zend-expressive-authentication).
 
-In order to use OAuth2 we need to configure the service
-`Zend\Expressive\Authentication\AuthenticationInterface` to resolve in
-`Zend\Expressive\Authentication\OAuth2\OAuth2Adapter`. Using the
-[zend-servicemanager](https://github.com/zendframework/zend-servicemanager) this
-can be achieved using `aliases` with the following configuration:
+In order to use OAuth2, we need to configure the service
+`Zend\Expressive\Authentication\AuthenticationInterface` to resolve to
+`Zend\Expressive\Authentication\OAuth2\OAuth2Adapter`. This can be achieved
+using the following configuration:
 
 ```php
 use Zend\Expressive\Authentication;
@@ -37,9 +36,10 @@ return [
 ```
 
 The previous configuration will instruct `zend-expressive-authentication` to use
-the OAuth2 adapter. This adapter does not require a `Zend\Expressive\Authentication\UserRepositoryInterface`.
-The OAuth2 database with user and client credentials is managed by the component
-itself.
+the OAuth2 adapter provided in this package. (Unlike other adapters, this
+adapter does not require a `Zend\Expressive\Authentication\UserRepositoryInterface`;
+the OAuth2 database with user and client credentials is managed by the component
+itself.)
 
 When the service alias is configured, you can immediately begin authenticating
 your application/API by adding the `AuthenticationMiddleware` to either your

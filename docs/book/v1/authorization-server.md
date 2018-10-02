@@ -1,17 +1,17 @@
 # Implement an authorization server
 
-This library provides the basics to implement an authorization server
+This library provides the basics for implementing an authorization server
 for your application.
 
 Since there are authorization flows that require user interaction,
-your application is expected to provide the middleware to handle this.
+**your application is expected to provide the middleware to handle this**.
 
 ## Add the token endpoint
 
 Adding the token endpoint involves routing to the provided
 `Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler`.
 
-This endpoint must accept POST requests.
+This endpoint **MUST** accept `POST` requests.
 
 For example:
 
@@ -23,45 +23,51 @@ $app->post('/oauth2/token', OAuth2\TokenEndpointHandler::class);
 
 ## Add the authorization endpoint
 
-The authorization endpoint is an url of to which the client redirects
+The authorization endpoint is the URL to which the client redirects
 to obtain an access token or authorization code.
 
-This endpoint must accept GET requests and should:
+This endpoint **MUST** accept `GET` requests and should:
 
- - Validate the request (especially for a valid client id and redirect url)
- - Make sure the User is authenticated (for example by showing a login
-   prompt if needed)
- - Optionally request the users consent to grant access to the client
- - Redirect to a specified url of the client with success or error information
+- Validate the request (especially for a valid client id and redirect url).
+ 
+- Make sure the user is authenticated (for example, by showing a login
+  prompt if needed).
 
-The first and the last part is provided by this library.
+- Optionally, request the user's consent to grant access to the client.
 
-For example, to add the authorization endpoint you can declare a middleware pipe
-to compose these parts:
+- Redirect to a specified url of the client with success or error information.
+
+The first and the last items are provided by this library.
+
+For example, to add the authorization endpoint, you can declare a middleware
+pipeline for the route as follows:
 
 ```php
 use Zend\Expressive\Authentication\OAuth2;
+use Zend\Expressive\Session\SessionMiddleware;
 
 $app->route('/oauth2/authorize', [
+    SessionMiddleware::class,
+
     OAuth2\AuthorizationMiddleware::class,
 
-    // The followig middleware is provided by your application (see below)
-    Application\OAuthAuthorizationMiddleware::class,
+    // The following middleware is provided by your application (see below):
+    App\OAuthAuthorizationMiddleware::class,
 
     OAuth2\AuthorizationHandler::class
 ], ['GET', 'POST']);
 ```
 
-In your `Application\OAuthAuthorizationMiddleware`, you'll have access
-to the `League\OAuth2\Server\RequestTypes\AuthorizationRequest` via the
-PSR-7 request. Your middleware should populate the user entity with `setUser()` and the
-user's consent decision with `setAuthorizationApproved()` to this authorization
-request instance.
+In your `App\OAuthAuthorizationMiddleware`, you'll have access to the
+`League\OAuth2\Server\RequestTypes\AuthorizationRequest` via the PSR-7 request.
+Your middleware should populate the `AuthorizationRequest`'s user entity via its
+`setUser()` method, and the user's consent decision via the
+`setAuthorizationApproved()`method.
+
+As an example:
 
 ```php
-<?php
-
-namespace Application;
+namespace App;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -72,28 +78,28 @@ use Zend\Expressive\Authentication\UserInterface;
 
 class OAuthAuthorizationMiddleware implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         // Assume a middleware handled the authentication check and
-        // populates the user object which also implements the
+        // populates the user object, which also implements the
         // OAuth2 UserEntityInterface
         $user = $request->getAttribute(UserInterface::class);
 
-        // Assume some middleware handles and populates a session
+        // Assume the SessionMiddleware handles and populates a session
         // container
         $session = $request->getAttribute('session');
 
-        // This is populated by the previous middleware
+        // This is populated by the previous middleware:
         /** @var AuthorizationRequest $authRequest */
         $authRequest = $request->getAttribute(AuthorizationRequest::class);
 
-        // the user is authenticated
+        // The user is authenticated:
         if ($user) {
             $authRequest->setUser($user);
 
-            // Assume all clients are trusted, but you could
-            // handle consent here or within the next middleware
-            // as needed
+            // This assumes all clients are trusted, but you could
+            // handle consent here, or within the next middleware
+            // as needed.
             $authRequest->setAuthorizationApproved(true);
 
             return $handler->handle($request);
