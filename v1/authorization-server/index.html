@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="OAuth2 (server) for Expressive and PSR-7 applications.">  
-    <link rel="shortcut icon" href="./img/favicon.ico">
+    <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>OAuth2 server middleware for Expressive and PSR-7 applications - OAuth2 middleware</title>
+    <title>Authorization server - OAuth2 middleware</title>
 
-    <link rel="stylesheet" href="./css/styles-3eb6fab3fb.css">
+    <link rel="stylesheet" href="../../css/styles-3eb6fab3fb.css">
 </head>
 <body id="page-top">
 
@@ -31,7 +31,7 @@
             
             <span class="navbar-brand">
                 <a class="logo-link" href="https://framework.zend.com/" data-tooltip data-placement="bottom" title="Go to the ZF homepage">
-                    <img src="./img/zend-framework-logo.svg" height="28" alt="Zend Framework">
+                    <img src="../../img/zend-framework-logo.svg" height="28" alt="Zend Framework">
                 </a>
             </span>
         </div>
@@ -66,7 +66,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">OAuth2 middleware</a>
+            <a href="../..">OAuth2 middleware</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,32 +74,32 @@
         <ul class="subnavigation__list">
             
                 
+                    <li class="subnavigation__list-item ">
+                        <a href="../.." class="subnavigation__link">OAuth2 server middleware for Expressive and PSR-7 applications</a>
+                    </li>
+                
+            
+                
+                    <li class="subnavigation__list-item ">
+                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                    </li>
+                
+            
+                
+                    <li class="subnavigation__list-item ">
+                        <a href="../usage/" class="subnavigation__link">Usage</a>
+                    </li>
+                
+            
+                
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="." class="subnavigation__link">OAuth2 server middleware for Expressive and PSR-7 applications</a>
+                        <a href="./" class="subnavigation__link">Authorization server</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="v1/intro/" class="subnavigation__link">Introduction</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/usage/" class="subnavigation__link">Usage</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/authorization-server/" class="subnavigation__link">Authorization server</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/authenticated-user/" class="subnavigation__link">Authenticated user</a>
+                        <a href="../authenticated-user/" class="subnavigation__link">Authenticated user</a>
                     </li>
                 
             
@@ -110,31 +110,31 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/client_credentials/" class="subnavigation__link">Client credentials</a>
+        <a href="../grant/client_credentials/" class="subnavigation__link">Client credentials</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/password/" class="subnavigation__link">Password</a>
+        <a href="../grant/password/" class="subnavigation__link">Password</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/auth_code/" class="subnavigation__link">Authorization code</a>
+        <a href="../grant/auth_code/" class="subnavigation__link">Authorization code</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/implicit/" class="subnavigation__link">Implicit</a>
+        <a href="../grant/implicit/" class="subnavigation__link">Implicit</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/refresh_token/" class="subnavigation__link">Refresh token</a>
+        <a href="../grant/refresh_token/" class="subnavigation__link">Refresh token</a>
     </li>
 
                             
@@ -203,30 +203,141 @@
                     <ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
   <li><a href="https://framework.zend.com/">Home</a></li>
   <li><a href="https://docs.zendframework.com/">Docs</a></li>
-  <li><a href=".">OAuth2 middleware</a></li>
+  <li><a href="../..">OAuth2 middleware</a></li>
   
     
   
-  <li class="active">OAuth2 server middleware for Expressive and PSR-7 applications</li>
+  <li class="active">Authorization server</li>
 </ol>
 
 
-    <h1>OAuth2 middleware</h1>
-<p>OAuth2 (server) for Expressive and PSR-7 applications.</p>
+    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">In This Article</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#add-the-token-endpoint" class="toc__link">Add the token endpoint</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#add-the-authorization-endpoint" class="toc__link">Add the authorization endpoint</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
 
 
-    <h2>Installation</h2>
-    <h3>Using Composer</h3>
-    <pre><code class="language-bash">$ composer require zendframework/OAuth2 middleware</code></pre>
+    <h1 id="implement-an-authorization-server">Implement an authorization server</h1>
+<p>This library provides the basics for implementing an authorization server
+for your application.</p>
+<p>Since there are authorization flows that require user interaction,
+<strong>your application is expected to provide the middleware to handle this</strong>.</p>
+<h2 id="add-the-token-endpoint">Add the token endpoint</h2>
+<p>Adding the token endpoint involves routing to the provided
+<code>Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler</code>.</p>
+<p>This endpoint <strong>MUST</strong> accept <code>POST</code> requests.</p>
+<p>For example:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Expressive\Authentication\OAuth2;
 
+$app-&gt;post('/oauth2/token', OAuth2\TokenEndpointHandler::class);</code></pre>
 
-<h2>Support</h2>
+<h2 id="add-the-authorization-endpoint">Add the authorization endpoint</h2>
+<p>The authorization endpoint is the URL to which the client redirects
+to obtain an access token or authorization code.</p>
+<p>This endpoint <strong>MUST</strong> accept <code>GET</code> requests and should:</p>
 <ul>
-    <li>Issues: <a href="https://github.com/zendframework/OAuth2 middleware/issues/">github.com/zendframework/OAuth2 middleware/issues</a></li>
-    <li>Source: <a href="https://github.com/zendframework/OAuth2 middleware/">github.com/zendframework/OAuth2 middleware</a></li>
-    <li>Chat: <a href="https://zendframework-slack.herokuapp.com">zendframework-slack.herokuapp.com</a></li>
-    <li>Forum: <a href="https://discourse.zendframework.com/">discourse.zendframework.com</a></li>
+<li>
+<p>Validate the request (especially for a valid client id and redirect url).</p>
+</li>
+<li>
+<p>Make sure the user is authenticated (for example, by showing a login
+  prompt if needed).</p>
+</li>
+<li>
+<p>Optionally, request the user's consent to grant access to the client.</p>
+</li>
+<li>
+<p>Redirect to a specified url of the client with success or error information.</p>
+</li>
 </ul>
+<p>The first and the last items are provided by this library.</p>
+<p>For example, to add the authorization endpoint, you can declare a middleware
+pipeline for the route as follows:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Expressive\Authentication\OAuth2;
+use Zend\Expressive\Session\SessionMiddleware;
+
+$app-&gt;route('/oauth2/authorize', [
+    SessionMiddleware::class,
+
+    OAuth2\AuthorizationMiddleware::class,
+
+    // The following middleware is provided by your application (see below):
+    App\OAuthAuthorizationMiddleware::class,
+
+    OAuth2\AuthorizationHandler::class
+], ['GET', 'POST']);</code></pre>
+
+<p>In your <code>App\OAuthAuthorizationMiddleware</code>, you'll have access to the
+<code>League\OAuth2\Server\RequestTypes\AuthorizationRequest</code> via the PSR-7 request.
+Your middleware should populate the <code>AuthorizationRequest</code>'s user entity via its
+<code>setUser()</code> method, and the user's consent decision via the
+<code>setAuthorizationApproved()</code>method.</p>
+<p>As an example:</p>
+<pre class="codehilite"><code class="language-php">namespace App;
+
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use Zend\Expressive\Authentication\UserInterface;
+
+class OAuthAuthorizationMiddleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    {
+        // Assume a middleware handled the authentication check and
+        // populates the user object, which also implements the
+        // OAuth2 UserEntityInterface
+        $user = $request-&gt;getAttribute(UserInterface::class);
+
+        // Assume the SessionMiddleware handles and populates a session
+        // container
+        $session = $request-&gt;getAttribute('session');
+
+        // This is populated by the previous middleware:
+        /** @var AuthorizationRequest $authRequest */
+        $authRequest = $request-&gt;getAttribute(AuthorizationRequest::class);
+
+        // The user is authenticated:
+        if ($user) {
+            $authRequest-&gt;setUser($user);
+
+            // This assumes all clients are trusted, but you could
+            // handle consent here, or within the next middleware
+            // as needed.
+            $authRequest-&gt;setAuthorizationApproved(true);
+
+            return $handler-&gt;handle($request);
+        }
+
+        // The user is not authenticated, show login form ...
+
+        // Store the auth request state
+        // NOTE: Do not attempt to serialize or store the authorization
+        // request object. Store the query parameters instead and redirect
+        // with these to this endpoint again to replay the request.
+        $session['oauth2_request_params'] = $request-&gt;getQueryParams();
+
+        return new RedirectResponse('/oauth2/login');
+    }
+}</code></pre>
 
 
 
@@ -236,12 +347,16 @@
         
         <li class="page-nav__item">
             
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../usage/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
         </li>
 
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="v1/intro/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../authenticated-user/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -250,6 +365,15 @@
 </nav>
 
 
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/zendframework/zend-expressive-authentication-oauth2/edit/master/docs/book/v1/authorization-server.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
 
                 
             <!-- content:end -->
@@ -267,7 +391,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">OAuth2 middleware</a>
+            <a href="../..">OAuth2 middleware</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -275,32 +399,32 @@
         <ul class="subnavigation__list">
             
                 
+                    <li class="subnavigation__list-item ">
+                        <a href="../.." class="subnavigation__link">OAuth2 server middleware for Expressive and PSR-7 applications</a>
+                    </li>
+                
+            
+                
+                    <li class="subnavigation__list-item ">
+                        <a href="../intro/" class="subnavigation__link">Introduction</a>
+                    </li>
+                
+            
+                
+                    <li class="subnavigation__list-item ">
+                        <a href="../usage/" class="subnavigation__link">Usage</a>
+                    </li>
+                
+            
+                
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="." class="subnavigation__link">OAuth2 server middleware for Expressive and PSR-7 applications</a>
+                        <a href="./" class="subnavigation__link">Authorization server</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="v1/intro/" class="subnavigation__link">Introduction</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/usage/" class="subnavigation__link">Usage</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/authorization-server/" class="subnavigation__link">Authorization server</a>
-                    </li>
-                
-            
-                
-                    <li class="subnavigation__list-item ">
-                        <a href="v1/authenticated-user/" class="subnavigation__link">Authenticated user</a>
+                        <a href="../authenticated-user/" class="subnavigation__link">Authenticated user</a>
                     </li>
                 
             
@@ -311,31 +435,31 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/client_credentials/" class="subnavigation__link">Client credentials</a>
+        <a href="../grant/client_credentials/" class="subnavigation__link">Client credentials</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/password/" class="subnavigation__link">Password</a>
+        <a href="../grant/password/" class="subnavigation__link">Password</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/auth_code/" class="subnavigation__link">Authorization code</a>
+        <a href="../grant/auth_code/" class="subnavigation__link">Authorization code</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/implicit/" class="subnavigation__link">Implicit</a>
+        <a href="../grant/implicit/" class="subnavigation__link">Implicit</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="v1/grant/refresh_token/" class="subnavigation__link">Refresh token</a>
+        <a href="../grant/refresh_token/" class="subnavigation__link">Refresh token</a>
     </li>
 
                             
@@ -414,12 +538,12 @@
 </footer>
 
     <script>
-        var base_url = '.',
+        var base_url = '../..',
             siteName = 'OAuth2 middleware';
     </script>
-    <script src="./js/scripts-a978f1ec1a.js"></script>
-        <script src="./search/require.js"></script>
-        <script src="./search/search.js"></script>
+    <script src="../../js/scripts-a978f1ec1a.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -455,8 +579,3 @@
 
 
 </html>
-
-<!--
-MkDocs version : 0.17.2
-Build Date UTC : 2018-10-04 08:03:31
--->
