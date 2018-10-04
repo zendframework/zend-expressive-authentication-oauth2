@@ -17,16 +17,6 @@ types:
 - implicit;
 - refresh token;
 
-## WORK IN PROGRESS
-
-This repository contains a **work in progress** project for building an
-authentication module for Expressive and PSR-7 applications.
-It also provides an OAuth2 adapter for [zend-expressive-authentication](https://github.com/zendframework/zend-expressive-authentication)
-library.
-
-
-**Please, don't use this code in a production environment!**
-
 ## Installation
 
 You can install the *zend-expressive-authentication-oauth2* library with
