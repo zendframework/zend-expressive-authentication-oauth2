@@ -17,8 +17,10 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use TypeError;
+use Zend\Expressive\Authentication\OAuth2\ConfigProvider;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationHandler;
 use Zend\Expressive\Authentication\OAuth2\AuthorizationHandlerFactory;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * @covers \Zend\Expressive\Authentication\OAuth2\AuthorizationHandlerFactory
@@ -107,5 +109,20 @@ class AuthorizationHandlerFactoryTest extends TestCase
         $factory = new AuthorizationHandlerFactory();
         $middleware = $factory($this->container->reveal());
         $this->assertInstanceOf(AuthorizationHandler::class, $middleware);
+    }
+
+    public function testConfigProvider()
+    {
+        $authServer      = $this->prophesize(AuthorizationServer::class)->reveal();
+        $responseFactory = function () {
+            return $this->prophesize(ResponseInterface::class)->reveal();
+        };
+
+        $container = new ServiceManager((new ConfigProvider())->getDependencies());
+        $container->setService(AuthorizationServer::class, $authServer);
+        $container->setService(ResponseInterface::class, $responseFactory);
+
+        $authHandler = $container->get(AuthorizationHandler::class);
+        $this->assertInstanceOf(AuthorizationHandler::class, $authHandler);
     }
 }
