@@ -152,7 +152,7 @@ class OAuth2AdapterTest extends TestCase
         $request = $this->prophesize(ServerRequestInterface::class)->reveal();
 
         $this->response
-            ->withHeader('WWW-Authenticate', 'Bearer token-example')
+            ->withHeader('WWW-Authenticate', 'Bearer realm="OAuth2 token"')
             ->will([$this->response, 'reveal']);
         $this->response
             ->withStatus(401)

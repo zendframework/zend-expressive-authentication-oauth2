@@ -82,7 +82,7 @@ class OAuth2Adapter implements AuthenticationInterface
         return ($this->responseFactory)()
             ->withHeader(
                 'WWW-Authenticate',
-                'Bearer token-example'
+                'Bearer realm="OAuth2 token"'
             )
             ->withStatus(401);
     }
