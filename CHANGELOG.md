@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#52](https://github.com/zendframework/zend-expressive-authentication-oauth2/issues/52)
+  Wrong factory mapped to AuthorizationHandler
 
 ## 1.0.0 - 2018-10-04
 
