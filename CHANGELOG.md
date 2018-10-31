@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.0.1 - TBD
+## 1.0.1 - 2018-10-31
 
 ### Added
 
@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#52](https://github.com/zendframework/zend-expressive-authentication-oauth2/issues/52)
   Wrong factory mapped to AuthorizationHandler
+- [#54](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/54)
+  Fixed "WWW-Authenticate" header value format
 
 ## 1.0.0 - 2018-10-04
 
