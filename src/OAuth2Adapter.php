@@ -29,6 +29,11 @@ class OAuth2Adapter implements AuthenticationInterface
      */
     protected $responseFactory;
 
+    /**
+     * @var callable
+     */
+    protected $userFactory;
+
     public function __construct(
         ResourceServer $resourceServer,
         callable $responseFactory,
@@ -56,9 +61,9 @@ class OAuth2Adapter implements AuthenticationInterface
             $result = $this->resourceServer->validateAuthenticatedRequest($request);
             $userId = $result->getAttribute('oauth_user_id', null);
             $clientId = $result->getAttribute('oauth_client_id', null);
-            if (isset($userId) || isset($clientId)) {
+            if (isset($userId)) {
                 return ($this->userFactory)(
-                    $userId ?? $clientId,
+                    $userId,
                     [],
                     [
                         'oauth_user_id' => $userId,

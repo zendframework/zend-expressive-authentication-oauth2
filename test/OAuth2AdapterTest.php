@@ -14,6 +14,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
@@ -31,6 +32,9 @@ class OAuth2AdapterTest extends TestCase
 
     /** @var callable */
     private $responseFactory;
+
+    /** @var callable */
+    private $userFactory;
 
     public function setUp()
     {
@@ -122,7 +126,7 @@ class OAuth2AdapterTest extends TestCase
         $this->assertSame([], $user->getRoles());
     }
 
-    public function testAuthenticateReturnsAClientIfTheResourceServerProducesAClientId()
+    public function testAuthenticateReturnNullIfTheResourceServerProducesAClientIdOnly()
     {
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getAttribute('oauth_user_id', null)->willReturn(null);
@@ -141,10 +145,7 @@ class OAuth2AdapterTest extends TestCase
         );
 
         $user = $adapter->authenticate($request->reveal());
-
-        $this->assertInstanceOf(UserInterface::class, $user);
-        $this->assertSame('some-identifier', $user->getIdentity());
-        $this->assertSame([], $user->getRoles());
+        $this->assertNull($user);
     }
 
     public function testUnauthorizedResponseProducesAResponseWithAWwwAuthenticateHeader()
