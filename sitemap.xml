@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/v1/intro/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>/v1/usage/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +28,7 @@
     
     <url>
      <loc>/v1/authorization-server/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +36,7 @@
     
     <url>
      <loc>/v1/authenticated-user/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -45,31 +45,31 @@
         
     <url>
      <loc>/v1/grant/client_credentials/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/v1/grant/password/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/v1/grant/auth_code/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/v1/grant/implicit/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/v1/grant/refresh_token/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -79,49 +79,49 @@
         
     <url>
      <loc>/intro/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/usage/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/authorization-server/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/grant/client_credentials/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/grant/password/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/grant/auth_code/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/grant/implicit/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/grant/refresh_token/</loc>
-     <lastmod>2018-10-31</lastmod>
+     <lastmod>2018-11-12</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
