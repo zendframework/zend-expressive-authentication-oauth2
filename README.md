@@ -28,10 +28,10 @@ $ composer require zendframework/zend-expressive-authentication-oauth2
 
 ## Documentation
 
-Documentation is [in the doc tree](doc/book/), and can be compiled using [mkdocs](http://www.mkdocs.org):
+Browse the documentation online at https://docs.zendframework.com/zend-expressive-authentication-oauth2/
 
-```bash
-$ mkdocs build
-```
+## Support
 
-You may also [browse the documentation online](https://docs.zendframework.com/zend-expressive-authentication-oauth2/).
+* [Issues](https://github.com/zendframework/zend-expressive-authentication-oauth2/issues/)
+* [Chat](https://zendframework-slack.herokuapp.com/)
+* [Forum](https://discourse.zendframework.com/)
