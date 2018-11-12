@@ -1,7 +1,7 @@
 docs_dir: docs/book
 site_dir: docs/html
 pages:
-    - index.md
+    - Home: index.md
     - Introduction: v1/intro.md
     - Usage: v1/usage.md
     - "Authorization server": v1/authorization-server.md
@@ -21,7 +21,7 @@ pages:
         - "_grant_authcode": grant/auth_code.md
         - "_grant_implicit": grant/implicit.md
         - "_grant_refreshtoken": grant/refresh_token.md
-site_name: OAuth2 middleware
+site_name: zend-expressive-authentication-oauth2
 site_description: 'OAuth2 (server) for Expressive and PSR-7 applications.'
 repo_url: 'https://github.com/zendframework/zend-expressive-authentication-oauth2'
 copyright: 'Copyright (c) 2015-2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
