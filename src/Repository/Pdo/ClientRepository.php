@@ -20,8 +20,12 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
     /**
      * {@inheritDoc}
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
-    {
+    public function getClientEntity(
+        $clientIdentifier,
+        $grantType = null,
+        $clientSecret = null,
+        $mustValidateSecret = true
+    ) {
         $sth = $this->pdo->prepare(
             'SELECT * FROM oauth_clients WHERE name = :clientIdentifier'
         );
@@ -51,7 +55,7 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
      * @param string $grantType
      * @return bool
      */
-    protected function isGranted(array $row, string $grantType) : bool
+    protected function isGranted(array $row, string $grantType = null) : bool
     {
         switch ($grantType) {
             case 'authorization_code':
