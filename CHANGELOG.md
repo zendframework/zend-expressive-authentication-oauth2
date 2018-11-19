@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.0.2 - TBD
+## 1.1.1 - TBD
 
 ### Added
 
@@ -11,6 +11,31 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Changed
 
 - Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
+## 1.1.0 - 2018-11-19
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#58](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/58)
+  Upgrades the `league/oauth2-server` library to 7.3.0 in order to use it with
+  [Swoole](https://www.swoole.co.uk/). This is provided by `league/oauth2-server`
+  thanks to [#960 AuthorizationServer stateless](https://github.com/thephpleague/oauth2-server/pull/960)
 
 ### Deprecated
 
