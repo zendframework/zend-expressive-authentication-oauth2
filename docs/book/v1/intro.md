@@ -74,6 +74,20 @@ return [
         Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
         Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class
     ],
+
+    // optionally configure event listeners
+    // 'listeners' => [
+    //     [
+    //         \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
+    //         \My\Event\Listener\Service::class,
+    //     ],
+    //     [
+    //         \League\OAuth2\Server\RequestEvent::ACCESS_TOKEN_ISSUED,
+    //         function (\League\OAuth2\Server\RequestEvent $event) {
+    //             // do something
+    //         },
+    //     ],
+    // ],
 ];
 ```
 
@@ -125,6 +139,8 @@ The `grants` array is for enabling/disabling grants. By default, all the support
 grants are configured to be available. If you would like to disable any of the
 supplied grants, change the value for the grant to `null`. Additionally,
 you can extend this array to add your own custom grants.
+
+The `listeners` array is for enabling event listeners. Listeners are not required. This is an array of arrays. Each array in the list must contain at least 2 elements. The first element must be a string that corresponds to the name of the event to listen for. The second element must be either a string or an anonymous function. If it's a string it's assumed to be a container service key that points to your listener. There may be a third element of the array -- it must be an integer. The third element is the `$priority` argument when registering the listener. See the [Authorization Server Domain Events documentation](https://oauth2.thephpleague.com/authorization-server/events/).
 
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
 database with the following command (using `sqlite3` for GNU/Linux):

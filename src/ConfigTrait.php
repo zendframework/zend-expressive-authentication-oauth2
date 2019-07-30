@@ -103,4 +103,25 @@ trait ConfigTrait
 
         return $config['grants'];
     }
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return array|null
+     */
+    protected function getListenersConfig(ContainerInterface $container) : ?array
+    {
+        $config = $container->get('config')['authentication'] ?? [];
+
+        if (empty($config['listeners'])) {
+            return null;
+        }
+        if (! is_array($config['listeners'])) {
+            throw new InvalidConfigException(
+                'The listeners must be an array value'
+            );
+        }
+
+        return $config['listeners'];
+    }
 }

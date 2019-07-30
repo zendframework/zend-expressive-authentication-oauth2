@@ -12,19 +12,27 @@ namespace Zend\Expressive\Authentication\OAuth2;
 
 use DateInterval;
 use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Grant;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException;
 
+/**
+ * Factory for OAuth AuthorizationServer
+ *
+ * Initializes a new AuthorizationServer with required params from config.
+ * Then configured grant types are enabled with configured access token
+ * expiry. Then any optionally configured event listeners are attached to the
+ * AuthorizationServer.
+ */
 class AuthorizationServerFactory
 {
     use ConfigTrait;
     use CryptKeyTrait;
     use RepositoryTrait;
 
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return AuthorizationServer
+     */
     public function __invoke(ContainerInterface $container) : AuthorizationServer
     {
         $clientRepository = $this->getClientRepository($container);
@@ -46,7 +54,7 @@ class AuthorizationServerFactory
         $accessTokenInterval = new DateInterval($this->getAccessTokenExpire($container));
 
         foreach ($grants as $grant) {
-            // Config may set this grant to null.  Continue on if grant has been disabled
+            // Config may set this grant to null. Continue on if grant has been disabled
             if (empty($grant)) {
                 continue;
             }
@@ -57,6 +65,35 @@ class AuthorizationServerFactory
             );
         }
 
+        // add listeners if configured
+        $this->addListeners($authServer, $container);
+
         return $authServer;
+    }
+
+    /**
+     * Optionally add event listeners
+     *
+     * @param AuthorizationServer $authServer
+     * @param ContainerInterface  $container
+     */
+    private function addListeners(
+        AuthorizationServer $authServer,
+        ContainerInterface $container
+    ): void {
+        $listeners = $this->getListenersConfig($container);
+        if (null === $listeners) {
+            return;
+        }
+        foreach ($listeners as $listenerConfig) {
+            $event = $listenerConfig[0];
+            $listener = $listenerConfig[1];
+            $priority = $listenerConfig[2] ?? null;
+            if (is_string($listener)) {
+                $listener = $container->get($listener);
+            }
+            $authServer->getEmitter()
+                ->addListener($event, $listener, $priority);
+        }
     }
 }

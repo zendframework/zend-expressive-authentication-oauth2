@@ -152,4 +152,43 @@ class ConfigTraitTest extends TestCase
         $result = $this->trait->proxy('getGrantsConfig', $this->container->reveal());
         $this->assertEquals($this->config['authentication']['grants'], $result);
     }
+
+    public function testGetListenersConfigNoConfig()
+    {
+        $this->container
+            ->get('config')
+            ->willReturn([]);
+        $result = $this->trait
+            ->proxy('getListenersConfig', $this->container->reveal());
+        $this->assertNull($result);
+    }
+
+    /**
+     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
+     */
+    public function testGetListenersConfigNoArrayValue()
+    {
+        $this->container
+            ->get('config')
+            ->willReturn([
+                'authentication' => [
+                    'listeners' => 'xxx',
+                ],
+            ]);
+
+        $this->trait->proxy('getListenersConfig', $this->container->reveal());
+    }
+
+    public function testGetListenersConfig()
+    {
+        $this->container->get('config')
+            ->willReturn([
+                'authentication' => [
+                    'listeners' => $expected = [['xxx']],
+                ],
+            ]);
+        $result = $this->trait
+            ->proxy('getListenersConfig', $this->container->reveal());
+        $this->assertEquals($expected, $result);
+    }
 }
