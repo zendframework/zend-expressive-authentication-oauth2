@@ -80,7 +80,8 @@ class AuthorizationServerFactoryTest extends TestCase
     /**
      * @return ObjectProphecy
      */
-    private function getContainerMock(): ObjectProphecy {
+    private function getContainerMock(): ObjectProphecy
+    {
         $mockContainer = $this->prophesize(ContainerInterface::class);
         $mockClientRepo = $this->prophesize(ClientRepositoryInterface::class);
         $mockAccessTokenRepo = $this->prophesize(AccessTokenRepositoryInterface::class);
@@ -259,6 +260,5 @@ class AuthorizationServerFactoryTest extends TestCase
         $this->expectException(InvalidConfigException::class);
 
         $result = $factory($mockContainer->reveal());
-
     }
 }

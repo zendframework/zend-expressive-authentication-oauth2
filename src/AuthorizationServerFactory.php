@@ -93,7 +93,7 @@ class AuthorizationServerFactory
             $listener = $listenerConfig[1];
             $priority = $listenerConfig[2] ?? null;
             if (is_string($listener)) {
-                if (!$container->has($listener)) {
+                if (! $container->has($listener)) {
                     throw new Exception\InvalidConfigException(sprintf(
                         'The second element of event-listeners config at ' .
                             'index "%s" is a string and therefore expected to ' .
@@ -124,7 +124,7 @@ class AuthorizationServerFactory
 
         foreach ($providers as $idx => $provider) {
             if (is_string($provider)) {
-                if (!$container->has($provider)) {
+                if (! $container->has($provider)) {
                     throw new Exception\InvalidConfigException(sprintf(
                         'The event-listener-providers config at ' .
                             'index "%s" is a string and therefore expected to ' .
