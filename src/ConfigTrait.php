@@ -107,21 +107,42 @@ trait ConfigTrait
     /**
      * @param ContainerInterface $container
      *
-     * @return array|null
+     * @return array
      */
-    protected function getListenersConfig(ContainerInterface $container) : ?array
+    protected function getListenersConfig(ContainerInterface $container) : array
     {
         $config = $container->get('config')['authentication'] ?? [];
 
-        if (empty($config['listeners'])) {
-            return null;
+        if (empty($config['event-listeners'])) {
+            return [];
         }
-        if (! is_array($config['listeners'])) {
+        if (! is_array($config['event-listeners'])) {
             throw new InvalidConfigException(
-                'The listeners must be an array value'
+                'The event-listeners config must be an array value'
             );
         }
 
-        return $config['listeners'];
+        return $config['event-listeners'];
+    }
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return array
+     */
+    protected function getListenerProvidersConfig(ContainerInterface $container) : array
+    {
+        $config = $container->get('config')['authentication'] ?? [];
+
+        if (empty($config['event-listener-providers'])) {
+            return [];
+        }
+        if (! is_array($config['event-listener-providers'])) {
+            throw new InvalidConfigException(
+                'The event-listener-providers config must be an array value'
+            );
+        }
+
+        return $config['event-listener-providers'];
     }
 }

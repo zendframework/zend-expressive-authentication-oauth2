@@ -160,7 +160,7 @@ class ConfigTraitTest extends TestCase
             ->willReturn([]);
         $result = $this->trait
             ->proxy('getListenersConfig', $this->container->reveal());
-        $this->assertNull($result);
+        $this->assertInternalType('array', $result);
     }
 
     /**
@@ -172,7 +172,7 @@ class ConfigTraitTest extends TestCase
             ->get('config')
             ->willReturn([
                 'authentication' => [
-                    'listeners' => 'xxx',
+                    'event-listeners' => 'xxx',
                 ],
             ]);
 
@@ -184,11 +184,50 @@ class ConfigTraitTest extends TestCase
         $this->container->get('config')
             ->willReturn([
                 'authentication' => [
-                    'listeners' => $expected = [['xxx']],
+                    'event-listeners' => $expected = [['xxx']],
                 ],
             ]);
         $result = $this->trait
             ->proxy('getListenersConfig', $this->container->reveal());
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testGetListenerProvidersConfigNoConfig()
+    {
+        $this->container
+            ->get('config')
+            ->willReturn([]);
+        $result = $this->trait
+            ->proxy('getListenerProvidersConfig', $this->container->reveal());
+        $this->assertInternalType('array', $result);
+    }
+
+    /**
+     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
+     */
+    public function testGetListenerProvidersConfigNoArrayValue()
+    {
+        $this->container
+            ->get('config')
+            ->willReturn([
+                'authentication' => [
+                    'event-listener-providers' => 'xxx',
+                ],
+            ]);
+
+        $this->trait->proxy('getListenerProvidersConfig', $this->container->reveal());
+    }
+
+    public function testGetListenerProvidersConfig()
+    {
+        $this->container->get('config')
+            ->willReturn([
+                'authentication' => [
+                    'event-listener-providers' => $expected = ['xxx'],
+                ],
+            ]);
+        $result = $this->trait
+            ->proxy('getListenerProvidersConfig', $this->container->reveal());
         $this->assertEquals($expected, $result);
     }
 }

@@ -74,20 +74,6 @@ return [
         Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
         Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class
     ],
-
-    // optionally configure event listeners
-    // 'listeners' => [
-    //     [
-    //         \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
-    //         \My\Event\Listener\Service::class,
-    //     ],
-    //     [
-    //         \League\OAuth2\Server\RequestEvent::ACCESS_TOKEN_ISSUED,
-    //         function (\League\OAuth2\Server\RequestEvent $event) {
-    //             // do something
-    //         },
-    //     ],
-    // ],
 ];
 ```
 
@@ -140,7 +126,47 @@ grants are configured to be available. If you would like to disable any of the
 supplied grants, change the value for the grant to `null`. Additionally,
 you can extend this array to add your own custom grants.
 
-The `listeners` array is for enabling event listeners. Listeners are not required. This is an array of arrays. Each array in the list must contain at least 2 elements. The first element must be a string that corresponds to the name of the event to listen for. The second element must be either a string or an anonymous function. If it's a string it's assumed to be a container service key that points to your listener. There may be a third element of the array -- it must be an integer. The third element is the `$priority` argument when registering the listener. See the [Authorization Server Domain Events documentation](https://oauth2.thephpleague.com/authorization-server/events/).
+### Configure Event Listeners
+
+_Optional_ The `event-listeners` and `event-listener-providers` arrays may be used to enable event listeners for events published by `league\oauth2-server`. See the [Authorization Server Domain Events documentation](https://oauth2.thephpleague.com/authorization-server/events/). The possible event names can be found [in `League\OAuth2\Server\RequestEvent`](https://github.com/thephpleague/oauth2-server/blob/0b0b43d43342c0909b3b32fb7a09d502c368d2ec/src/RequestEvent.php#L17-L22).
+
+#### Event Listeners
+
+The `event-listeners` key must contain an array of arrays. Each array element must contain at least 2 elements and may include a 3rd element. These roughly correspond to the arguments passed to [`League\Event\ListenerAcceptorInterface::addListener()`](https://github.com/thephpleague/event/blob/d2cc124cf9a3fab2bb4ff963307f60361ce4d119/src/ListenerAcceptorInterface.php#L43). The first element must be a string -- either the [wildcard (`*`)](https://event.thephpleague.com/2.0/listeners/wildcard/) or a [single event name](https://event.thephpleague.com/2.0/events/named/). The second element must be either a callable, a concrete instance of `League\Event\ListenerInterface`, or a string pointing to your listener service instance in the container. The third element is optional, and must be an integer if provided.
+
+See the [documentation for callable listeners](https://event.thephpleague.com/2.0/listeners/callables/).
+
+#### Event Listener Providers
+
+The `event-listener-providers` key must contain an array. Each array element must contain either a concrete instance of `League\Event\ListenerProviderInterface` or a string pointing to your container service instance of a listener provider.
+
+See the [documentation for listener providers](https://event.thephpleague.com/2.0/listeners/providers/).
+
+Example config:
+
+```php
+return [    
+    'event-listeners' => [
+        // using a container service
+        [
+            \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
+            \My\Event\Listener\Service::class,
+        ],
+        // using a callable
+        [
+            \League\OAuth2\Server\RequestEvent::ACCESS_TOKEN_ISSUED,
+            function (\League\OAuth2\Server\RequestEvent $event) {
+                // do something
+            },
+        ],
+    ],
+    'event-listener-providers' => [
+        \My\Event\ListenerProvider\Service::class,
+    ],
+];
+```
+
+## OAuth2 Database
 
 You need to provide an OAuth2 database yourself, or generate a [SQLite](https://www.sqlite.org)
 database with the following command (using `sqlite3` for GNU/Linux):
@@ -168,7 +194,7 @@ For security reason, the client `secret` and the user `password` are stored
 using the `bcrypt` algorithm as used by the [password_hash](http://php.net/manual/en/function.password-hash.php)
 function.
 
-## Configure OAuth2 routes
+## Configure OAuth2 Routes
 
 As the final step, in order to use the OAuth2 server you need to configure the routes
 for the **token endpoint** and **authorization**.
