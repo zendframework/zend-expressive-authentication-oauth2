@@ -128,17 +128,17 @@ you can extend this array to add your own custom grants.
 
 ### Configure Event Listeners
 
-_Optional_ The `event-listeners` and `event-listener-providers` arrays may be used to enable event listeners for events published by `league\oauth2-server`. See the [Authorization Server Domain Events documentation](https://oauth2.thephpleague.com/authorization-server/events/). The possible event names can be found [in `League\OAuth2\Server\RequestEvent`](https://github.com/thephpleague/oauth2-server/blob/0b0b43d43342c0909b3b32fb7a09d502c368d2ec/src/RequestEvent.php#L17-L22).
+_Optional_ The `event_listeners` and `event_listener_providers` arrays may be used to enable event listeners for events published by `league\oauth2-server`. See the [Authorization Server Domain Events documentation](https://oauth2.thephpleague.com/authorization-server/events/). The possible event names can be found [in `League\OAuth2\Server\RequestEvent`](https://github.com/thephpleague/oauth2-server/blob/0b0b43d43342c0909b3b32fb7a09d502c368d2ec/src/RequestEvent.php#L17-L22).
 
 #### Event Listeners
 
-The `event-listeners` key must contain an array of arrays. Each array element must contain at least 2 elements and may include a 3rd element. These roughly correspond to the arguments passed to [`League\Event\ListenerAcceptorInterface::addListener()`](https://github.com/thephpleague/event/blob/d2cc124cf9a3fab2bb4ff963307f60361ce4d119/src/ListenerAcceptorInterface.php#L43). The first element must be a string -- either the [wildcard (`*`)](https://event.thephpleague.com/2.0/listeners/wildcard/) or a [single event name](https://event.thephpleague.com/2.0/events/named/). The second element must be either a callable, a concrete instance of `League\Event\ListenerInterface`, or a string pointing to your listener service instance in the container. The third element is optional, and must be an integer if provided.
+The `event_listeners` key must contain an array of arrays. Each array element must contain at least 2 elements and may include a 3rd element. These roughly correspond to the arguments passed to [`League\Event\ListenerAcceptorInterface::addListener()`](https://github.com/thephpleague/event/blob/d2cc124cf9a3fab2bb4ff963307f60361ce4d119/src/ListenerAcceptorInterface.php#L43). The first element must be a string -- either the [wildcard (`*`)](https://event.thephpleague.com/2.0/listeners/wildcard/) or a [single event name](https://event.thephpleague.com/2.0/events/named/). The second element must be either a callable, a concrete instance of `League\Event\ListenerInterface`, or a string pointing to your listener service instance in the container. The third element is optional, and must be an integer if provided.
 
 See the [documentation for callable listeners](https://event.thephpleague.com/2.0/listeners/callables/).
 
 #### Event Listener Providers
 
-The `event-listener-providers` key must contain an array. Each array element must contain either a concrete instance of `League\Event\ListenerProviderInterface` or a string pointing to your container service instance of a listener provider.
+The `event_listener_providers` key must contain an array. Each array element must contain either a concrete instance of `League\Event\ListenerProviderInterface` or a string pointing to your container service instance of a listener provider.
 
 See the [documentation for listener providers](https://event.thephpleague.com/2.0/listeners/providers/).
 
@@ -146,7 +146,7 @@ Example config:
 
 ```php
 return [    
-    'event-listeners' => [
+    'event_listeners' => [
         // using a container service
         [
             \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
@@ -160,7 +160,7 @@ return [
             },
         ],
     ],
-    'event-listener-providers' => [
+    'event_listener_providers' => [
         \My\Event\ListenerProvider\Service::class,
     ],
 ];

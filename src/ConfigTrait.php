@@ -113,16 +113,16 @@ trait ConfigTrait
     {
         $config = $container->get('config')['authentication'] ?? [];
 
-        if (empty($config['event-listeners'])) {
+        if (empty($config['event_listeners'])) {
             return [];
         }
-        if (! is_array($config['event-listeners'])) {
+        if (! is_array($config['event_listeners'])) {
             throw new InvalidConfigException(
-                'The event-listeners config must be an array value'
+                'The event_listeners config must be an array value'
             );
         }
 
-        return $config['event-listeners'];
+        return $config['event_listeners'];
     }
 
     /**
@@ -134,15 +134,15 @@ trait ConfigTrait
     {
         $config = $container->get('config')['authentication'] ?? [];
 
-        if (empty($config['event-listener-providers'])) {
+        if (empty($config['event_listener_providers'])) {
             return [];
         }
-        if (! is_array($config['event-listener-providers'])) {
+        if (! is_array($config['event_listener_providers'])) {
             throw new InvalidConfigException(
-                'The event-listener-providers config must be an array value'
+                'The event_listener_providers config must be an array value'
             );
         }
 
-        return $config['event-listener-providers'];
+        return $config['event_listener_providers'];
     }
 }

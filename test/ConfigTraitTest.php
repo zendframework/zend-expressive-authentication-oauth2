@@ -172,7 +172,7 @@ class ConfigTraitTest extends TestCase
             ->get('config')
             ->willReturn([
                 'authentication' => [
-                    'event-listeners' => 'xxx',
+                    'event_listeners' => 'xxx',
                 ],
             ]);
 
@@ -184,7 +184,7 @@ class ConfigTraitTest extends TestCase
         $this->container->get('config')
             ->willReturn([
                 'authentication' => [
-                    'event-listeners' => $expected = [['xxx']],
+                    'event_listeners' => $expected = [['xxx']],
                 ],
             ]);
         $result = $this->trait
@@ -211,7 +211,7 @@ class ConfigTraitTest extends TestCase
             ->get('config')
             ->willReturn([
                 'authentication' => [
-                    'event-listener-providers' => 'xxx',
+                    'event_listener_providers' => 'xxx',
                 ],
             ]);
 
@@ -223,7 +223,7 @@ class ConfigTraitTest extends TestCase
         $this->container->get('config')
             ->willReturn([
                 'authentication' => [
-                    'event-listener-providers' => $expected = ['xxx'],
+                    'event_listener_providers' => $expected = ['xxx'],
                 ],
             ]);
         $result = $this->trait

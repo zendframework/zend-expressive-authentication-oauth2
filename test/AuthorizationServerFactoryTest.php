@@ -145,7 +145,7 @@ class AuthorizationServerFactoryTest extends TestCase
                     ClientCredentialsGrant::class
                         => ClientCredentialsGrant::class,
                 ],
-                'event-listeners' => [
+                'event_listeners' => [
                     [
                         RequestEvent::CLIENT_AUTHENTICATION_FAILED,
                         function (RequestEvent $event) {
@@ -183,7 +183,7 @@ class AuthorizationServerFactoryTest extends TestCase
                     ClientCredentialsGrant::class
                         => ClientCredentialsGrant::class,
                 ],
-                'event-listeners' => [
+                'event_listeners' => [
                     [
                         RequestEvent::CLIENT_AUTHENTICATION_FAILED,
                         ListenerInterface::class
@@ -217,7 +217,7 @@ class AuthorizationServerFactoryTest extends TestCase
                     ClientCredentialsGrant::class
                         => ClientCredentialsGrant::class,
                 ],
-                'event-listener-providers' => [
+                'event_listener_providers' => [
                     ListenerProviderInterface::class
                 ]
             ]
@@ -247,7 +247,7 @@ class AuthorizationServerFactoryTest extends TestCase
                     ClientCredentialsGrant::class
                         => ClientCredentialsGrant::class,
                 ],
-                'event-listener-providers' => [
+                'event_listener_providers' => [
                     ListenerProviderInterface::class
                 ]
             ]

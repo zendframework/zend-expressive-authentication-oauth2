@@ -95,7 +95,7 @@ class AuthorizationServerFactory
             if (is_string($listener)) {
                 if (! $container->has($listener)) {
                     throw new Exception\InvalidConfigException(sprintf(
-                        'The second element of event-listeners config at ' .
+                        'The second element of event_listeners config at ' .
                             'index "%s" is a string and therefore expected to ' .
                             'be available as a service key in the container. ' .
                             'A service named "%s" was not found.',
@@ -126,7 +126,7 @@ class AuthorizationServerFactory
             if (is_string($provider)) {
                 if (! $container->has($provider)) {
                     throw new Exception\InvalidConfigException(sprintf(
-                        'The event-listener-providers config at ' .
+                        'The event_listener_providers config at ' .
                             'index "%s" is a string and therefore expected to ' .
                             'be available as a service key in the container. ' .
                             'A service named "%s" was not found.',
