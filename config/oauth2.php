@@ -35,25 +35,6 @@ $config = [
         \League\OAuth2\Server\Grant\RefreshTokenGrant::class
             => \League\OAuth2\Server\Grant\RefreshTokenGrant::class
     ],
-
-    // optionally add listener config
-    // 'listeners' => [
-    //     [
-    //         // event name
-    //         \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
-    //         // listener defined as a service key
-    //         \My\League\Event\Listener\For\Auth\Failure::class,
-    //     ], [
-    //         \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
-    //         // listener defined as an anonymous function
-    //         function (\League\OAuth2\Server\RequestEvent $event) {
-    //             // do something
-    //         },
-    //         // priority NORMAL (0) is the default but you may set an
-    //         // int val of your choosing
-    //         // League\Event\ListenerAcceptorInterface::P_HIGH,
-    //     ],
-    // ],
 ];
 
 // Conditionally include the encryption_key config setting, based on presence of file.
