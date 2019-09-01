@@ -29,7 +29,7 @@ to obtain an access token or authorization code.
 This endpoint **MUST** accept `GET` requests and should:
 
 - Validate the request (especially for a valid client id and redirect url).
- 
+
 - Make sure the user is authenticated (for example, by showing a login
   prompt if needed).
 
