@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use TypeError;
 use Zend\Expressive\Authentication\AuthenticationInterface;
+use Zend\Expressive\Authentication\OAuth2\Exception;
 use Zend\Expressive\Authentication\OAuth2\OAuth2Adapter;
 use Zend\Expressive\Authentication\OAuth2\OAuth2AdapterFactory;
 use Zend\Expressive\Authentication\UserInterface;
@@ -36,7 +37,7 @@ class OAuth2AdapterFactoryTest extends TestCase
     /** @var callable */
     private $responseFactory;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->container       = $this->prophesize(ContainerInterface::class);
         $this->resourceServer  = $this->prophesize(ResourceServer::class);
@@ -60,13 +61,12 @@ class OAuth2AdapterFactoryTest extends TestCase
         $this->assertInstanceOf(OAuth2AdapterFactory::class, $factory);
     }
 
-    /**
-     * @expectedException \Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testInvokeWithEmptyContainer()
     {
         $factory = new OAuth2AdapterFactory();
-        $oauth2Adapter = $factory($this->container->reveal());
+
+        $this->expectException(Exception\InvalidConfigException::class);
+        $factory($this->container->reveal());
     }
 
     public function testFactoryRaisesTypeErrorForNonCallableResponseFactory()

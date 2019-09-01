@@ -15,7 +15,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\RevokableTrait;
 
 class RevokableTraitTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->trait = $this->getMockForTrait(RevokableTrait::class);
     }

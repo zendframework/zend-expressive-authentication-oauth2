@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\TimestampableTrait;
 
 class TimestampableTraitTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->trait = $this->getMockForTrait(TimestampableTrait::class);
     }

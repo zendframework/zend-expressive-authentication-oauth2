@@ -18,13 +18,14 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Zend\Expressive\Authentication\OAuth2\Exception;
 use Zend\Expressive\Authentication\OAuth2\RepositoryTrait;
 
 class RepositoryTraitTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
-        $this->trait = $trait = new class {
+        $this->trait = new class {
             use RepositoryTrait;
 
             public function proxy(string $name, ContainerInterface $container)
@@ -35,14 +36,13 @@ class RepositoryTraitTest extends TestCase
         $this->container = $this->prophesize(ContainerInterface::class);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetUserRepositoryWithoutService()
     {
         $this->container
             ->has(UserRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getUserRepository', $this->container->reveal());
     }
 
@@ -59,14 +59,13 @@ class RepositoryTraitTest extends TestCase
         $this->assertInstanceOf(UserRepositoryInterface::class, $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetScopeRepositoryWithoutService()
     {
         $this->container
             ->has(ScopeRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getScopeRepository', $this->container->reveal());
     }
 
@@ -83,14 +82,13 @@ class RepositoryTraitTest extends TestCase
         $this->assertInstanceOf(ScopeRepositoryInterface::class, $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetAccessTokenRepositoryWithoutService()
     {
         $this->container
             ->has(AccessTokenRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getAccessTokenRepository', $this->container->reveal());
     }
 
@@ -107,14 +105,13 @@ class RepositoryTraitTest extends TestCase
         $this->assertInstanceOf(AccessTokenRepositoryInterface::class, $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetClientRepositoryWithoutService()
     {
         $this->container
             ->has(ClientRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getClientRepository', $this->container->reveal());
     }
 
@@ -131,14 +128,13 @@ class RepositoryTraitTest extends TestCase
         $this->assertInstanceOf(ClientRepositoryInterface::class, $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetRefreshTokenRepositoryWithoutService()
     {
         $this->container
             ->has(RefreshTokenRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getRefreshTokenRepository', $this->container->reveal());
     }
 
@@ -155,14 +151,13 @@ class RepositoryTraitTest extends TestCase
         $this->assertInstanceOf(RefreshTokenRepositoryInterface::class, $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetAuthCodeRepositoryWithoutService()
     {
         $this->container
             ->has(AuthCodeRepositoryInterface::class)
             ->willReturn(false);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getAuthCodeRepository', $this->container->reveal());
     }
 

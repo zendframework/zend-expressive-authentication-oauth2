@@ -27,7 +27,7 @@ class ResourceServerFactoryTest extends TestCase
         'key_permissions_check' => false,
     ];
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->container  = $this->prophesize(ContainerInterface::class);
     }
@@ -48,9 +48,6 @@ class ResourceServerFactoryTest extends TestCase
         $factory($this->container->reveal());
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testInvokeWithConfigWithoutRepository()
     {
         $this->container->has('config')->willReturn(true);
@@ -64,6 +61,8 @@ class ResourceServerFactoryTest extends TestCase
             ->willReturn(false);
 
         $factory = new ResourceServerFactory();
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
     }
 

@@ -32,7 +32,7 @@ class OAuth2AdapterTest extends TestCase
     /** @var callable */
     private $responseFactory;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->resourceServer  = $this->prophesize(ResourceServer::class);
         $this->response        = $this->prophesize(ResponseInterface::class);

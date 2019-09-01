@@ -30,7 +30,7 @@ class TokenEndpointHandlerFactoryTest extends TestCase
      */
     private $subject;
 
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp() : void
     {
         $this->subject = new TokenEndpointHandlerFactory();
         parent::setUp();

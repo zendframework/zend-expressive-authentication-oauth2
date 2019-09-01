@@ -25,7 +25,7 @@ use function time;
 
 class AuthCodeRepositoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->pdo = $this->prophesize(PdoService::class);
         $this->repo = new AuthCodeRepository($this->pdo->reveal());

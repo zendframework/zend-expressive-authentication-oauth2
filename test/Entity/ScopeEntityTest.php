@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\ScopeEntity;
 
 class ScopeEntityTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->entity = new ScopeEntity();
     }

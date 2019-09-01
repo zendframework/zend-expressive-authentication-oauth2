@@ -32,7 +32,7 @@ class AccessTokenRepositoryTest extends TestCase
      */
     private $repo;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->pdo = $this->prophesize(PdoService::class);
         $this->repo = new AccessTokenRepository($this->pdo->reveal());
