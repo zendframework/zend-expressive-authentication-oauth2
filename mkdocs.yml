@@ -24,4 +24,3 @@ pages:
 site_name: zend-expressive-authentication-oauth2
 site_description: 'OAuth2 (server) for Expressive and PSR-7 applications.'
 repo_url: 'https://github.com/zendframework/zend-expressive-authentication-oauth2'
-copyright: 'Copyright (c) 2015-2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
