@@ -6,9 +6,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#63](https://github.com/zendframework/zend-expressive-authentication-oauth2/issues/63)
+- [#63](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/63)
   registers the `ConfigProvider` with the package. If you are using zend-component-installer
   it will be added to your configuration during the installation.
+
+- [#64](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/64)
+  adds support for PHP 7.3.
 
 ### Changed
 
