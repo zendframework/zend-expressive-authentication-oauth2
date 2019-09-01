@@ -2,92 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/intro/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/usage/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/authorization-server/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/authenticated-user/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/grant/client_credentials/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/grant/password/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/grant/auth_code/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/grant/implicit/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/grant/refresh_token/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/intro/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/usage/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/authorization-server/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/grant/client_credentials/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/grant/password/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/grant/auth_code/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/grant/implicit/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-expressive-authentication-oauth2/grant/refresh_token/</loc>
-     <lastmod>2019-04-29</lastmod>
+     <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
