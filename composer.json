@@ -17,7 +17,7 @@
         "issues": "https://github.com/zendframework/zend-expressive-authentication-oauth2/issues",
         "source": "https://github.com/zendframework/zend-expressive-authentication-oauth2",
         "rss": "https://github.com/zendframework/zend-expressive-authentication-oauth2/releases.atom",
-        "slack": "https://zendframework-slack.herokuapp.com",
+        "chat": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/expressive"
     },
     "require": {
