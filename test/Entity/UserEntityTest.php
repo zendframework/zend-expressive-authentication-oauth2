@@ -10,22 +10,24 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Authentication\OAuth2\Entity;
 
+use ArgumentCountError;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use PHPUnit\Framework\TestCase;
 use Zend\Expressive\Authentication\OAuth2\Entity\UserEntity;
 
 class UserEntityTest extends TestCase
 {
-    public function setUp()
+    /** @var UserEntity */
+    private $entity;
+
+    protected function setUp() : void
     {
         $this->entity = new UserEntity('foo');
     }
 
-    /**
-     * @expectedException ArgumentCountError
-     */
     public function testConstructorWithoutParamWillResultInAnException()
     {
+        $this->expectException(ArgumentCountError::class);
         $entity = new UserEntity();
     }
 

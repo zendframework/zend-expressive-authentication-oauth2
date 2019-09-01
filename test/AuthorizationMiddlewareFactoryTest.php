@@ -34,7 +34,7 @@ class AuthorizationMiddlewareFactoryTest extends TestCase
     /** @var ResponseInterface|ObjectProphecy */
     private $response;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->container  = $this->prophesize(ContainerInterface::class);
         $this->authServer = $this->prophesize(AuthorizationServer::class);

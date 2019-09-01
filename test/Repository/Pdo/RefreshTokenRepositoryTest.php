@@ -25,7 +25,7 @@ use function time;
 
 class RefreshTokenRepositoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->pdo = $this->prophesize(PdoService::class);
         $this->repo = new RefreshTokenRepository($this->pdo->reveal());

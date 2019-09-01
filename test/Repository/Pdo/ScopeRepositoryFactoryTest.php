@@ -23,7 +23,7 @@ class ScopeRepositoryFactoryTest extends TestCase
      */
     private $container;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->pdo = $this->prophesize(PdoService::class);

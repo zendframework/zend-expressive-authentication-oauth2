@@ -19,7 +19,7 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 
 class ClientRepositoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->pdo = $this->prophesize(PdoService::class);
         $this->repo = new ClientRepository($this->pdo->reveal());

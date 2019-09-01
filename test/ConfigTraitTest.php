@@ -13,10 +13,11 @@ namespace ZendTest\Expressive\Authentication\OAuth2;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\OAuth2\ConfigTrait;
+use Zend\Expressive\Authentication\OAuth2\Exception;
 
 class ConfigTraitTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->trait = $trait = new class {
             use ConfigTrait;
@@ -42,14 +43,13 @@ class ConfigTraitTest extends TestCase
             ->willReturn($this->config);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetPrivateKeyWhenNoConfigPresentWillResultInAnException()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getPrivateKey', $this->container->reveal());
     }
 
@@ -59,14 +59,13 @@ class ConfigTraitTest extends TestCase
         $this->assertEquals($this->config['authentication']['private_key'], $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetEncryptionKeyNoConfig()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getEncryptionKey', $this->container->reveal());
     }
 
@@ -76,14 +75,13 @@ class ConfigTraitTest extends TestCase
         $this->assertEquals($this->config['authentication']['encryption_key'], $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetAccessTokenExpireNoConfig()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getAccessTokenExpire', $this->container->reveal());
     }
 
@@ -93,14 +91,13 @@ class ConfigTraitTest extends TestCase
         $this->assertEquals($this->config['authentication']['access_token_expire'], $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetRefreshTokenExpireNoConfig()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getRefreshTokenExpire', $this->container->reveal());
     }
 
@@ -110,14 +107,13 @@ class ConfigTraitTest extends TestCase
         $this->assertEquals($this->config['authentication']['refresh_token_expire'], $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetAuthCodeExpireNoConfig()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getAuthCodeExpire', $this->container->reveal());
     }
 
@@ -127,20 +123,16 @@ class ConfigTraitTest extends TestCase
         $this->assertEquals($this->config['authentication']['auth_code_expire'], $result);
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetGrantsConfigNoConfig()
     {
         $this->container
             ->get('config')
             ->willReturn([]);
+
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getGrantsConfig', $this->container->reveal());
     }
 
-    /**
-     * @expectedException Zend\Expressive\Authentication\OAuth2\Exception\InvalidConfigException
-     */
     public function testGetGrantsConfigNoArrayValue()
     {
         $this->container
@@ -151,6 +143,7 @@ class ConfigTraitTest extends TestCase
                 ],
             ]);
 
+        $this->expectException(Exception\InvalidConfigException::class);
         $this->trait->proxy('getGrantsConfig', $this->container->reveal());
     }
 

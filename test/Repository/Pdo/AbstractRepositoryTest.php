@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoService;
 
 class AbstractRepositoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->pdo = $this->prophesize(PdoService::class);
     }

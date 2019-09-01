@@ -97,7 +97,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
     /** @var UserRepository */
     private $userRepository;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         self::tearDownAfterClass();
 
@@ -118,14 +118,14 @@ class OAuth2PdoMiddlewareTest extends TestCase
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass() : void
     {
         if (file_exists(self::DB_FILE)) {
             unlink(self::DB_FILE);
         }
     }
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->response = new Response();
         $this->pdoService = new PdoService('sqlite:' . self::DB_FILE);
@@ -188,7 +188,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
         $this->assertEquals('Bearer', $content->token_type);
-        $this->assertInternalType("int", $content->expires_in);
+        $this->assertIsInt($content->expires_in);
         $this->assertNotEmpty($content->access_token);
     }
 
@@ -236,7 +236,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
         $this->assertEquals('Bearer', $content->token_type);
-        $this->assertInternalType("int", $content->expires_in);
+        $this->assertIsInt($content->expires_in);
         $this->assertNotEmpty($content->access_token);
         $this->assertNotEmpty($content->refresh_token);
     }
@@ -344,7 +344,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
         $this->assertEquals('Bearer', $content->token_type);
-        $this->assertInternalType("int", $content->expires_in);
+        $this->assertIsInt($content->expires_in);
         $this->assertNotEmpty($content->access_token);
         $this->assertNotEmpty($content->refresh_token);
 
@@ -443,7 +443,7 @@ class OAuth2PdoMiddlewareTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode((string) $response->getBody());
         $this->assertEquals('Bearer', $content->token_type);
-        $this->assertInternalType("int", $content->expires_in);
+        $this->assertIsInt($content->expires_in);
         $this->assertNotEmpty($content->access_token);
         $this->assertNotEmpty($content->refresh_token);
     }

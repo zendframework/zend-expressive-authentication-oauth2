@@ -18,7 +18,7 @@ use Zend\Expressive\Authentication\OAuth2\Repository\Pdo\PdoServiceFactory;
 
 class PdoServiceFactoryTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->factory = new PdoServiceFactory();

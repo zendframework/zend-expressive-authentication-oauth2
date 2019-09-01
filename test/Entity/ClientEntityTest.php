@@ -16,7 +16,7 @@ use Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity;
 
 class ClientEntityTest extends TestCase
 {
-    public function setUp()
+    protected function setUp() : void
     {
         $this->entity = new ClientEntity('foo', 'bar', 'http://localhost');
     }
