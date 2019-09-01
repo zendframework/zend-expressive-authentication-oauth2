@@ -32,7 +32,7 @@
         "phpunit/phpunit": "^7.5.15 || ^8.3.4",
         "roave/security-advisories": "dev-master",
         "zendframework/zend-coding-standard": "~1.0.0",
-        "zendframework/zend-diactoros": "^1.4.0",
+        "zendframework/zend-diactoros": "^1.4.0 || ^2.0",
         "zendframework/zend-servicemanager": "^3.0.0"
     },
     "conflict": {
