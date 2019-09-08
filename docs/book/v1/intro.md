@@ -81,6 +81,20 @@ The `private_key` and `public_key` values contains the paths to the previous
 generated pair of keys. The `encryption_key` contains the encryption key value
 as a string, as stored in the `data/oauth/encryption.key` file.
 
+By default both key files are checked for correct permissions (chmod 400, 440,
+600, 640 or 660 is expected, and 600 or 660 is recommended). In case the
+environment/operating system (e.g. Windows) does not support such a permissions,
+the check can be disabled:
+
+```php
+    // ...
+    'private_key' => [
+        'key_or_path' => __DIR__ . '/../data/oauth/private.key',
+        'key_permissions_check' => false,
+    ],
+    // ...
+```
+
 The `access_token_expire` value is the time-to-live (TTL) value of the access
 token. The time period is represented using the [DateInterval](http://php.net/manual/en/class.dateinterval.php)
 format in PHP.  The default value is `P1D` (1 day).
