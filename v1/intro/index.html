@@ -366,6 +366,17 @@ return [
 <p>The <code>private_key</code> and <code>public_key</code> values contains the paths to the previous
 generated pair of keys. The <code>encryption_key</code> contains the encryption key value
 as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
+<p>By default both key files are checked for correct permissions (chmod 400, 440,
+600, 640 or 660 is expected, and 600 or 660 is recommended). In case the
+environment/operating system (e.g. Windows) does not support such a permissions,
+the check can be disabled:</p>
+<pre class="codehilite"><code class="language-php">    // ...
+    'private_key' =&gt; [
+        'key_or_path' =&gt; __DIR__ . '/../data/oauth/private.key',
+        'key_permissions_check' =&gt; false,
+    ],
+    // ...</code></pre>
+
 <p>The <code>access_token_expire</code> value is the time-to-live (TTL) value of the access
 token. The time period is represented using the <a href="http://php.net/manual/en/class.dateinterval.php">DateInterval</a>
 format in PHP.  The default value is <code>P1D</code> (1 day).</p>
