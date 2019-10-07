@@ -60,6 +60,44 @@ class ClientRepositoryTest extends TestCase
         );
     }
 
+    public function testGetClientEntityReturnsCorrectEntity()
+    {
+        $name = 'foo';
+        $redirect = 'bar';
+
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
+        $statement->execute()->will(function () use ($statement, $name, $redirect) {
+            $statement->fetch()->willReturn([
+                'name' => $name,
+                'redirect' => $redirect,
+            ]);
+            return null;
+        });
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT * FROM oauth_clients'))
+            ->will([$statement, 'reveal']);
+
+        $this->prophesize(ClientEntityInterface::class);
+
+        /** @var ClientEntityInterface $client */
+        $client = $this->repo->getClientEntity('client_id');
+
+        $this->assertInstanceOf(
+            ClientEntityInterface::class,
+            $client
+        );
+        $this->assertEquals(
+            $name,
+            $client->getName()
+        );
+        $this->assertEquals(
+            [$redirect],
+            $client->getRedirectUri()
+        );
+    }
+
     public function invalidGrants()
     {
         return [
@@ -74,6 +112,30 @@ class ClientRepositoryTest extends TestCase
                 'password_client' => false,
             ]],
         ];
+    }
+
+    public function testValidateClientReturnsFalseIfNoRowReturned()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
+        $statement->execute()->will(function () use ($statement) {
+            $statement->fetch()->willReturn([]);
+            return null;
+        });
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT * FROM oauth_clients'))
+            ->will([$statement, 'reveal']);
+
+        $client = $this->prophesize(ClientEntityInterface::class);
+
+        $this->assertFalse(
+            $this->repo->validateClient(
+                'client_id',
+                '',
+                'password'
+            )
+        );
     }
 
     /**
