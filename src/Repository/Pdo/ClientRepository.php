@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\ClientEntity;
 
@@ -32,17 +33,17 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
         $sth->bindParam(':clientIdentifier', $clientIdentifier);
 
         if (false === $sth->execute()) {
-            return;
+            return null;
         }
         $row = $sth->fetch();
         if (empty($row) || ! $this->isGranted($row, $grantType)) {
-            return;
+            return null;
         }
 
         if ($mustValidateSecret
             && (empty($row['secret']) || ! password_verify((string) $clientSecret, $row['secret']))
         ) {
-            return;
+            return null;
         }
 
         return new ClientEntity($clientIdentifier, $row['name'], $row['redirect']);
@@ -67,5 +68,19 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
             default:
                 return true;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateClient($clientIdentifier, $clientSecret, $grantType) : bool
+    {
+        $client = $this->getClientEntity(
+            $clientIdentifier,
+            $grantType,
+            $clientSecret
+        );
+
+        return $client instanceof ClientEntityInterface;
     }
 }
