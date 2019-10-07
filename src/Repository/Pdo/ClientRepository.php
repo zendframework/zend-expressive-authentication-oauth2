@@ -21,39 +21,69 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
     /**
      * {@inheritDoc}
      */
-    public function getClientEntity(
-        $clientIdentifier,
-        $grantType = null,
-        $clientSecret = null,
-        $mustValidateSecret = true
-    ) {
-        $sth = $this->pdo->prepare(
+    public function getClientEntity($clientIdentifier) : ?ClientEntityInterface
+    {
+        $clientData = $this->getClientData($clientIdentifier);
+
+        if (empty($clientData)) {
+            return null;
+        }
+
+        return new ClientEntity(
+            $clientIdentifier,
+            $clientData['name'] ?? '',
+            $clientData['redirect'] ?? '',
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateClient($clientIdentifier, $clientSecret, $grantType) : bool
+    {
+        $clientData = $this->getClientData($clientIdentifier);
+
+        if (empty($clientData)) {
+            return false;
+        }
+
+        if (! $this->isGranted($clientData, $grantType)) {
+            return false;
+        }
+
+        if (empty($clientData['secret']) || ! password_verify((string) $clientSecret, $clientData['secret'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function getClientData(string $clientIdentifier) : ?array
+    {
+        $statement = $this->pdo->prepare(
             'SELECT * FROM oauth_clients WHERE name = :clientIdentifier'
         );
-        $sth->bindParam(':clientIdentifier', $clientIdentifier);
+        $statement->bindParam(':clientIdentifier', $clientIdentifier);
 
-        if (false === $sth->execute()) {
-            return null;
-        }
-        $row = $sth->fetch();
-        if (empty($row) || ! $this->isGranted($row, $grantType)) {
+        if ($statement->execute() === false) {
             return null;
         }
 
-        if ($mustValidateSecret
-            && (empty($row['secret']) || ! password_verify((string) $clientSecret, $row['secret']))
-        ) {
+        $row = $statement->fetch();
+
+        if (empty($row)) {
             return null;
         }
 
-        return new ClientEntity($clientIdentifier, $row['name'], $row['redirect']);
+        return $row;
     }
 
     /**
      * Check the grantType for the client value, stored in $row
      *
-     * @param array $row
+     * @param array  $row
      * @param string $grantType
+     *
      * @return bool
      */
     protected function isGranted(array $row, string $grantType = null) : bool
@@ -68,19 +98,5 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
             default:
                 return true;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validateClient($clientIdentifier, $clientSecret, $grantType) : bool
-    {
-        $client = $this->getClientEntity(
-            $clientIdentifier,
-            $grantType,
-            $clientSecret
-        );
-
-        return $client instanceof ClientEntityInterface;
     }
 }

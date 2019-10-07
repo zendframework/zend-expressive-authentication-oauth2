@@ -36,10 +36,7 @@ class ClientRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertNull(
-            $this->repo ->getClientEntity(
-                'client_id',
-                'grant_type'
-            )
+            $this->repo ->getClientEntity('client_id')
         );
     }
 
@@ -59,10 +56,7 @@ class ClientRepositoryTest extends TestCase
         $client = $this->prophesize(ClientEntityInterface::class);
 
         $this->assertNull(
-            $this->repo ->getClientEntity(
-                'client_id',
-                'grant_type'
-            )
+            $this->repo ->getClientEntity('client_id')
         );
     }
 
@@ -85,7 +79,7 @@ class ClientRepositoryTest extends TestCase
     /**
      * @dataProvider invalidGrants
      */
-    public function testGetClientEntityReturnsNullIfRowIndicatesNotGranted(string $grantType, array $rowReturned)
+    public function testValidateClientReturnsFalseIfRowIndicatesNotGranted(string $grantType, array $rowReturned)
     {
         $statement = $this->prophesize(PDOStatement::class);
         $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
@@ -100,22 +94,23 @@ class ClientRepositoryTest extends TestCase
 
         $client = $this->prophesize(ClientEntityInterface::class);
 
-        $this->assertNull(
-            $this->repo ->getClientEntity(
+        $this->assertFalse(
+            $this->repo ->validateClient(
                 'client_id',
+                '',
                 $grantType
             )
         );
     }
 
-    public function testGetClientReturnsNullForNonMatchingClientSecret()
+    public function testValidateClientReturnsFalseForNonMatchingClientSecret()
     {
         $statement = $this->prophesize(PDOStatement::class);
         $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
         $statement->execute()->will(function () use ($statement) {
             $statement->fetch()->willReturn([
                 'password_client' => true,
-                'secret' => 'unknown password',
+                'secret' => 'bar',
             ]);
             return null;
         });
@@ -126,17 +121,16 @@ class ClientRepositoryTest extends TestCase
 
         $client = $this->prophesize(ClientEntityInterface::class);
 
-        $this->assertNull(
-            $this->repo ->getClientEntity(
+        $this->assertFalse(
+            $this->repo ->validateClient(
                 'client_id',
-                'password_client',
-                'password',
-                true
+                'foo',
+                'password'
             )
         );
     }
 
-    public function testGetClientReturnsNullForEmptyClientSecret()
+    public function testValidateClientReturnsFalseForEmptyClientSecret()
     {
         $statement = $this->prophesize(PDOStatement::class);
         $statement->bindParam(':clientIdentifier', 'client_id')->shouldBeCalled();
@@ -154,12 +148,11 @@ class ClientRepositoryTest extends TestCase
 
         $client = $this->prophesize(ClientEntityInterface::class);
 
-        $this->assertNull(
-            $this->repo ->getClientEntity(
+        $this->assertFalse(
+            $this->repo ->validateClient(
                 'client_id',
-                'password_client',
-                'password',
-                true
+                'foo',
+                'password'
             )
         );
     }

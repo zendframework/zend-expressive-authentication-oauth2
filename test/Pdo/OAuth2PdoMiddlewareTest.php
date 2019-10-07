@@ -12,6 +12,7 @@ namespace ZendTest\Expressive\Authentication\OAuth2\Pdo;
 
 use DateInterval;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\CodeChallengeVerifiers\S256Verifier;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
@@ -63,6 +64,8 @@ class OAuth2PdoMiddlewareTest extends TestCase
     const DB_DATA        = __DIR__ . '/TestAsset/test_data.sql';
     const PRIVATE_KEY    = __DIR__ .'/../TestAsset/private.key';
     const ENCRYPTION_KEY = 'T2x2+1OGrEzfS+01OUmwhOcJiGmE58UD1fllNn6CGcQ=';
+
+    const CODE_VERIFIER = 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk';
 
     /** @var AccessTokenRepository */
     private $accessTokenRepository;
@@ -269,6 +272,17 @@ class OAuth2PdoMiddlewareTest extends TestCase
             'scope'         => 'test',
             'state'         => $state
         ];
+
+        $codeVerifier = new S256Verifier();
+
+        $params['code_challenge_method'] = $codeVerifier->getMethod();
+        $params['code_verifier'] = self::CODE_VERIFIER;
+        $params['code_challenge'] = strtr(
+            rtrim(base64_encode(hash('sha256', self::CODE_VERIFIER, true)), '='),
+            '+/',
+            '-_'
+        );
+
         $request = $this->buildServerRequest(
             'GET',
             '/auth_code?' . http_build_query($params),
@@ -324,8 +338,10 @@ class OAuth2PdoMiddlewareTest extends TestCase
             'client_id'     => 'client_test2',
             'client_secret' => 'test',
             'redirect_uri'  => '/redirect',
-            'code'          => $code
+            'code'          => $code,
+            'code_verifier' => self::CODE_VERIFIER,
         ];
+
         $request = $this->buildServerRequest(
             'POST',
             '/access_token',
