@@ -58,26 +58,6 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
         return true;
     }
 
-    protected function getClientData(string $clientIdentifier) : ?array
-    {
-        $statement = $this->pdo->prepare(
-            'SELECT * FROM oauth_clients WHERE name = :clientIdentifier'
-        );
-        $statement->bindParam(':clientIdentifier', $clientIdentifier);
-
-        if ($statement->execute() === false) {
-            return null;
-        }
-
-        $row = $statement->fetch();
-
-        if (empty($row)) {
-            return null;
-        }
-
-        return $row;
-    }
-
     /**
      * Check the grantType for the client value, stored in $row
      *
@@ -98,5 +78,25 @@ class ClientRepository extends AbstractRepository implements ClientRepositoryInt
             default:
                 return true;
         }
+    }
+
+    private function getClientData(string $clientIdentifier) : ?array
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT * FROM oauth_clients WHERE name = :clientIdentifier'
+        );
+        $statement->bindParam(':clientIdentifier', $clientIdentifier);
+
+        if ($statement->execute() === false) {
+            return null;
+        }
+
+        $row = $statement->fetch();
+
+        if (empty($row)) {
+            return null;
+        }
+
+        return $row;
     }
 }
