@@ -115,7 +115,7 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
             return false;
         }
         $row = $sth->fetch();
-        if (!is_array($row)) {
+        if (! is_array($row)) {
             throw OAuthServerException::invalidRefreshToken();
         }
 
