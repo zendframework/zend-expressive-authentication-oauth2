@@ -15,6 +15,7 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
@@ -131,6 +132,21 @@ class AccessTokenRepositoryTest extends TestCase
             ->will([$statement, 'reveal']);
 
         $this->assertTrue($this->repo->isAccessTokenRevoked('token_id'));
+    }
+
+    public function testIsAcessTokenRevokedRaisesExceptionWhenTokenIdDontExists()
+    {
+        $statement = $this->prophesize(PDOStatement::class);
+        $statement->bindParam(':tokenId', 'token_id')->shouldBeCalled();
+        $statement->execute()->willReturn(true)->shouldBeCalled();
+        $statement->fetch()->willReturn(false)->shouldBeCalled();
+
+        $this->pdo
+            ->prepare(Argument::containingString('SELECT revoked FROM oauth_access_tokens'))
+            ->will([$statement, 'reveal']);
+
+        $this->expectException(OAuthServerException::class);
+        $this->repo->isAccessTokenRevoked('token_id');
     }
 
     public function testRevokeAccessToken()
