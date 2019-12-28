@@ -53,8 +53,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.3.x-dev",
-            "dev-develop": "2.0.x-dev"
+            "dev-master": "2.0.x-dev",
+            "dev-develop": "2.1.x-dev"
         },
         "zf": {
             "config-provider": "Zend\\Expressive\\Authentication\\OAuth2\\ConfigProvider"
