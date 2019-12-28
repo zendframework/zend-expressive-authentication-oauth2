@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.0.0 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#69](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/69) updates the minimum supported version of league/oauth-server to ^8.0.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.3.0 - 2019-12-28
 
 ### Added
