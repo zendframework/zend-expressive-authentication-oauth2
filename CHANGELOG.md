@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#71](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/71) adds a check to `AccessTokenRepository` to verify that a row was returned before checking if a token was revoked, raising an exception if not.
 
 ## 1.2.0 - 2019-09-01
 
