@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#62](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/62) adds the ability to configure and add event listeners for the underlying league/oauth2 implementation. See the [event listeners configuration documentation](https://docs.zendframework.com/zend-expressive-authentication-oauth2/intro/#configure-event-listeners) for more information.
 
 ### Changed
 
