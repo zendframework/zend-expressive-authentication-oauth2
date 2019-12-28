@@ -12,6 +12,7 @@ namespace Zend\Expressive\Authentication\OAuth2\Repository\Pdo;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Zend\Expressive\Authentication\OAuth2\Entity\AccessTokenEntity;
@@ -114,6 +115,9 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
             return false;
         }
         $row = $sth->fetch();
+        if (! is_array($row)) {
+            throw OAuthServerException::invalidRefreshToken();
+        }
 
         return array_key_exists('revoked', $row) ? (bool) $row['revoked'] : false;
     }
