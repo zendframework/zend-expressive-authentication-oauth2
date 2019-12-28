@@ -51,10 +51,8 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => ClientCredentialsGrant::class,
-                    PasswordGrant::class
-                        => PasswordGrant::class,
+                    ClientCredentialsGrant::class => ClientCredentialsGrant::class,
+                    PasswordGrant::class => PasswordGrant::class,
                 ],
             ]
         ];
@@ -112,12 +110,10 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => null,
-                    PasswordGrant::class
-                        => PasswordGrant::class,
+                    ClientCredentialsGrant::class => null,
+                    PasswordGrant::class => PasswordGrant::class,
                 ],
-            ]
+            ],
         ];
 
         $mockContainer->get('config')->willReturn($config);
@@ -142,21 +138,21 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => ClientCredentialsGrant::class,
+                    ClientCredentialsGrant::class => ClientCredentialsGrant::class,
                 ],
                 'event_listeners' => [
                     [
                         RequestEvent::CLIENT_AUTHENTICATION_FAILED,
                         function (RequestEvent $event) {
                             // do something
-                        }
-                    ], [
+                        },
+                    ],
+                    [
                         RequestEvent::CLIENT_AUTHENTICATION_FAILED,
-                        ListenerInterface::class
-                    ]
-                ]
-            ]
+                        ListenerInterface::class,
+                    ],
+                ],
+            ],
         ];
 
         $mockContainer->get('config')->willReturn($config);
@@ -180,16 +176,15 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => ClientCredentialsGrant::class,
+                    ClientCredentialsGrant::class => ClientCredentialsGrant::class,
                 ],
                 'event_listeners' => [
                     [
                         RequestEvent::CLIENT_AUTHENTICATION_FAILED,
-                        ListenerInterface::class
-                    ]
-                ]
-            ]
+                        ListenerInterface::class,
+                    ],
+                ],
+            ],
         ];
 
         $mockContainer->get('config')->willReturn($config);
@@ -214,13 +209,12 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => ClientCredentialsGrant::class,
+                    ClientCredentialsGrant::class => ClientCredentialsGrant::class,
                 ],
                 'event_listener_providers' => [
                     ListenerProviderInterface::class
-                ]
-            ]
+                ],
+            ],
         ];
 
         $mockContainer->get('config')->willReturn($config);
@@ -244,13 +238,12 @@ class AuthorizationServerFactoryTest extends TestCase
                 'encryption_key' => 'iALlwJ1sH77dmFCJFo+pMdM6Af4bF/hCca1EDDx7MwE=',
                 'access_token_expire' => 'P1D',
                 'grants' => [
-                    ClientCredentialsGrant::class
-                        => ClientCredentialsGrant::class,
+                    ClientCredentialsGrant::class => ClientCredentialsGrant::class,
                 ],
                 'event_listener_providers' => [
-                    ListenerProviderInterface::class
-                ]
-            ]
+                    ListenerProviderInterface::class,
+                ],
+            ],
         ];
 
         $mockContainer->get('config')->willReturn($config);
@@ -258,7 +251,6 @@ class AuthorizationServerFactoryTest extends TestCase
         $factory = new AuthorizationServerFactory();
 
         $this->expectException(InvalidConfigException::class);
-
-        $result = $factory($mockContainer->reveal());
+        $factory($mockContainer->reveal());
     }
 }
