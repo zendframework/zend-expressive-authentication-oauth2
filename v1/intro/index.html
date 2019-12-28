@@ -291,7 +291,11 @@
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#configure-oauth2-routes" class="toc__link">Configure OAuth2 routes</a>
+                        <a href="#oauth2-database" class="toc__link">OAuth2 Database</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#configure-oauth2-routes" class="toc__link">Configure OAuth2 Routes</a>
                     </li>
                 
             </ul>
@@ -395,6 +399,38 @@ name to the <code>pdo</code> key as follows:</p>
 grants are configured to be available. If you would like to disable any of the
 supplied grants, change the value for the grant to <code>null</code>. Additionally,
 you can extend this array to add your own custom grants.</p>
+<h3>Configure Event Listeners</h3>
+<ul>
+<li><strong>Since 1.3.0</strong></li>
+</ul>
+<p><em>Optional</em> The <code>event_listeners</code> and <code>event_listener_providers</code> arrays may be used to enable event listeners for events published by <code>league\oauth2-server</code>. See the <a href="https://oauth2.thephpleague.com/authorization-server/events/">Authorization Server Domain Events documentation</a>. The possible event names can be found <a href="https://github.com/thephpleague/oauth2-server/blob/0b0b43d43342c0909b3b32fb7a09d502c368d2ec/src/RequestEvent.php#L17-L22">in <code>League\OAuth2\Server\RequestEvent</code></a>.</p>
+<h4>Event Listeners</h4>
+<p>The <code>event_listeners</code> key must contain an array of arrays. Each array element must contain at least 2 elements and may include a 3rd element. These roughly correspond to the arguments passed to <a href="https://github.com/thephpleague/event/blob/d2cc124cf9a3fab2bb4ff963307f60361ce4d119/src/ListenerAcceptorInterface.php#L43"><code>League\Event\ListenerAcceptorInterface::addListener()</code></a>. The first element must be a string -- either the <a href="https://event.thephpleague.com/2.0/listeners/wildcard/">wildcard (<code>*</code>)</a> or a <a href="https://event.thephpleague.com/2.0/events/named/">single event name</a>. The second element must be either a callable, a concrete instance of <code>League\Event\ListenerInterface</code>, or a string pointing to your listener service instance in the container. The third element is optional, and must be an integer if provided.</p>
+<p>See the <a href="https://event.thephpleague.com/2.0/listeners/callables/">documentation for callable listeners</a>.</p>
+<h4>Event Listener Providers</h4>
+<p>The <code>event_listener_providers</code> key must contain an array. Each array element must contain either a concrete instance of <code>League\Event\ListenerProviderInterface</code> or a string pointing to your container service instance of a listener provider.</p>
+<p>See the <a href="https://event.thephpleague.com/2.0/listeners/providers/">documentation for listener providers</a>.</p>
+<p>Example config:</p>
+<pre class=codehilite><code class=language-php>return [    
+    'event_listeners' =&gt; [
+        // using a container service
+        [
+            \League\OAuth2\Server\RequestEvent::CLIENT_AUTHENTICATION_FAILED,
+            \My\Event\Listener\Service::class,
+        ],
+        // using a callable
+        [
+            \League\OAuth2\Server\RequestEvent::ACCESS_TOKEN_ISSUED,
+            function (\League\OAuth2\Server\RequestEvent $event) {
+                // do something
+            },
+        ],
+    ],
+    'event_listener_providers' =&gt; [
+        \My\Event\ListenerProvider\Service::class,
+    ],
+];</code></pre>
+<h2 id="oauth2-database">OAuth2 Database</h2>
 <p>You need to provide an OAuth2 database yourself, or generate a <a href="https://www.sqlite.org">SQLite</a>
 database with the following command (using <code>sqlite3</code> for GNU/Linux):</p>
 <pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql</code></pre>
@@ -412,7 +448,7 @@ database with the following command (using <code>sqlite3</code> for GNU/Linux):<
 <p>For security reason, the client <code>secret</code> and the user <code>password</code> are stored
 using the <code>bcrypt</code> algorithm as used by the <a href="http://php.net/manual/en/function.password-hash.php">password_hash</a>
 function.</p>
-<h2 id="configure-oauth2-routes">Configure OAuth2 routes</h2>
+<h2 id="configure-oauth2-routes">Configure OAuth2 Routes</h2>
 <p>As the final step, in order to use the OAuth2 server you need to configure the routes
 for the <strong>token endpoint</strong> and <strong>authorization</strong>.</p>
 <p>You can read how add the <strong>token endpoint</strong> and the <strong>authorization</strong> routes in
