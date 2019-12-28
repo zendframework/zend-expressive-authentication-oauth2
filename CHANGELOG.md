@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#55](https://github.com/zendframework/zend-expressive-authentication-oauth2/pull/55) changes how the `OAuth2Adapter` validates when a client ID is present. Previously, if a client ID was present, but not a user ID, it would attempt to pull a user from the user factory using the client ID, which was incorrect. With this release, it no longer does that.
 
 ### Deprecated
 
