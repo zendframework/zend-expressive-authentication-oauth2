@@ -306,9 +306,9 @@ for your application.</p>
 <code>Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler</code>.</p>
 <p>This endpoint <strong>MUST</strong> accept <code>POST</code> requests.</p>
 <p>For example:</p>
-<p> <pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication\OAuth2;
+<pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication\OAuth2;
 
-$app-&gt;post('/oauth2/token', OAuth2\TokenEndpointHandler::class);</code></pre></p>
+$app-&gt;post('/oauth2/token', OAuth2\TokenEndpointHandler::class);</code></pre>
 <h2 id="add-the-authorization-endpoint">Add the authorization endpoint</h2>
 <p>The authorization endpoint is the URL to which the client redirects
 to obtain an access token or authorization code.</p>
@@ -331,7 +331,7 @@ to obtain an access token or authorization code.</p>
 <p>The first and the last items are provided by this library.</p>
 <p>For example, to add the authorization endpoint, you can declare a middleware
 pipeline for the route as follows:</p>
-<p> <pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication\OAuth2;
+<pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication\OAuth2;
 use Zend\Expressive\Session\SessionMiddleware;
 
 $app-&gt;route('/oauth2/authorize', [
@@ -343,14 +343,14 @@ $app-&gt;route('/oauth2/authorize', [
     App\OAuthAuthorizationMiddleware::class,
 
     OAuth2\AuthorizationHandler::class
-], ['GET', 'POST']);</code></pre></p>
+], ['GET', 'POST']);</code></pre>
 <p>In your <code>App\OAuthAuthorizationMiddleware</code>, you'll have access to the
 <code>League\OAuth2\Server\RequestTypes\AuthorizationRequest</code> via the PSR-7 request.
 Your middleware should populate the <code>AuthorizationRequest</code>'s user entity via its
 <code>setUser()</code> method, and the user's consent decision via the
 <code>setAuthorizationApproved()</code>method.</p>
 <p>As an example:</p>
-<p> <pre class=codehilite><code class=language-php>namespace App;
+<pre class=codehilite><code class=language-php>namespace App;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -398,7 +398,7 @@ class OAuthAuthorizationMiddleware implements MiddlewareInterface
 
         return new RedirectResponse('/oauth2/login');
     }
-}</code></pre></p>
+}</code></pre>
 
 
 

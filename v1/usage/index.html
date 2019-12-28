@@ -317,7 +317,7 @@ class provided by <a href="https://github.com/zendframework/zend-expressive-auth
 <code>Zend\Expressive\Authentication\AuthenticationInterface</code> to resolve to
 <code>Zend\Expressive\Authentication\OAuth2\OAuth2Adapter</code>. This can be achieved
 using the following configuration:</p>
-<p> <pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication;
+<pre class=codehilite><code class=language-php>use Zend\Expressive\Authentication;
 
 return [
     'dependencies' =&gt; [
@@ -325,7 +325,7 @@ return [
             Authentication\AuthenticationInterface::class =&gt; Authentication\OAuth2\OAuth2Adapter::class,
         ],
     ],
-];</code></pre></p>
+];</code></pre>
 <p>The previous configuration will instruct <code>zend-expressive-authentication</code> to use
 the OAuth2 adapter provided in this package. (Unlike other adapters, this
 adapter does not require a <code>Zend\Expressive\Authentication\UserRepositoryInterface</code>;
@@ -336,10 +336,10 @@ your application/API by adding the <code>AuthenticationMiddleware</code> to eith
 application or route-specific middleware pipeline. For instance, using an
 <a href="https://docs.zendframework.com/zend-expressive/">Expressive</a> application, you
 could add it to a specific route, as follows:</p>
-<p> <pre class=codehilite><code class=language-php>$app-&gt;post('/api/users', [
+<pre class=codehilite><code class=language-php>$app-&gt;post('/api/users', [
     Zend\Expressive\Authentication\AuthenticationMiddleware::class,
     App\Action\AddUserAction::class,
-], 'api.add.user');</code></pre></p>
+], 'api.add.user');</code></pre>
 <h1 id="providing-an-authorization-server">Providing an authorization server</h1>
 <p>See the chapter <a href="../authorization-server/">Authorization server</a> for details on how
 to implement this.</p>

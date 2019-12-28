@@ -321,14 +321,14 @@ package for implementing the OAuth2 server.</p>
 <p>In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
 <code>./vendor/bin/generate-oauth2-keys</code> in order to generate these keys.</p>
-<p> <pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-oauth2-keys</code></pre></p>
+<pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-oauth2-keys</code></pre>
 <p>This script will store the keys in the application's <code>data</code> folder if found:</p>
-<p> <pre class=codehilite><code class=language-text>Private key stored in:
+<pre class=codehilite><code class=language-text>Private key stored in:
 ./data/oauth/private.key
 Public key stored in:
 ./data/oauth/public.key
 Encryption key stored in:
-./data/oauth/encryption.key</code></pre></p>
+./data/oauth/encryption.key</code></pre>
 <p>The script will generate public and private keys, and an encryption key.
 These keys are used by <a href="https://oauth2.thephpleague.com/">league/oauth2-server</a>
 as security settings for the OAuth2 server infrastructure.</p>
@@ -336,7 +336,7 @@ as security settings for the OAuth2 server infrastructure.</p>
 <p>The OAuth2 server is configured by the <code>authentication</code> configuration key in the
 PSR-11 container (e.g. <a href="https://github.com/zendframework/zend-servicemanager">zend-servicemanager</a>).</p>
 <p>The default values are:</p>
-<p> <pre class=codehilite><code class=language-php>use League\OAuth2\Server\Grant;
+<pre class=codehilite><code class=language-php>use League\OAuth2\Server\Grant;
 
 return [
     'private_key'    =&gt; __DIR__ . '/../data/oauth/private.key',
@@ -359,7 +359,7 @@ return [
         Grant\ImplicitGrant::class          =&gt; Grant\ImplicitGrant::class,
         Grant\RefreshTokenGrant::class      =&gt; Grant\RefreshTokenGrant::class
     ],
-];</code></pre></p>
+];</code></pre>
 <p>The <code>private_key</code> and <code>public_key</code> values contains the paths to the previous
 generated pair of keys. The <code>encryption_key</code> contains the encryption key value
 as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
@@ -367,12 +367,12 @@ as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
 600, 640 or 660 is expected, and 600 or 660 is recommended). In case the
 environment/operating system (e.g. Windows) does not support such a permissions,
 the check can be disabled:</p>
-<p> <pre class=codehilite><code class=language-php>    // ...
+<pre class=codehilite><code class=language-php>    // ...
     'private_key' =&gt; [
         'key_or_path' =&gt; __DIR__ . '/../data/oauth/private.key',
         'key_permissions_check' =&gt; false,
     ],
-    // ...</code></pre></p>
+    // ...</code></pre>
 <p>The <code>access_token_expire</code> value is the time-to-live (TTL) value of the access
 token. The time period is represented using the <a href="http://php.net/manual/en/class.dateinterval.php">DateInterval</a>
 format in PHP.  The default value is <code>P1D</code> (1 day).</p>
@@ -388,18 +388,18 @@ database is stored in the <a href="https://github.com/zendframework/zend-express
 file.</p>
 <p>If you already have a PDO service configured, you can instead pass the service
 name to the <code>pdo</code> key as follows:</p>
-<p> <pre class=codehilite><code class=language-php>return [
+<pre class=codehilite><code class=language-php>return [
     'pdo' =&gt; 'myServiceName',
-];</code></pre></p>
+];</code></pre>
 <p>The <code>grants</code> array is for enabling/disabling grants. By default, all the supported
 grants are configured to be available. If you would like to disable any of the
 supplied grants, change the value for the grant to <code>null</code>. Additionally,
 you can extend this array to add your own custom grants.</p>
 <p>You need to provide an OAuth2 database yourself, or generate a <a href="https://www.sqlite.org">SQLite</a>
 database with the following command (using <code>sqlite3</code> for GNU/Linux):</p>
-<p> <pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql</code></pre></p>
+<pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql</code></pre>
 <p>You can also create some testing values using the <code>data/oauth2_test.sql</code> file:</p>
-<p> <pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2_test.sql</code></pre></p>
+<pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2_test.sql</code></pre>
 <p>These commands will insert the following testing values:</p>
 <ul>
 <li>a client <code>client_test</code> with secret <code>test</code>, used for <a href="../grant/client_credentials/">client_credentials</a>

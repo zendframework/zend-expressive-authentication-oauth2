@@ -307,12 +307,12 @@ this is a great way to handle logging in.</p>
 <li><code>password</code> with the user’s password.</li>
 </ul>
 <p>The authorization server responds with a JSON as follows:</p>
-<p> <pre class=codehilite><code class=language-json>{
+<pre class=codehilite><code class=language-json>{
     &quot;token_type&quot; : &quot;Bearer&quot;,
     &quot;expires_in&quot; : &quot;3600&quot;,
     &quot;refresh_token&quot; : &quot;YWYwNjhmNmZmMDhmZjkyOGJj...&quot;,
     &quot;access_token&quot; : &quot;eyJ0eXAiOiJKV1Q...&quot;
-}</code></pre></p>
+}</code></pre>
 <p>The <code>token_type</code> is the type of generated token (Bearer). The <code>expires_in</code> is an
 integer representing the TTL (in seconds) of the access token.  The
 <code>refresh_token</code> a token that can be used to refresh the <code>access_token</code> when
