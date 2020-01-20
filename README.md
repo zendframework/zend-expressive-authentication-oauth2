@@ -2,7 +2,7 @@
 
 > ## Repository abandoned 2019-12-31
 >
-> This repository has moved to mezzio/mezzio-authentication-oauth2.
+> This repository has moved to [mezzio/mezzio-authentication-oauth2](https://github.com/mezzio/mezzio-authentication-oauth2).
 
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-authentication-oauth2.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-authentication-oauth2)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-authentication-oauth2/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-authentication-oauth2?branch=master)
