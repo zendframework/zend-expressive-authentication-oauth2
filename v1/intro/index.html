@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="OAuth2 (server) for Expressive and PSR-7 applications.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-authentication-oauth2/v1/intro/">
+    <link rel="canonical" href="https://docs.zendframework.com/v1/intro/">
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Introduction - zend-expressive-authentication-oauth2 - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -235,9 +235,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-authentication-oauth2/">mezzio/mezzio-authentication-oauth2.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -325,14 +325,18 @@ package for implementing the OAuth2 server.</p>
 <p>In order to implement the OAuth2 server, we first need to configure it. The
 first step is to generate new cryptographic keys. We need to execute the script
 <code>./vendor/bin/generate-oauth2-keys</code> in order to generate these keys.</p>
-<pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-oauth2-keys</code></pre>
+<pre><code class="language-bash">$ ./vendor/bin/generate-oauth2-keys
+</code></pre>
+
 <p>This script will store the keys in the application's <code>data</code> folder if found:</p>
-<pre class=codehilite><code class=language-text>Private key stored in:
+<pre><code class="language-text">Private key stored in:
 ./data/oauth/private.key
 Public key stored in:
 ./data/oauth/public.key
 Encryption key stored in:
-./data/oauth/encryption.key</code></pre>
+./data/oauth/encryption.key
+</code></pre>
+
 <p>The script will generate public and private keys, and an encryption key.
 These keys are used by <a href="https://oauth2.thephpleague.com/">league/oauth2-server</a>
 as security settings for the OAuth2 server infrastructure.</p>
@@ -340,7 +344,7 @@ as security settings for the OAuth2 server infrastructure.</p>
 <p>The OAuth2 server is configured by the <code>authentication</code> configuration key in the
 PSR-11 container (e.g. <a href="https://github.com/zendframework/zend-servicemanager">zend-servicemanager</a>).</p>
 <p>The default values are:</p>
-<pre class=codehilite><code class=language-php>use League\OAuth2\Server\Grant;
+<pre><code class="language-php">use League\OAuth2\Server\Grant;
 
 return [
     'private_key'    =&gt; __DIR__ . '/../data/oauth/private.key',
@@ -363,7 +367,9 @@ return [
         Grant\ImplicitGrant::class          =&gt; Grant\ImplicitGrant::class,
         Grant\RefreshTokenGrant::class      =&gt; Grant\RefreshTokenGrant::class
     ],
-];</code></pre>
+];
+</code></pre>
+
 <p>The <code>private_key</code> and <code>public_key</code> values contains the paths to the previous
 generated pair of keys. The <code>encryption_key</code> contains the encryption key value
 as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
@@ -371,12 +377,14 @@ as a string, as stored in the <code>data/oauth/encryption.key</code> file.</p>
 600, 640 or 660 is expected, and 600 or 660 is recommended). In case the
 environment/operating system (e.g. Windows) does not support such a permissions,
 the check can be disabled:</p>
-<pre class=codehilite><code class=language-php>    // ...
+<pre><code class="language-php">    // ...
     'private_key' =&gt; [
         'key_or_path' =&gt; __DIR__ . '/../data/oauth/private.key',
         'key_permissions_check' =&gt; false,
     ],
-    // ...</code></pre>
+    // ...
+</code></pre>
+
 <p>The <code>access_token_expire</code> value is the time-to-live (TTL) value of the access
 token. The time period is represented using the <a href="http://php.net/manual/en/class.dateinterval.php">DateInterval</a>
 format in PHP.  The default value is <code>P1D</code> (1 day).</p>
@@ -392,9 +400,11 @@ database is stored in the <a href="https://github.com/zendframework/zend-express
 file.</p>
 <p>If you already have a PDO service configured, you can instead pass the service
 name to the <code>pdo</code> key as follows:</p>
-<pre class=codehilite><code class=language-php>return [
+<pre><code class="language-php">return [
     'pdo' =&gt; 'myServiceName',
-];</code></pre>
+];
+</code></pre>
+
 <p>The <code>grants</code> array is for enabling/disabling grants. By default, all the supported
 grants are configured to be available. If you would like to disable any of the
 supplied grants, change the value for the grant to <code>null</code>. Additionally,
@@ -411,7 +421,7 @@ you can extend this array to add your own custom grants.</p>
 <p>The <code>event_listener_providers</code> key must contain an array. Each array element must contain either a concrete instance of <code>League\Event\ListenerProviderInterface</code> or a string pointing to your container service instance of a listener provider.</p>
 <p>See the <a href="https://event.thephpleague.com/2.0/listeners/providers/">documentation for listener providers</a>.</p>
 <p>Example config:</p>
-<pre class=codehilite><code class=language-php>return [    
+<pre><code class="language-php">return [    
     'event_listeners' =&gt; [
         // using a container service
         [
@@ -429,13 +439,19 @@ you can extend this array to add your own custom grants.</p>
     'event_listener_providers' =&gt; [
         \My\Event\ListenerProvider\Service::class,
     ],
-];</code></pre>
+];
+</code></pre>
+
 <h2 id="oauth2-database">OAuth2 Database</h2>
 <p>You need to provide an OAuth2 database yourself, or generate a <a href="https://www.sqlite.org">SQLite</a>
 database with the following command (using <code>sqlite3</code> for GNU/Linux):</p>
-<pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql</code></pre>
+<pre><code class="language-bash">$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2.sql
+</code></pre>
+
 <p>You can also create some testing values using the <code>data/oauth2_test.sql</code> file:</p>
-<pre class=codehilite><code class=language-bash>$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2_test.sql</code></pre>
+<pre><code class="language-bash">$ sqlite3 data/oauth2.sqlite &lt; vendor/zendframework/zend-expressive-authentication-oauth2/data/oauth2_test.sql
+</code></pre>
+
 <p>These commands will insert the following testing values:</p>
 <ul>
 <li>a client <code>client_test</code> with secret <code>test</code>, used for <a href="../grant/client_credentials/">client_credentials</a>
@@ -654,7 +670,7 @@ the <a href="../authorization-server/">Implement an authorization server</a> sec
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -662,10 +678,10 @@ the <a href="../authorization-server/">Implement an authorization server</a> sec
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -673,27 +689,28 @@ the <a href="../authorization-server/">Implement an authorization server</a> sec
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '../..',
             siteName = 'zend-expressive-authentication-oauth2';
     </script>
-    <script src="../../js/scripts-8d7ae56abf.js"></script>
-        <script src="../../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
